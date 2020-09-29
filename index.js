@@ -56,12 +56,10 @@ const repoGlobMap = Object.freeze({
   if (isCommitted) {
     const myToken = core.getInput("myToken");
     const octokit = github.getOctokit(myToken);
-    const { owner, repo } = github.context.repo;
     await logPromise(
       "Creating a new Pull Request",
       octokit.pulls.create({
-        owner,
-        repo,
+        ...github.context.repo,
         title: `Run Prettier ${prettierPkg.version}`,
         head: BRANCH_NAME,
         base: "master",
