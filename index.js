@@ -1,10 +1,13 @@
 const path = require("path");
-const fs = require("fs/promises");
+const fs = require("fs");
 const execa = require("execa");
 const prettierPkg = require("./prettier/package.json");
 const core = require("@actions/core");
 const github = require("@actions/github");
 const { logPromise } = require("./utils");
+const { promisify } = require("util");
+
+const readdir = promisify(fs.readdir);
 
 const repoGlobMap = Object.freeze({
   "typescript-eslint": "./**/*.{ts,js,json,md}",
@@ -17,7 +20,7 @@ const repoGlobMap = Object.freeze({
   );
 
   const reposDir = path.join(process.cwd(), "repos");
-  const repos = await fs.readdir(reposDir);
+  const repos = await readdir(reposDir);
 
   const BRANCH_NAME = `run-prettier-${prettierPkg.version}`;
   let isCommitted = false;
