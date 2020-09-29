@@ -2,6 +2,8 @@ const path = require("path");
 const fs = require("fs/promises");
 const execa = require("execa");
 const prettierPkg = require("./prettier/package.json");
+const core = require("@actions/core");
+const github = require("@actions/github");
 const { logPromise } = require("./utils");
 
 const repoGlobMap = Object.freeze({
@@ -37,11 +39,7 @@ const repoGlobMap = Object.freeze({
         "Commiting changes",
         (async () => {
           if (!isCommitted) {
-            await execa("git", [
-              "checkout",
-              "-b",
-              BRANCH_NAME,
-            ]);
+            await execa("git", ["checkout", "-b", BRANCH_NAME]);
           }
           await execa("git", ["add", "."]);
           await execa("git", [
@@ -56,6 +54,20 @@ const repoGlobMap = Object.freeze({
   }
 
   if (isCommitted) {
-    // TODO: Create PR
+    const myToken = core.getInput("myToken");
+    const octokit = github.getOctokit(myToken);
+    const { owner, repo } = github.context.repo;
+    await logPromise(
+      "Creating a new Pull Request",
+      octokit.pulls.create({
+        owner,
+        repo,
+        title: `Run Prettier ${prettierPkg.version}`,
+        head: BRANCH_NAME,
+        base: "master",
+      })
+    );
   }
-})();
+})().catch((error) => {
+  core.setFailed(error.message);
+});
