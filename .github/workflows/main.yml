@@ -6,7 +6,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Testing job step
-        uses: ./
+      - uses: actions/setup-node@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        node-version: '12'
+      - run: yarn install
+      - run: node ./index.js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
