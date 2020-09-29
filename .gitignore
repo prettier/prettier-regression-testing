@@ -1,0 +1,13 @@
+/node_modules
+*.log
+/errors
+/.vscode
+.DS_Store
+.idea
+package-lock.json
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

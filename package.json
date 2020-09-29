@@ -1,0 +1,17 @@
+{
+  "name": "prettier-regression-testing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/sosukesuzuki/prettier-regression-testing.git",
+  "author": "sosukesuzuki <aosukeke@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "fix": "prettier . -w"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.0",
+    "execa": "^4.0.3",
+    "prettier": "^2.1.2",
+    "string-width": "^4.2.0"
+  }
+}
