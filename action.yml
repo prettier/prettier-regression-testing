@@ -1,0 +1,5 @@
+name: "Prettier regression testing"
+description: "Regression testing for latest Prettier"
+runs:
+  using: "node12"
+  main: "index.js"

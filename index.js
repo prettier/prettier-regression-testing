@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs/promises");
 const execa = require("execa");
+const prettierPkg = require("./prettier/package.json");
 const { logPromise } = require("./utils");
 
 const repoGlobMap = Object.freeze({
@@ -16,6 +17,7 @@ const repoGlobMap = Object.freeze({
   const reposDir = path.join(process.cwd(), "repos");
   const repos = await fs.readdir(reposDir);
 
+  const BRANCH_NAME = `run-prettier-${prettierPkg.version}`;
   let isCommitted = false;
   for (const repo of repos) {
     const repoPath = path.join(reposDir, repo);
@@ -34,6 +36,13 @@ const repoGlobMap = Object.freeze({
       await logPromise(
         "Commiting changes",
         (async () => {
+          if (!isCommitted) {
+            await execa("git", [
+              "checkout",
+              "-b",
+              BRANCH_NAME,
+            ]);
+          }
           await execa("git", ["add", "."]);
           await execa("git", [
             "commit",
