@@ -54,8 +54,8 @@ const repoGlobMap = Object.freeze({
   }
 
   if (isCommitted) {
-    const myToken = core.getInput("myToken");
-    const octokit = github.getOctokit(myToken);
+    const token = core.getInput("token");
+    const octokit = github.getOctokit(token);
     await logPromise(
       "Creating a new Pull Request",
       octokit.pulls.create({
