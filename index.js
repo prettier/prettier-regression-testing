@@ -65,7 +65,10 @@ const repoGlobMap = Object.freeze({
         base: "master",
       })
     );
+  } else {
+    console.log(`There is not change by ${prettierPkg.version}`);
   }
+  console.log("Done");
 })().catch((error) => {
   core.setFailed(error.message);
 });
