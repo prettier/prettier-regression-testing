@@ -1,3 +1,6 @@
 [submodule "prettier"]
 	path = prettier
 	url = git@github.com:prettier/prettier.git
+[submodule "repos/typescript-eslint"]
+	path = repos/typescript-eslint
+	url = git@github.com:typescript-eslint/typescript-eslint.git
