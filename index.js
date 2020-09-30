@@ -39,7 +39,6 @@ const repoGlobMap = Object.freeze({
       )
     );
     if (isChanged) {
-      // TODO: Support submodules
       await logPromise(
         "Commiting changes",
         (async () => {
