@@ -46,12 +46,12 @@ const repoGlobMap = Object.freeze({
           if (!isCommitted) {
             await execa("git", ["checkout", "-b", BRANCH_NAME]);
           }
-          await execa("git", ["add", "."]);
-          await execa("git", [
-            "commit",
-            "-m",
-            `Run latest Prettier on ${repo}`,
-          ]);
+          await execa("git", ["add", "."], { cwd: repoPath });
+          await execa(
+            "git",
+            ["commit", "-m", `Run latest Prettier on ${repo}`],
+            { cwd: repoPath }
+          );
         })()
       );
       isCommitted = true;
@@ -59,6 +59,13 @@ const repoGlobMap = Object.freeze({
   }
 
   if (isCommitted) {
+    await logPromise(
+      "Commiting submodule changes",
+      (async () => {
+        await execa("git", ["add", "."]);
+        await execa("git", ["commit", "-m", `Update via ${prettierPkg.version}`]);
+      })()
+    );
     const token = process.env.NODE_AUTH_TOKEN;
     const octokit = github.getOctokit(token);
     await logPromise(
