@@ -51,7 +51,7 @@ const repoGlobMap = Object.freeze({
           await execa("git", ["add", "."], { cwd: repoPath });
           await execa(
             "git",
-            ["commit", "-m", `Run latest Prettier on ${repo}`],
+            ["commit", "-m", `"Run latest Prettier on ${repo}"`],
             { cwd: repoPath }
           );
         })()
@@ -65,7 +65,7 @@ const repoGlobMap = Object.freeze({
       "Commiting submodule changes",
       (async () => {
         await execa("git", ["add", "."]);
-        await execa("git", ["commit", "-m", `Update via ${prettierPkg.version}`]);
+        await execa("git", ["commit", "-m", `"Update via ${prettierPkg.version}"`]);
       })()
     );
     const token = process.env.NODE_AUTH_TOKEN;
