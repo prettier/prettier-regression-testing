@@ -64,10 +64,11 @@ const repoGlobMap = Object.freeze({
 
   if (isCommitted) {
     await logPromise(
-      "Commiting submodule changes",
+      "Pushing submodule changes",
       (async () => {
         await execa("git", ["add", "."]);
         await execa("git", ["commit", "-m", `"Update via ${prettierPkg.version}"`]);
+        await execa("git", ["push", "origin", BRANCH_NAME]);
       })()
     );
     const token = process.env.NODE_AUTH_TOKEN;
