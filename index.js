@@ -46,6 +46,8 @@ const repoGlobMap = Object.freeze({
         "Commiting changes",
         (async () => {
           if (!isCommitted) {
+            await execa("git", ["config", "--global", "user.email", `"action@github.com"`])
+            await execa("git", ["config", "--global", "user.name", `"GitHub Action"`])
             await execa("git", ["checkout", "-b", BRANCH_NAME]);
           }
           await execa("git", ["add", "."], { cwd: repoPath });
