@@ -29,8 +29,11 @@ const repoGlobMap = Object.freeze({
     const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
     await logPromise(
       `Running latest Prettier on ${repo}`,
-      // FIXME: Glob not working
-      execa(latestPrettier, [path.join(repoPath, repoGlobMap[repo]), "-w"])
+      execa(
+        path.relative(repoPath, latestPrettier),
+        ["--write", JSON.stringify(repoGlobMap[repo])],
+        { cwd: repoPath, shell: true }
+      )
     );
     const isChanged = await logPromise(
       `Checking if source code from ${repo} is changed`,
