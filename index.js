@@ -46,12 +46,24 @@ const repoGlobMap = Object.freeze({
         "Commiting changes",
         (async () => {
           if (!isCommitted) {
+            await execa("git", [
+              "config",
+              "--global",
+              "user.email",
+              `"action@github.com"`,
+            ]);
+            await execa("git", [
+              "config",
+              "--global",
+              "user.name",
+              `"GitHub Action"`,
+            ]);
             await execa("git", ["checkout", "-b", BRANCH_NAME]);
           }
           await execa("git", ["add", "."], { cwd: repoPath });
           await execa(
             "git",
-            ["commit", "-m", `Run latest Prettier on ${repo}`],
+            ["commit", "-m", `"Run latest Prettier on ${repo}"`],
             { cwd: repoPath }
           );
         })()
@@ -62,10 +74,15 @@ const repoGlobMap = Object.freeze({
 
   if (isCommitted) {
     await logPromise(
-      "Commiting submodule changes",
+      "Pushing submodule changes",
       (async () => {
         await execa("git", ["add", "."]);
-        await execa("git", ["commit", "-m", `Update via ${prettierPkg.version}`]);
+        await execa("git", [
+          "commit",
+          "-m",
+          `"Update via ${prettierPkg.version}"`,
+        ]);
+        await execa("git", ["push", "origin", BRANCH_NAME]);
       })()
     );
     const token = process.env.NODE_AUTH_TOKEN;
