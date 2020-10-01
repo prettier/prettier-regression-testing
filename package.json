@@ -6,7 +6,8 @@
   "author": "sosukesuzuki <aosukeke@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "fix": "prettier . -w"
+    "fix": "prettier . -w",
+    "lint": "eslint . --ext .js && prettier . --check"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
@@ -16,6 +17,8 @@
     "string-width": "^4.2.0"
   },
   "devDependencies": {
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
     "prettier": "^2.1.2"
   }
 }
