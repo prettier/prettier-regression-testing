@@ -19,8 +19,6 @@ const repoGlobMap = Object.freeze({
   const reposDir = path.join(process.cwd(), "repos");
   const repos = await fs.readdir(reposDir);
 
-  const BRANCH_NAME = `run-prettier-${prettierPkg.version}`;
-  let isCommitted = false;
   for (const repo of repos) {
     const repoPath = path.join(reposDir, repo);
     const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
@@ -32,71 +30,27 @@ const repoGlobMap = Object.freeze({
         { cwd: repoPath, shell: true }
       )
     );
-    const isChanged = await logPromise(
-      `Checking if source code from ${repo} is changed`,
-      execa("git", ["diff", "--name-only"]).then(({ stdout }) =>
-        stdout.includes(`repos/${repo}`)
+    const diff = await logPromise(
+      `Printing diff of submodules`,
+      execa("git", ["diff", "--submodule=diff", "repos"]).then(
+        ({ stdout }) => stdout
       )
-    );
-    if (isChanged) {
-      await logPromise(
-        "Commiting changes",
-        (async () => {
-          if (!isCommitted) {
-            await execa("git", [
-              "config",
-              "--global",
-              "user.email",
-              `"action@github.com"`,
-            ]);
-            await execa("git", [
-              "config",
-              "--global",
-              "user.name",
-              `"GitHub Action"`,
-            ]);
-            await execa("git", ["checkout", "-b", BRANCH_NAME]);
-          }
-          await execa("git", ["add", "."], { cwd: repoPath });
-          await execa(
-            "git",
-            ["commit", "-m", `"Run latest Prettier on ${repo}"`],
-            { cwd: repoPath }
-          );
-        })()
-      );
-      isCommitted = true;
-    }
-  }
-
-  if (isCommitted) {
-    await logPromise(
-      "Pushing submodule changes",
-      (async () => {
-        await execa("git", ["add", "."]);
-        await execa("git", [
-          "commit",
-          "-m",
-          `"Update via ${prettierPkg.version}"`,
-        ]);
-        await execa("git", ["push", "origin", BRANCH_NAME]);
-      })()
     );
     const token = process.env.NODE_AUTH_TOKEN;
     const octokit = github.getOctokit(token);
-    await logPromise(
-      "Creating a new Pull Request",
-      octokit.pulls.create({
+    const createIssueComment = (body) =>
+      octokit.issues.createComment({
         ...github.context.repo,
-        title: `Run Prettier ${prettierPkg.version}`,
-        head: BRANCH_NAME,
-        base: "master",
-      })
-    );
-  } else {
-    console.log(`There is not change by ${prettierPkg.version}`);
+        issue_number: 2,
+        body,
+      });
+    if (diff) {
+      const body = "```diff\n" + diff + "\n```";
+      createIssueComment(body);
+    } else {
+      createIssueComment(`There is no change by ${prettierPkg.version}`);
+    }
   }
-  console.log("Done");
 })().catch((error) => {
   core.setFailed(error.message);
 });
