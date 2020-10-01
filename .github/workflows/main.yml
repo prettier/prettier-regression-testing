@@ -1,6 +1,9 @@
-on: [push]
+on:
+  issue_comment:
+    types: [created]
 jobs:
   regression_testing_job:
+    if: github.event.comment.body == '!github Run'
     runs-on: ubuntu-latest
     name: a job for regression testing
     steps:
