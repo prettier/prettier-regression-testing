@@ -30,15 +30,15 @@ const repoGlobMap = Object.freeze({
         { cwd: repoPath, shell: true }
       )
     );
-    const prettierCommit = logPromise(
-      "Getting head commit hash of Prettier",
-      execa("git", ["rev-parse", "HEAD"], { cwd: prettierPath }).then(
-        ({ stdout }) => stdout
-      )
-    );
     const diff = await logPromise(
       "Getting diff of submodules",
       execa("git", ["diff", "--submodule=diff", "repos"]).then(
+        ({ stdout }) => stdout
+      )
+    );
+    const prettierCommitHash = await logPromise(
+      "Getting head commit hash of Prettier",
+      execa("git", ["rev-parse", "HEAD"], { cwd: prettierPath }).then(
         ({ stdout }) => stdout
       )
     );
@@ -53,7 +53,7 @@ const repoGlobMap = Object.freeze({
             issue_number: 2,
             body,
           });
-        const prettyCommitHash = `prettier/prettier@${prettierCommit}`;
+        const prettyCommitHash = `prettier/prettier@${prettierCommitHash}`;
         if (diff) {
           const body =
             `Diff by ${prettyCommitHash}\n` + "```diff\n" + diff + "\n```";
