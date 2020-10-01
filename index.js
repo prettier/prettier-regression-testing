@@ -50,7 +50,7 @@ const repoGlobMap = Object.freeze({
         const createIssueComment = (body) =>
           octokit.issues.createComment({
             ...github.context.repo,
-            issue_number: 2,
+            issue_number: github.context.issue.number,
             body,
           });
         const prettyCommitHash = `prettier/prettier@${prettierCommitHash}`;
