@@ -30,41 +30,41 @@ const repoGlobMap = Object.freeze({
         { cwd: repoPath, shell: true }
       )
     );
-    const diff = await logPromise(
-      "Getting diff of submodules",
-      execa("git", ["diff", "--submodule=diff", "repos"]).then(
-        ({ stdout }) => stdout
-      )
-    );
-    const prettierCommitHash = await logPromise(
-      "Getting head commit hash of Prettier",
-      execa("git", ["rev-parse", "HEAD"], { cwd: prettierPath }).then(
-        ({ stdout }) => stdout
-      )
-    );
-    await logPromise(
-      "Creating issue comment",
-      (async () => {
-        const token = process.env.NODE_AUTH_TOKEN;
-        const octokit = github.getOctokit(token);
-        const createIssueComment = (body) =>
-          octokit.issues.createComment({
-            ...github.context.repo,
-            issue_number: github.context.issue.number,
-            body,
-          });
-        const prettyCommitHash = `prettier/prettier@${prettierCommitHash}`;
-        if (diff) {
-          const body =
-            `Diff by ${prettyCommitHash}\n` + "```diff\n" + diff + "\n```";
-          await createIssueComment(body);
-        } else {
-          await createIssueComment(`There is no diff by ${prettyCommitHash}`);
-        }
-      })()
-    );
-    console.log("Done");
   }
+  const diff = await logPromise(
+    "Getting diff of submodules",
+    execa("git", ["diff", "--submodule=diff", "repos"]).then(
+      ({ stdout }) => stdout
+    )
+  );
+  const prettierCommitHash = await logPromise(
+    "Getting head commit hash of Prettier",
+    execa("git", ["rev-parse", "HEAD"], { cwd: prettierPath }).then(
+      ({ stdout }) => stdout
+    )
+  );
+  await logPromise(
+    "Creating issue comment",
+    (async () => {
+      const token = process.env.NODE_AUTH_TOKEN;
+      const octokit = github.getOctokit(token);
+      const createIssueComment = (body) =>
+        octokit.issues.createComment({
+          ...github.context.repo,
+          issue_number: github.context.issue.number,
+          body,
+        });
+      const prettyCommitHash = `prettier/prettier@${prettierCommitHash}`;
+      if (diff) {
+        const body =
+          `Diff by ${prettyCommitHash}\n` + "```diff\n" + diff + "\n```";
+        await createIssueComment(body);
+      } else {
+        await createIssueComment(`There is no diff by ${prettyCommitHash}`);
+      }
+    })()
+  );
+  console.log("Done");
 })().catch((error) => {
   core.setFailed(error.message);
 });
