@@ -4,3 +4,6 @@
 [submodule "repos/typescript-eslint"]
 	path = repos/typescript-eslint
 	url = git@github.com:typescript-eslint/typescript-eslint.git
+[submodule "repos/eslint-plugin-vue"]
+	path = repos/eslint-plugin-vue
+	url = git@github.com:vuejs/eslint-plugin-vue.git

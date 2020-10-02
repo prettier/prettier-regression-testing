@@ -7,6 +7,7 @@ const { logPromise, getPrettyCommitHash } = require("./utils");
 
 const repoGlobMap = Object.freeze({
   "typescript-eslint": "./**/*.{ts,js,json,md}",
+  "eslint-plugin-vue": "./**/*.js"
 });
 
 (async () => {
