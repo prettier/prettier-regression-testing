@@ -40,7 +40,7 @@ async function getPrettyCommitHash(repoPath) {
   ).then(({ stdout }) => stdout);
   const prettyRepoName =
     // TODO: Use better regex?
-    remoteUrl.replace("ssh://git@github.com/", "").replace(".git", "");
+    remoteUrl.replace("git@github.com:", "").replace(".git", "");
   return `${prettyRepoName}@${headCommitHash}`;
 }
 
