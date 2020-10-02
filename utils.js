@@ -1,4 +1,5 @@
 // from https://github.com/prettier/prettier/blob/ed961df609992e265483d955b6d74ad0c7c9af8c/scripts/release/utils.js
+const execa = require("execa");
 const stringWidth = require("string-width");
 const chalk = require("chalk");
 
@@ -28,4 +29,19 @@ function logPromise(name, promise) {
     });
 }
 
-module.exports = { logPromise };
+async function getPrettyCommitHash(repoPath) {
+  const headCommitHash = await execa("git", ["rev-parse", "HEAD"], {
+    cwd: repoPath,
+  }).then(({ stdout }) => stdout);
+  const remoteUrl = await execa(
+    "git",
+    ["remote", "get-url", "--all", "origin"],
+    { cwd: repoPath }
+  ).then(({ stdout }) => stdout);
+  const prettyRepoName =
+    // TODO: Use better regex?
+    remoteUrl.replace("ssh://git@github.com/", "").replace(".git", "");
+  return `${prettyRepoName}@${headCommitHash}`;
+}
+
+module.exports = { logPromise, getPrettyCommitHash };

@@ -3,7 +3,7 @@ const fs = require("fs/promises");
 const execa = require("execa");
 const core = require("@actions/core");
 const github = require("@actions/github");
-const { logPromise } = require("./utils");
+const { logPromise, getPrettyCommitHash } = require("./utils");
 
 const repoGlobMap = Object.freeze({
   "typescript-eslint": "./**/*.{ts,js,json,md}",
@@ -11,6 +11,8 @@ const repoGlobMap = Object.freeze({
 
 (async () => {
   const prettierPath = path.join(process.cwd(), "prettier");
+  const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
+
   await logPromise(
     "installing dependencies",
     execa("npm", ["i"], { cwd: prettierPath })
@@ -19,27 +21,24 @@ const repoGlobMap = Object.freeze({
   const reposDir = path.join(process.cwd(), "repos");
   const repos = await fs.readdir(reposDir);
 
-  for (const repo of repos) {
-    const repoPath = path.join(reposDir, repo);
-    const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
-    await logPromise(
-      `Running latest Prettier on ${repo}`,
-      execa(
-        path.relative(repoPath, latestPrettier),
-        ["--write", JSON.stringify(repoGlobMap[repo])],
-        { cwd: repoPath, shell: true }
-      )
-    );
-  }
+  const results = await Promise.all(
+    repos.map(async (repo) => {
+      const repoPath = path.join(reposDir, repo);
+      await logPromise(
+        `Running latest Prettier on ${repo}`,
+        execa(
+          path.relative(repoPath, latestPrettier),
+          ["--write", JSON.stringify(repoGlobMap[repo])],
+          { cwd: repoPath, shell: true }
+        )
+      );
+      const prettyCommitHash = await getPrettyCommitHash(repoPath);
+      return { prettyCommitHash };
+    })
+  );
   const diff = await logPromise(
     "Getting diff of submodules",
     execa("git", ["diff", "--submodule=diff", "repos"]).then(
-      ({ stdout }) => stdout
-    )
-  );
-  const prettierCommitHash = await logPromise(
-    "Getting head commit hash of Prettier",
-    execa("git", ["rev-parse", "HEAD"], { cwd: prettierPath }).then(
       ({ stdout }) => stdout
     )
   );
@@ -54,13 +53,19 @@ const repoGlobMap = Object.freeze({
           issue_number: github.context.issue.number,
           body,
         });
-      const prettyCommitHash = `prettier/prettier@${prettierCommitHash}`;
+      const reposList = results.reduce((prev, { prettyCommitHash }) => {
+        const item = `- ${prettyCommitHash}\n`;
+        return prev + item;
+      }, "");
+      const prettyCommitHash = await getPrettyCommitHash(prettierPath);
       if (diff) {
-        const body =
-          `Diff by ${prettyCommitHash}\n` + "```diff\n" + diff + "\n```";
-        await createIssueComment(body);
+        const heading = `Diff by ${prettyCommitHash}\n`;
+        const diffCodeBlock = "```diff\n" + diff + "\n```";
+        await createIssueComment(heading + reposList + diffCodeBlock);
       } else {
-        await createIssueComment(`There is no diff by ${prettyCommitHash}`);
+        await createIssueComment(
+          `There is no diff by ${prettyCommitHash}` + "\n" + reposList
+        );
       }
     })()
   );
