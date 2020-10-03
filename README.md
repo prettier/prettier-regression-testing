@@ -18,4 +18,5 @@ This is a lot of work, so we use GitHub Actions to automate it.
 ## Usage
 
 - Create a comment `run` on any issue.
+  - Or `run with cheking out foo` to specify checking out.
 - An issue comment that includes diffs will be created. (See [an issue for demo](https://github.com/sosukesuzuki/prettier-regression-testing/issues/6).)
