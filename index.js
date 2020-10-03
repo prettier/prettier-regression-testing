@@ -14,6 +14,8 @@ const repoGlobMap = Object.freeze({
   const prettierPath = path.join(process.cwd(), "prettier");
   const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
 
+  console.log(JSON.stringify(github.context.payload))
+
   await logPromise(
     "installing dependencies",
     execa("npm", ["i"], { cwd: prettierPath })
