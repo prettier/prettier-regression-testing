@@ -14,7 +14,15 @@ const repoGlobMap = Object.freeze({
   const prettierPath = path.join(process.cwd(), "prettier");
   const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
 
-  console.log(JSON.stringify(github.context.payload))
+  const PREFIX = "run with checking out ";
+  const commentBody = github.context.payload.comment.body;
+  if (commentBody.startsWith(PREFIX)) {
+    const checkOutTarget = commentBody.replace(PREFIX, "");
+    await logPromise(
+      `Checking out to prettier/prettier@${checkOutTarget}`,
+      execa("git", ["checkout", checkOutTarget], { cwd: prettierPath })
+    );
+  }
 
   await logPromise(
     "installing dependencies",
