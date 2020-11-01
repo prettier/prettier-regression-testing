@@ -13,6 +13,7 @@ const repoGlobMap = Object.freeze({
 });
 const repoIgnorePathMap = Object.freeze({
   excalidraw: ".eslintignore",
+  babel: ".eslintignore",
 });
 
 (async () => {
