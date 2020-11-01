@@ -9,6 +9,10 @@ const repoGlobMap = Object.freeze({
   "typescript-eslint": "./**/*.{ts,js,json,md}",
   "eslint-plugin-vue": "./**/*.js",
   babel: "./{packages,codemodes,eslint}/**/*.js",
+  excalidraw: "./**/*.{css,scss,json,md,html,yml}",
+});
+const repoIgnorePathMap = Object.freeze({
+  excalidraw: ".eslintignore",
 });
 
 (async () => {
@@ -38,11 +42,16 @@ const repoGlobMap = Object.freeze({
       const repoPath = path.join(reposDir, repo);
       await logPromise(
         `Running latest Prettier on ${repo}`,
-        execa(
-          path.relative(repoPath, latestPrettier),
-          ["--write", JSON.stringify(repoGlobMap[repo])],
-          { cwd: repoPath, shell: true }
-        )
+        (async () => {
+          const ignorePath = repoIgnorePathMap[repo];
+          await execa(
+            path.relative(repoPath, latestPrettier),
+            ["--write", JSON.stringify(repoGlobMap[repo])].concat(
+              ignorePath ? ["--ignore-path", ignorePath] : []
+            ),
+            { cwd: repoPath, shell: true }
+          );
+        })()
       );
       const prettyCommitHash = await getPrettyCommitHash(repoPath);
       return { prettyCommitHash };

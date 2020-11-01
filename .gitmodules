@@ -10,3 +10,6 @@
 [submodule "repos/babel"]
 	path = repos/babel
 	url = git@github.com:babel/babel.git
+[submodule "repos/excalidraw"]
+	path = repos/excalidraw
+	url = git@github.com:excalidraw/excalidraw.git
