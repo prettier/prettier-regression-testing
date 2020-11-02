@@ -43,9 +43,13 @@ const repoIgnorePathMap = Object.freeze({
         (async () => {
           const remoteName = repo.split("/")[0];
           const repoFullName = getRepoFullName(repo);
-          await execa("git", ["remote", "add", remoteName, repoFullName]);
-          await execa("git", ["fetch", remoteName]);
-          await execa("git", ["checkout", checkOutTarget]);
+          await execa("git", ["remote", "add", remoteName, repoFullName], {
+            cwd: prettierPath,
+          });
+          await execa("git", ["fetch", remoteName], { cwd: prettierPath });
+          await execa("git", ["checkout", checkOutTarget], {
+            cwd: prettierPath,
+          });
         })()
       );
     }
