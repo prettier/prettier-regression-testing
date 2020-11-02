@@ -27,14 +27,17 @@ const repoIgnorePathMap = Object.freeze({
 
   const commentBody = github.context.payload.comment.body;
   const result = getCheckoutTargetAndRepoFromCommentBody(commentBody);
+  let prettierPrettyCommitHash;
   if (result) {
     const { checkOutTarget, repo } = result;
     if (!repo) {
+      prettierPrettyCommitHash = `prettier/prettier@${checkOutTarget}`;
       await logPromise(
         `Checking out to prettier/prettier@${checkOutTarget}`,
         execa("git", ["checkout", checkOutTarget], { cwd: prettierPath })
       );
     } else {
+      prettierPrettyCommitHash = `${repo}@${checkOutTarget}`;
       await logPromise(
         `Checking out to ${repo}@${checkOutTarget}`,
         (async () => {
@@ -46,6 +49,8 @@ const repoIgnorePathMap = Object.freeze({
         })()
       );
     }
+  } else {
+    prettierPrettyCommitHash = await getPrettyCommitHash(prettierPath);
   }
 
   await logPromise(
@@ -97,14 +102,13 @@ const repoIgnorePathMap = Object.freeze({
         const item = `- ${prettyCommitHash}\n`;
         return prev + item;
       }, "");
-      const prettyCommitHash = await getPrettyCommitHash(prettierPath);
       if (diff) {
-        const heading = `Diff by ${prettyCommitHash}\n`;
+        const heading = `Diff by ${prettierPrettyCommitHash}\n`;
         const diffCodeBlock = "```diff\n" + diff + "\n```";
         await createIssueComment(heading + reposList + diffCodeBlock);
       } else {
         await createIssueComment(
-          `There is no diff by ${prettyCommitHash}` + "\n" + reposList
+          `There is no diff by ${prettierPrettyCommitHash}` + "\n" + reposList
         );
       }
     })()
