@@ -19,4 +19,5 @@ This is a lot of work, so we use GitHub Actions to automate it.
 
 - Create a comment `run` on any issue.
   - Or `run with checking out foo` to specify checking out.
+  - Or `run with checking out foo on sosukesuzuki/prettier` to specify cheking out and specify forked repository.
 - An issue comment that includes diffs will be created. (See [an issue for demo](https://github.com/sosukesuzuki/prettier-regression-testing/issues/6).)
