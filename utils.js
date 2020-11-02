@@ -54,9 +54,9 @@ function getCheckoutTargetAndRepoFromCommentBody(commentBody) {
     return undefined;
   }
   const splitted = commentBody.split(" ");
-  const checkoutTarget = splitted[4];
+  const checkOutTarget = splitted[4];
   const repo = splitted[6]; // A string like "sosukesuzuki/prettier"
-  return { checkoutTarget, repo };
+  return { checkOutTarget, repo };
 }
 
 /**
