@@ -64,7 +64,8 @@ function getCheckoutTargetAndRepoFromCommentBody(commentBody) {
  * @returns {String}
  */
 function getRepoFullName(repo) {
-  return `git@github.com:${repo}.git`;
+  const token = process.env.NODE_AUTH_TOKEN;
+  return `https://${token}@github.com/${repo}.git`;
 }
 
 module.exports = {
