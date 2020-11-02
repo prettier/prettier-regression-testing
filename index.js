@@ -3,7 +3,12 @@ const fs = require("fs/promises");
 const execa = require("execa");
 const core = require("@actions/core");
 const github = require("@actions/github");
-const { logPromise, getPrettyCommitHash } = require("./utils");
+const {
+  logPromise,
+  getPrettyCommitHash,
+  getCheckoutTargetAndRepoFromCommentBody,
+  getRepoFullName,
+} = require("./utils");
 
 const repoGlobMap = Object.freeze({
   "typescript-eslint": "./**/*.{ts,js,json,md}",
@@ -20,14 +25,27 @@ const repoIgnorePathMap = Object.freeze({
   const prettierPath = path.join(process.cwd(), "prettier");
   const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
 
-  const PREFIX = "run with checking out ";
   const commentBody = github.context.payload.comment.body;
-  if (commentBody.startsWith(PREFIX)) {
-    const checkOutTarget = commentBody.replace(PREFIX, "");
-    await logPromise(
-      `Checking out to prettier/prettier@${checkOutTarget}`,
-      execa("git", ["checkout", checkOutTarget], { cwd: prettierPath })
-    );
+  const result = getCheckoutTargetAndRepoFromCommentBody(commentBody);
+  if (result) {
+    const { checkOutTarget, repo } = result;
+    if (!repo) {
+      await logPromise(
+        `Checking out to prettier/prettier@${checkOutTarget}`,
+        execa("git", ["checkout", checkOutTarget], { cwd: prettierPath })
+      );
+    } else {
+      await logPromise(
+        `Checking out to ${repo}@${checkOutTarget}`,
+        (async () => {
+          const remoteName = repo.split("/")[0];
+          const repoFullName = getRepoFullName(repo);
+          await execa("git", ["remote", "add", remoteName, repoFullName]);
+          await execa("git", ["fetch", remoteName]);
+          await execa("git", ["checkout", checkOutTarget]);
+        })()
+      );
+    }
   }
 
   await logPromise(

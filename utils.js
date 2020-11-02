@@ -44,4 +44,32 @@ async function getPrettyCommitHash(repoPath) {
   return `${prettyRepoName}@${headCommitHash}`;
 }
 
-module.exports = { logPromise, getPrettyCommitHash };
+/**
+ * @param {String} commentBody
+ * @returns {{ commitHash: string; repo: string | undefined }}
+ */
+function getCheckoutTargetAndRepoFromCommentBody(commentBody) {
+  const PREFIX = "run with checking out ";
+  if (!commentBody.startsWith(PREFIX)) {
+    return undefined;
+  }
+  const splitted = commentBody.split(" ");
+  const checkoutTarget = splitted[4];
+  const repo = splitted[6]; // A string like "sosukesuzuki/prettier"
+  return { checkoutTarget, repo };
+}
+
+/**
+ * @param {String} repo
+ * @returns {String}
+ */
+function getRepoFullName(repo) {
+  return `git@github.com:${repo}.git`;
+}
+
+module.exports = {
+  logPromise,
+  getPrettyCommitHash,
+  getCheckoutTargetAndRepoFromCommentBody,
+  getRepoFullName,
+};
