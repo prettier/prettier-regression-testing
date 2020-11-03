@@ -13,3 +13,6 @@
 [submodule "repos/excalidraw"]
 	path = repos/excalidraw
 	url = git@github.com:excalidraw/excalidraw.git
+[submodule "repos/prettier"]
+	path = repos/prettier
+	url = git@github.com:prettier/prettier.git

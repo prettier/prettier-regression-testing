@@ -15,6 +15,7 @@ const repoGlobMap = Object.freeze({
   "eslint-plugin-vue": "./**/*.js",
   babel: "./{packages,codemodes,eslint}/**/*.js",
   excalidraw: "./**/*.{css,scss,json,md,html,yml}",
+  prettier: ".",
 });
 const repoIgnorePathMap = Object.freeze({
   excalidraw: ".eslintignore",
