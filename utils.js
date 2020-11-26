@@ -59,11 +59,11 @@ function parseTarget(commentBody) {
   if (prParseResult) {
     return { type: "pr", ...prParseResult };
   }
-  let { groups: repoMatch } =
+  let { groups: repoMatchResult } =
     commentBody.match(
       /^run( with checking out (?<ref>.*?)(?: on (?<repo>.*?))?)?$/
     ) || {};
-  return { type: "repo", ...repoMatch };
+  return { type: "repo", ...repoMatchResult };
 }
 
 /**
