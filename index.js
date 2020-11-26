@@ -28,6 +28,7 @@ const repoIgnorePathMap = Object.freeze({
 
   const commentBody = github.context.payload.comment.body;
   const { type, ref, repo, pr } = parseTarget(commentBody);
+  console.log({ type, ref, repo, pr });
   let prettierPrettyCommitHash;
   if (type === "pr") {
     prettierPrettyCommitHash = `[Prettier PR ${pr}](https://github.com/prettier/prettier/pull/${pr})`;
