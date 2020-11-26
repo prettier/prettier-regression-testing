@@ -53,6 +53,7 @@ async function getPrettyCommitHash(repoPath) {
  * @returns {RepoResult | PrResult}
  */
 function parseTarget(commentBody) {
+  commentBody = commentBody.trim();
   let { groups: prParseResult } =
     commentBody.match(/^run with pr (?<pr>\d+)$/) || {};
   if (prParseResult) {
