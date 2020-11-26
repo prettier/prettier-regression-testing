@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - run-with-pr
   pull_request:
 
 jobs:

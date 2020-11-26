@@ -34,7 +34,7 @@ const repoIgnorePathMap = Object.freeze({
     await logPromise(`Installing GitHub CLI`, execa("brew", ["install", "gh"]));
     await logPromise(
       `Checking out PR ${pr}`,
-      execa("gh", ["pr", "checkout", "pr"], { cwd: prettierPath })
+      execa("gh", ["pr", "checkout", pr], { cwd: prettierPath })
     );
   } else {
     if (repo) {
