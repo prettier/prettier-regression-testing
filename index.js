@@ -6,7 +6,7 @@ const github = require("@actions/github");
 const {
   logPromise,
   getPrettyCommitHash,
-  getCheckoutTargetAndRepoFromCommentBody,
+  parseTarget,
   getRepoFullName,
 } = require("./utils");
 
@@ -31,7 +31,7 @@ const repoIgnorePathMap = Object.freeze({
   let prettierPrettyCommitHash;
   if (type === "pr") {
     prettierPrettyCommitHash = `[Prettier PR ${pr}](https://github.com/prettier/prettier/pull/${pr})`;
-    await logPromise(`Installing GitHub CLI`, execa("brew", ["install", gh]));
+    await logPromise(`Installing GitHub CLI`, execa("brew", ["install", "gh"]));
     await logPromise(
       `Checking out PR ${pr}`,
       execa("gh", ["pr", "checkout", "pr"], { cwd: prettierPath })
@@ -48,7 +48,7 @@ const repoIgnorePathMap = Object.freeze({
             cwd: prettierPath,
           });
           await execa("git", ["fetch", remoteName], { cwd: prettierPath });
-          await execa("git", ["checkout", checkOutTarget], {
+          await execa("git", ["checkout", ref], {
             cwd: prettierPath,
           });
         })()
