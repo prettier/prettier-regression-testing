@@ -27,20 +27,20 @@ const repoIgnorePathMap = Object.freeze({
   const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
 
   const commentBody = github.context.payload.comment.body;
-  const result = getCheckoutTargetAndRepoFromCommentBody(commentBody);
+  const { type, ref, repo, pr } = parseTarget(commentBody);
   let prettierPrettyCommitHash;
-  if (result) {
-    const { checkOutTarget, repo } = result;
-    if (!repo) {
-      prettierPrettyCommitHash = `prettier/prettier@${checkOutTarget}`;
+  if (type === "pr") {
+    prettierPrettyCommitHash = `[Prettier PR ${pr}](https://github.com/prettier/prettier/pull/${pr})`;
+    await logPromise(`Installing GitHub CLI`, execa("brew", ["install", gh]));
+    await logPromise(
+      `Checking out PR ${pr}`,
+      execa("gh", ["pr", "checkout", "pr"], { cwd: prettierPath })
+    );
+  } else {
+    if (repo) {
+      prettierPrettyCommitHash = `${repo}@${ref}`;
       await logPromise(
-        `Checking out to prettier/prettier@${checkOutTarget}`,
-        execa("git", ["checkout", checkOutTarget], { cwd: prettierPath })
-      );
-    } else {
-      prettierPrettyCommitHash = `${repo}@${checkOutTarget}`;
-      await logPromise(
-        `Checking out to ${repo}@${checkOutTarget}`,
+        `Checking out ${repo}@${ref}`,
         (async () => {
           const remoteName = repo.split("/")[0];
           const repoFullName = getRepoFullName(repo);
@@ -53,9 +53,15 @@ const repoIgnorePathMap = Object.freeze({
           });
         })()
       );
+    } else if (ref) {
+      prettierPrettyCommitHash = `prettier/prettier@${ref}`;
+      await logPromise(
+        `Checking out prettier/prettier@${ref}`,
+        execa("git", ["checkout", ref], { cwd: prettierPath })
+      );
+    } else {
+      prettierPrettyCommitHash = await getPrettyCommitHash(prettierPath);
     }
-  } else {
-    prettierPrettyCommitHash = await getPrettyCommitHash(prettierPath);
   }
 
   await logPromise(

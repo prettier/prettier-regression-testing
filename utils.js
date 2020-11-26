@@ -45,18 +45,24 @@ async function getPrettyCommitHash(repoPath) {
 }
 
 /**
+ * @typedef {{type: "repo", ref?: string, repo?: string}} RepoResult
+ * @typedef {{type: "pr", pr?: string}} PrResult
+ *
  * @param {String} commentBody
- * @returns {{ commitHash: string; repo: string | undefined }}
+  
+ * @returns {RepoResult | PrResult}
  */
-function getCheckoutTargetAndRepoFromCommentBody(commentBody) {
-  const PREFIX = "run with checking out ";
-  if (!commentBody.startsWith(PREFIX)) {
-    return undefined;
+function parseTarget(commentBody) {
+  let { groups: prParseResult } =
+    commentBody.match(/^run with pr (?<pr>\d+)$/) || {};
+  if (prParseResult) {
+    return { type: "pr", ...prParseResult };
   }
-  const splitted = commentBody.split(" ");
-  const checkOutTarget = splitted[4];
-  const repo = splitted[6]; // A string like "sosukesuzuki/prettier"
-  return { checkOutTarget, repo };
+  let { groups: repoMatch } =
+    commentBody.match(
+      /^run( with checking out (?<ref>.*?)(?: on (?<repo>.*?))?)?$/
+    ) || {};
+  return { type: "repo", ...repoMatch };
 }
 
 /**
@@ -71,6 +77,6 @@ function getRepoFullName(repo) {
 module.exports = {
   logPromise,
   getPrettyCommitHash,
-  getCheckoutTargetAndRepoFromCommentBody,
+  parseTarget,
   getRepoFullName,
 };
