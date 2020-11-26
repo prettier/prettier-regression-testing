@@ -33,6 +33,10 @@ const repoIgnorePathMap = Object.freeze({
     prettierPrettyCommitHash = `[Prettier PR ${pr}](https://github.com/prettier/prettier/pull/${pr})`;
     await logPromise(`Installing GitHub CLI`, execa("brew", ["install", "gh"]));
     await logPromise(
+      `Login Github CLI`,
+      execa("gh", ["auth", "login", process.env.NODE_AUTH_TOKEN], { cwd: prettierPath })
+    );
+    await logPromise(
       `Checking out PR ${pr}`,
       execa("gh", ["pr", "checkout", pr], { cwd: prettierPath })
     );
