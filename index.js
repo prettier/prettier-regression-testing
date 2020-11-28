@@ -6,7 +6,7 @@ const github = require("@actions/github");
 const {
   logPromise,
   getPrettyCommitHash,
-  getCheckoutTargetAndRepoFromCommentBody,
+  parseTarget,
   getRepoFullName,
 } = require("./utils");
 
@@ -27,20 +27,27 @@ const repoIgnorePathMap = Object.freeze({
   const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
 
   const commentBody = github.context.payload.comment.body;
-  const result = getCheckoutTargetAndRepoFromCommentBody(commentBody);
+  const { type, ref, repo, pr } = parseTarget(commentBody);
+  console.log({ type, ref, repo, pr });
   let prettierPrettyCommitHash;
-  if (result) {
-    const { checkOutTarget, repo } = result;
-    if (!repo) {
-      prettierPrettyCommitHash = `prettier/prettier@${checkOutTarget}`;
+  if (type === "pr") {
+    prettierPrettyCommitHash = `[Prettier PR ${pr}](https://github.com/prettier/prettier/pull/${pr})`;
+    await logPromise(`Installing GitHub CLI`, execa("brew", ["install", "gh"]));
+    await logPromise(
+      `Login Github CLI`,
+      execa("gh", ["auth", "login", "--with-token"], {
+        input: process.env.NODE_AUTH_TOKEN,
+      })
+    );
+    await logPromise(
+      `Checking out PR ${pr}`,
+      execa("gh", ["pr", "checkout", pr], { cwd: prettierPath })
+    );
+  } else {
+    if (repo) {
+      prettierPrettyCommitHash = `${repo}@${ref}`;
       await logPromise(
-        `Checking out to prettier/prettier@${checkOutTarget}`,
-        execa("git", ["checkout", checkOutTarget], { cwd: prettierPath })
-      );
-    } else {
-      prettierPrettyCommitHash = `${repo}@${checkOutTarget}`;
-      await logPromise(
-        `Checking out to ${repo}@${checkOutTarget}`,
+        `Checking out ${repo}@${ref}`,
         (async () => {
           const remoteName = repo.split("/")[0];
           const repoFullName = getRepoFullName(repo);
@@ -48,14 +55,20 @@ const repoIgnorePathMap = Object.freeze({
             cwd: prettierPath,
           });
           await execa("git", ["fetch", remoteName], { cwd: prettierPath });
-          await execa("git", ["checkout", checkOutTarget], {
+          await execa("git", ["checkout", ref], {
             cwd: prettierPath,
           });
         })()
       );
+    } else if (ref) {
+      prettierPrettyCommitHash = `prettier/prettier@${ref}`;
+      await logPromise(
+        `Checking out prettier/prettier@${ref}`,
+        execa("git", ["checkout", ref], { cwd: prettierPath })
+      );
+    } else {
+      prettierPrettyCommitHash = await getPrettyCommitHash(prettierPath);
     }
-  } else {
-    prettierPrettyCommitHash = await getPrettyCommitHash(prettierPath);
   }
 
   await logPromise(
