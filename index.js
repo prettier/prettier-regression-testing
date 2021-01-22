@@ -73,7 +73,7 @@ const repoIgnorePathMap = Object.freeze({
 
   await logPromise(
     "installing dependencies",
-    execa("npm", ["i"], { cwd: prettierPath })
+    execa("yarn", [], { cwd: prettierPath })
   );
 
   const reposDir = path.join(process.cwd(), "repos");
