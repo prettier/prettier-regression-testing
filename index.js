@@ -22,11 +22,57 @@ const repoIgnorePathMap = Object.freeze({
   babel: ".eslintignore",
 });
 
+async function runThoughCLI(text) {
+  await logPromise(`Running format`, execa("node", ["cli.mjs", text]));
+
+  const report = JSON.parser(
+    fs.readFileSync(path.join("workspace/report.json"), "utf8")
+  );
+
+  const diff = report.differences
+    .map(({ target, differences }) => `${target}\n${differences}`)
+    .join("\n");
+
+  await createComment({
+    reposList: report.targets,
+    diff,
+    prettierPrettyCommitHash: `prettier@${report.alternative}`,
+  });
+}
+
+async function createComment({ reposList, diff, prettierPrettyCommitHash }) {
+  await logPromise(
+    "Creating issue comment",
+    (async () => {
+      const token = process.env.NODE_AUTH_TOKEN;
+      const octokit = github.getOctokit(token);
+      const createIssueComment = (body) =>
+        octokit.issues.createComment({
+          ...github.context.repo,
+          issue_number: github.context.issue.number,
+          body,
+        });
+      if (diff) {
+        const heading = `Diff by ${prettierPrettyCommitHash}\n`;
+        const diffCodeBlock = "```diff\n" + diff + "\n```";
+        await createIssueComment(heading + reposList + diffCodeBlock);
+      } else {
+        await createIssueComment(
+          `There is no diff by ${prettierPrettyCommitHash}` + "\n" + reposList
+        );
+      }
+    })()
+  );
+}
+
 (async () => {
+  const commentBody = github.context.payload.comment.body;
+  if (!commentBody.startsWith("run with ")) {
+    return runThoughCLI(commentBody);
+  }
+
   const prettierPath = path.join(process.cwd(), "prettier");
   const latestPrettier = path.join(process.cwd(), "prettier/bin/prettier.js");
-
-  const commentBody = github.context.payload.comment.body;
   const { type, ref, repo, pr } = parseTarget(commentBody);
   console.log({ type, ref, repo, pr });
   let prettierPrettyCommitHash;
@@ -105,32 +151,11 @@ const repoIgnorePathMap = Object.freeze({
       ({ stdout }) => stdout
     )
   );
-  await logPromise(
-    "Creating issue comment",
-    (async () => {
-      const token = process.env.NODE_AUTH_TOKEN;
-      const octokit = github.getOctokit(token);
-      const createIssueComment = (body) =>
-        octokit.issues.createComment({
-          ...github.context.repo,
-          issue_number: github.context.issue.number,
-          body,
-        });
-      const reposList = results.reduce((prev, { prettyCommitHash }) => {
-        const item = `- ${prettyCommitHash}\n`;
-        return prev + item;
-      }, "");
-      if (diff) {
-        const heading = `Diff by ${prettierPrettyCommitHash}\n`;
-        const diffCodeBlock = "```diff\n" + diff + "\n```";
-        await createIssueComment(heading + reposList + diffCodeBlock);
-      } else {
-        await createIssueComment(
-          `There is no diff by ${prettierPrettyCommitHash}` + "\n" + reposList
-        );
-      }
-    })()
-  );
+  const reposList = results.reduce((prev, { prettyCommitHash }) => {
+    const item = `- ${prettyCommitHash}\n`;
+    return prev + item;
+  }, "");
+  await createComment({ reposList, diff, prettierPrettyCommitHash });
   console.log("Done");
 })().catch((error) => {
   core.setFailed(error.message);
