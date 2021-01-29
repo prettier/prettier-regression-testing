@@ -49,6 +49,14 @@ describe("parse", () => {
         repositoryAndRef: "sosukesuzuki/prettier#ref",
       });
     });
+    it("throws syntax error for invalid source token", () => {
+      expect(() =>
+        parseRepositorySource({ kind: "source", value: "" })
+      ).toThrow("Unexpected source value ''.");
+      expect(() =>
+        parseRepositorySource({ kind: "source", value: "foobar" })
+      ).toThrow("Unexpected source value 'foobar'.");
+    });
   });
 
   describe("tokenize", () => {
