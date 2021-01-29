@@ -101,16 +101,7 @@ async function getDifference({
     );
   await runPrettier(originalPrettier, directory);
 
-  const { stdout: differencesOnOriginalPrettier } = await runGit(
-    "diff",
-    ["--name-only"],
-    directory
-  );
-
-  // git diff --name-only --exit-code
-  if (differencesOnOriginalPrettier) {
-    await runGit("commit", ["-am", "Format with original version."], directory);
-  }
+  await runGit("commit", ["-am", "Format with original version.", "--allow-empty"], directory);
 
   await runPrettier(alternativePrettier, directory);
   const f = path.join(directory, "selectpage.js");
