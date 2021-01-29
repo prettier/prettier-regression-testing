@@ -57,7 +57,7 @@ function runGit(command, gitArguments, cwd) {
 function runPrettier(prettier, cwd) {
   const subprocess = execa(
     "node",
-    [prettier, ".", "--ignore-unknown", "--write"],
+    [prettier, "src/**/*.js", "--ignore-unknown", "--write"],
     { cwd }
   );
   subprocess.stdout.pipe(process.stdout);
