@@ -99,7 +99,13 @@ function parseRepositorySource(token: Token) {
 
 type Token =
   | {
-      kind: "run" | "vs" | "on";
+      kind: "run";
+    }
+  | {
+      kind: "vs";
+    }
+  | {
+      kind: "on";
     }
   | {
       kind: "source";
