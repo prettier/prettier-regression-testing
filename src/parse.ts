@@ -25,15 +25,20 @@ export type Project = {
 };
 
 export interface Command {
-  alternativePrettier?: PrettierRepositorySource;
+  alternativePrettier: PrettierRepositorySource;
   originalPrettier: PrettierRepositorySource;
-  projects: [];
 }
 
+const defaultPrettierRepositorySource = {
+  type: sourceTypes.repositoryAndRef,
+  repositoryAndRef: "prettier/prettier#main",
+};
 export function parse(source: string): Command {
   const tokens = tokenize(source);
-  let alternativePrettier: PrettierRepositorySource | undefined;
-  let originalPrettier: PrettierRepositorySource | undefined;
+
+  let alternativePrettier: PrettierRepositorySource;
+  let originalPrettier: PrettierRepositorySource = defaultPrettierRepositorySource;
+
   for (const [index, token] of tokenize(source).entries()) {
     const lookahead = (): Token => {
       return tokens[index + 1];
@@ -83,7 +88,8 @@ export function parse(source: string): Command {
       }
     }
   }
-  return { alternativePrettier, originalPrettier, projects: [] };
+
+  return { alternativePrettier, originalPrettier };
 }
 
 export function parseRepositorySource(token: Token): PrettierRepositorySource {

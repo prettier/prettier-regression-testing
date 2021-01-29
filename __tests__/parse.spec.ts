@@ -2,6 +2,45 @@ import { tokenize, parse, parseRepositorySource } from "../src/parse";
 
 describe("parse", () => {
   describe("parse", () => {
+    it("returns command obj represents prNumber vs repositoryAndRef", () => {
+      const command = parse("run #2345 vs sosukesuzuki/prettier#ref");
+      expect(command).toEqual({
+        alternativePrettier: {
+          type: "prNumber",
+          prNumber: "2345",
+        },
+        originalPrettier: {
+          type: "repositoryAndRef",
+          repositoryAndRef: "sosukesuzuki/prettier#ref",
+        },
+      });
+    });
+    it("returns command obj represents version vs repositoryAndRef", () => {
+      const command = parse("run 2.1.2 vs sosukesuzuki/prettier#ref");
+      expect(command).toEqual({
+        alternativePrettier: {
+          type: "version",
+          version: "2.1.2",
+        },
+        originalPrettier: {
+          type: "repositoryAndRef",
+          repositoryAndRef: "sosukesuzuki/prettier#ref",
+        },
+      });
+    });
+    it("returns command obj represents version vs default", () => {
+      const command = parse("run 2.1.2");
+      expect(command).toEqual({
+        alternativePrettier: {
+          type: "version",
+          version: "2.1.2",
+        },
+        originalPrettier: {
+          type: "repositoryAndRef",
+          repositoryAndRef: "prettier/prettier#main",
+        },
+      });
+    });
     it("throws syntax error for non-first run", () => {
       expect(() => parse("2.0.0 run")).toThrow(
         "A command must start with 'run'."
