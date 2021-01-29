@@ -106,8 +106,6 @@ async function getDifference({
   await runGit("commit", ["-am", '"Format with original version."', "--allow-empty"], directory);
 
   await runPrettier(alternativePrettier, directory);
-  const f = path.join(directory, "selectpage.js");
-  await fs.writeFile(f, (await fs.readFile(f, "utf8")).replace(/a/g, "A"));
   const { stdout } = await runGit("diff", [], directory);
   return stdout;
 }
