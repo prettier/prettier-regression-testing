@@ -13,7 +13,12 @@ export type PrettierRepositorySource =
     }
   | {
       type: typeof sourceTypes.repositoryAndRef;
-      repositoryAndRef: string;
+      // like "sosukesuzuki"
+      remoteName: string;
+      // like "sosukesuzuki/prettier"
+      repositoryName: string;
+      // like "main"
+      ref: string;
     }
   | {
       type: typeof sourceTypes.prNumber;
@@ -31,7 +36,9 @@ export interface Command {
 
 const defaultPrettierRepositorySource = {
   type: sourceTypes.repositoryAndRef,
-  repositoryAndRef: "prettier/prettier#main",
+  remoteName: "origin",
+  repositoryName: "prettier/prettier",
+  ref: "main",
 };
 export function parse(source: string): Command {
   const tokens = tokenize(source);
@@ -108,12 +115,18 @@ export function parseRepositorySource(token: Token): PrettierRepositorySource {
   }
 
   // like "sosukesuzuki/prettier#ref"
-  const splitted = value.split("/").filter(Boolean);
+  const splitted1 = value.split("/").filter(Boolean);
   if (value.split("/").length === 2) {
-    if (splitted[1].split("#").filter(Boolean).length === 2) {
+    const splitted2 = splitted1[1].split("#").filter(Boolean);
+    if (splitted2.length === 2) {
+      const remoteName = splitted1[0];
+      const repositoryName = `${remoteName}/${splitted2[0]}`;
+      const ref = splitted2[1];
       return {
         type: sourceTypes.repositoryAndRef,
-        repositoryAndRef: value,
+        remoteName,
+        repositoryName,
+        ref,
       };
     }
   }

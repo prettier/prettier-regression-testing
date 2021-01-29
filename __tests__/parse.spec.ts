@@ -11,7 +11,9 @@ describe("parse", () => {
         },
         originalPrettier: {
           type: "repositoryAndRef",
-          repositoryAndRef: "sosukesuzuki/prettier#ref",
+          ref: "ref",
+          remoteName: "sosukesuzuki",
+          repositoryName: "sosukesuzuki/prettier",
         },
       });
     });
@@ -24,7 +26,9 @@ describe("parse", () => {
         },
         originalPrettier: {
           type: "repositoryAndRef",
-          repositoryAndRef: "sosukesuzuki/prettier#ref",
+          ref: "ref",
+          remoteName: "sosukesuzuki",
+          repositoryName: "sosukesuzuki/prettier",
         },
       });
     });
@@ -37,7 +41,9 @@ describe("parse", () => {
         },
         originalPrettier: {
           type: "repositoryAndRef",
-          repositoryAndRef: "prettier/prettier#main",
+          ref: "main",
+          remoteName: "origin",
+          repositoryName: "prettier/prettier",
         },
       });
     });
@@ -85,7 +91,9 @@ describe("parse", () => {
       });
       expect(source).toEqual({
         type: "repositoryAndRef",
-        repositoryAndRef: "sosukesuzuki/prettier#ref",
+        ref: "ref",
+        remoteName: "sosukesuzuki",
+        repositoryName: "sosukesuzuki/prettier",
       });
     });
     it("throws syntax error for invalid source token", () => {
