@@ -101,8 +101,8 @@ async function getDifference({
     );
   await runPrettier(originalPrettier, directory);
 
-  await runGit("config", ["--global", "user.email", "you@example.com"]);
-  await runGit("config", ["--global", "user.name", "Your Name"]);
+  await runGit("config", ["user.email", "you@example.com"], directory);
+  await runGit("config", ["user.name", "Your Name"], directory);
   await runGit("commit", ["-am", '"Format with original version."', "--allow-empty"], directory);
 
   await runPrettier(alternativePrettier, directory);
