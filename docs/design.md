@@ -14,7 +14,7 @@ This will be installed via `yarn add prettier@version`.
 
 ### 2. Forked repository name + ref(like branch names and commit hashes) such as `sosukesuzuki/prettier#ref`.
 
-This will be installed via `prettier@sosukesuzuki/prettier#ref`.
+This will be installed via `yarn add prettier@sosukesuzuki/prettier#ref`.
 
 ### 3. Pull Request number on [prettier/prettier](https://github.com/prettier/prettier) repository such us `#110168`.
 
