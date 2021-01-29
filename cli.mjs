@@ -101,14 +101,14 @@ async function getDifference({
     );
   await runPrettier(originalPrettier, directory);
 
-  const { exitCode } = await runGit(
+  const { stdout: differencesOnOriginalPrettier } = await runGit(
     "diff",
-    ["--name-only", "--exit-code"],
+    ["--name-only"],
     directory
   );
 
   // git diff --name-only --exit-code
-  if (exitCode !== 0) {
+  if (differencesOnOriginalPrettier) {
     await runGit("commit", ["-am", "Format with original version."], directory);
   }
 
