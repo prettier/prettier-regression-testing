@@ -11,3 +11,4 @@ package-lock.json
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+/build
