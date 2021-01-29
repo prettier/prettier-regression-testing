@@ -4,7 +4,7 @@ export const sourceTypes = {
   version: "version",
   repositoryAndRef: "repositoryAndRef",
   prNumber: "prNumber",
-};
+} as const;
 
 export type PrettierRepositorySource =
   | {

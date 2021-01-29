@@ -1,9 +1,24 @@
 import path from "path";
-import { Command } from "./parse";
+import { Command, PrettierRepositorySource } from "./parse";
+
+const cwd = process.cwd();
+const prettierRepositoryPath = path.join(cwd, "./prettier");
+
+async function setupPrettierRepository(
+  prettierRepositorySource: PrettierRepositorySource
+) {
+  switch (prettierRepositorySource.type) {
+    case "prNumber": {
+    }
+    case "repositoryAndRef": {
+    }
+    case "version": {
+    }
+  }
+}
 
 //  リポジトリセットアップ手順
 //    prNumber の場合
-//      yarn add prettier する
 //      gh をインストールする
 //      gh pr checkout prNumber する
 //      yarn install
@@ -17,7 +32,6 @@ import { Command } from "./parse";
 //      yarn install
 
 export function execute(command: Command) {
-  const cwd = process.cwd();
   //  original
   //    まず original を リポジトリセットアップ手順 に従ってセットアップする
   //    original を各 projects に対して実行する
