@@ -1,6 +1,29 @@
-import { tokenize } from "../src/parse";
+import { tokenize, parse } from "../src/parse";
 
 describe("parse", () => {
+  describe("parse", () => {
+    it("throws syntax error for non-first run", () => {
+      expect(() => parse("foo run")).toThrow(
+        "A command must start with 'run'."
+      );
+    });
+    it("throws syntax error for 'run' that has no source", () => {
+      expect(() => parse("run on")).toThrow(
+        "A prettier repository source must be specified for 'run'."
+      );
+    });
+    it("throws syntax error for 'vs' that has no after source", () => {
+      expect(() => parse("run foo vs on")).toThrow(
+        "A prettier repository source must be specified for 'vs'."
+      );
+    });
+    it("throw syntax error for unsupported 'on'", () => {
+      expect(() => parse("run foo on")).toThrow(
+        "We haven't supported 'on' yet."
+      );
+    });
+  });
+
   describe("tokenize", () => {
     it("returns 'run' token", () => {
       const tokens = tokenize("run");
