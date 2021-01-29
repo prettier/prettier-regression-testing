@@ -36,7 +36,7 @@ const defaultPrettierRepositorySource = {
 export function parse(source: string): Command {
   const tokens = tokenize(source);
 
-  let alternativePrettier: PrettierRepositorySource;
+  let alternativePrettier: PrettierRepositorySource | undefined = undefined;
   let originalPrettier: PrettierRepositorySource = defaultPrettierRepositorySource;
 
   for (const [index, token] of tokenize(source).entries()) {
@@ -89,7 +89,7 @@ export function parse(source: string): Command {
     }
   }
 
-  return { alternativePrettier, originalPrettier };
+  return { alternativePrettier, originalPrettier } as Command;
 }
 
 export function parseRepositorySource(token: Token): PrettierRepositorySource {
