@@ -1,9 +1,9 @@
-import { tokenize, parse } from "../src/parse";
+import { tokenize, parse, parseRepositorySource } from "../src/parse";
 
 describe("parse", () => {
   describe("parse", () => {
     it("throws syntax error for non-first run", () => {
-      expect(() => parse("foo run")).toThrow(
+      expect(() => parse("2.0.0 run")).toThrow(
         "A command must start with 'run'."
       );
     });
@@ -13,14 +13,41 @@ describe("parse", () => {
       );
     });
     it("throws syntax error for 'vs' that has no after source", () => {
-      expect(() => parse("run foo vs on")).toThrow(
+      expect(() => parse("run 2.0.0 vs on")).toThrow(
         "A prettier repository source must be specified for 'vs'."
       );
     });
     it("throw syntax error for unsupported 'on'", () => {
-      expect(() => parse("run foo on")).toThrow(
+      expect(() => parse("run 2.0.0 on")).toThrow(
         "We haven't supported 'on' yet."
       );
+    });
+  });
+
+  describe("parseRepositorySource", () => {
+    it("returns an object represents version", () => {
+      const source = parseRepositorySource({ kind: "source", value: "2.1.2" });
+      expect(source).toEqual({
+        type: "version",
+        version: "2.1.2",
+      });
+    });
+    it("returns an object represents PR number", () => {
+      const source = parseRepositorySource({ kind: "source", value: "#2333" });
+      expect(source).toEqual({
+        type: "prNumber",
+        prNumber: "2333",
+      });
+    });
+    it("returns an object represents repository and ref", () => {
+      const source = parseRepositorySource({
+        kind: "source",
+        value: "sosukesuzuki/prettier#ref",
+      });
+      expect(source).toEqual({
+        type: "repositoryAndRef",
+        repositoryAndRef: "sosukesuzuki/prettier#ref",
+      });
     });
   });
 

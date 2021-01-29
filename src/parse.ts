@@ -1,21 +1,23 @@
-export const commandTypes = {
+import semver from "semver";
+
+export const sourceTypes = {
   version: "version",
-  repositoryAndRef: "repository-and-ref",
-  prNumber: "pr-number",
+  repositoryAndRef: "repositoryAndRef",
+  prNumber: "prNumber",
 };
 
 export type PrettierRepositorySource =
   | {
-      type: typeof commandTypes.version;
+      type: typeof sourceTypes.version;
       version: string;
     }
   | {
-      type: typeof commandTypes.repositoryAndRef;
+      type: typeof sourceTypes.repositoryAndRef;
       repositoryAndRef: string;
     }
   | {
-      type: typeof commandTypes.prNumber;
-      number: number;
+      type: typeof sourceTypes.prNumber;
+      prNumber: string;
     };
 
 export type Project = {
@@ -84,17 +86,42 @@ export function parse(source: string): Command {
   return { alternativePrettier, originalPrettier, projects: [] };
 }
 
-function parseRepositorySource(token: Token) {
+export function parseRepositorySource(token: Token): PrettierRepositorySource {
   if (token.kind !== "source") {
     throw new Error(`Unexpected token '${token.kind}', expect 'source'.`);
   }
 
   const { value } = token;
 
-  return {
-    type: commandTypes.version,
-    version: "2.0",
-  };
+  // lile "2.3.4"
+  if (semver.valid(value)) {
+    return {
+      type: sourceTypes.version,
+      version: value,
+    };
+  }
+
+  // like "sosukesuzuki/prettier#ref"
+  const splitted = value.split("/").filter(Boolean);
+  if (value.split("/").length === 2) {
+    if (splitted[1].split("#").filter(Boolean).length === 2) {
+      return {
+        type: sourceTypes.repositoryAndRef,
+        repositoryAndRef: value,
+      };
+    }
+  }
+
+  // like "#3465"
+  const matched = value.match(/\b\d{1,5}\b/g);
+  if (value.startsWith("#") && matched) {
+    return {
+      type: sourceTypes.prNumber,
+      prNumber: matched[0],
+    };
+  }
+
+  throw new SyntaxError(`Unexpected source value '${value}'.`);
 }
 
 type Token =
