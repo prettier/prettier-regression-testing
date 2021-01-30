@@ -6,24 +6,28 @@ export const sourceTypes = {
   prNumber: "prNumber",
 } as const;
 
+export interface PrettierRepositorySourceVersion {
+  type: typeof sourceTypes.version;
+  version: string;
+}
+export interface PrettierRepositorySourceRepositoryAndRef {
+  type: typeof sourceTypes.repositoryAndRef;
+  // like "sosukesuzuki"
+  remoteName: string;
+  // like "sosukesuzuki/prettier"
+  repositoryName: string;
+  // like "main"
+  ref: string;
+}
+export interface PrettierRepositorySourcePrNumber {
+  type: typeof sourceTypes.prNumber;
+  prNumber: string;
+}
+
 export type PrettierRepositorySource =
-  | {
-      type: typeof sourceTypes.version;
-      version: string;
-    }
-  | {
-      type: typeof sourceTypes.repositoryAndRef;
-      // like "sosukesuzuki"
-      remoteName: string;
-      // like "sosukesuzuki/prettier"
-      repositoryName: string;
-      // like "main"
-      ref: string;
-    }
-  | {
-      type: typeof sourceTypes.prNumber;
-      prNumber: string;
-    };
+  | PrettierRepositorySourceVersion
+  | PrettierRepositorySourceRepositoryAndRef
+  | PrettierRepositorySourcePrNumber;
 
 export type Project = {
   repositoryUrl: string;

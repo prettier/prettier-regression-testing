@@ -1,5 +1,10 @@
 import path from "path";
-import { Command, PrettierRepositorySource } from "./parse";
+import { Command, PrettierRepositorySource } from "../parse";
+import {
+  setupPullRequestNumber,
+  setupRepositoryAndRef,
+  setupVersion,
+} from "./setup-repository";
 
 const cwd = process.cwd();
 const prettierRepositoryPath = path.join(cwd, "./prettier");
@@ -9,10 +14,16 @@ async function setupPrettierRepository(
 ) {
   switch (prettierRepositorySource.type) {
     case "prNumber": {
+      setupPullRequestNumber(prettierRepositorySource, prettierRepositoryPath);
+      break;
     }
     case "repositoryAndRef": {
+      setupRepositoryAndRef(prettierRepositorySource, prettierRepositoryPath);
+      break;
     }
     case "version": {
+      setupVersion(prettierRepositorySource, prettierRepositoryPath);
+      break;
     }
   }
 }
