@@ -45,8 +45,12 @@ export async function add(pathspec: string, cwd: string) {
   return execa("git", ["add", pathspec], { cwd });
 }
 
-export async function commit(message: string, cwd: string) {
-  return execa("git", ["commit", "-m", JSON.stringify(message)], { cwd });
+export async function commitAllowEmptyNoVerify(message: string, cwd: string) {
+  return execa(
+    "git",
+    ["commit", "--allow-empty", "--no-verify", "-m", JSON.stringify(message)],
+    { cwd }
+  );
 }
 
 export async function resetHeadHard(cwd: string) {

@@ -41,7 +41,7 @@ export async function execute({
         targetRepositoryName
       );
       await git.add(".", targetRepositoryPath);
-      await git.commit(
+      await git.commitAllowEmptyNoVerify(
         "Fixed by originalVersionPrettier",
         targetRepositoryPath
       );
