@@ -40,7 +40,11 @@ function getLogTitle(command: Command): string {
 
 export function getLogText(result: ExecuteResult, command: Command) {
   const logTitle = getLogTitle(command);
-  let logText = logTitle + "\n\n";
+  let logText = "";
+  if (!configuration.isCI) {
+    logText = logText + "\n========= Result =========\n\n";
+  }
+  logText = logText + logTitle + "\n\n";
   for (const targetRepositoryPrettyCommitHash of result.targetRepositoriesPrettyheadCommitHashList) {
     logText = logText + `- ${targetRepositoryPrettyCommitHash}\n`;
   }
@@ -51,7 +55,7 @@ export function getLogText(result: ExecuteResult, command: Command) {
     logText = logText + "\n```";
   } else {
     logText = logText + result.diffString;
-    logText = logText + "\n\n======= END OF LOG =======";
+    logText = logText + "\n\n========= END OF LOG =========\n";
   }
   return logText;
 }

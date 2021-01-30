@@ -12,7 +12,8 @@ export async function log(logText: string) {
       body: logText,
     });
   } else {
-    await fs.writeFile("log.txt", logText);
+    const fileData = await fs.readFile("log.txt", "utf-8");
+    await fs.writeFile("log.txt", fileData + logText + "\n");
   }
 }
 

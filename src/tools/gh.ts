@@ -1,9 +1,9 @@
 import execa from "execa";
 
-export function prCheckout(prNumber: string, cwd: string) {
-  return execa("gh", ["pr", "checkout", prNumber], { cwd });
+export async function prCheckout(prNumber: string, cwd: string) {
+  await execa("gh", ["pr", "checkout", prNumber], { cwd });
 }
 
-export function authLoginWithToken(token: string) {
-  return execa("gh", ["auth", "login", "--with-token"], { input: token });
+export async function authLoginWithToken(token: string) {
+  await execa("gh", ["auth", "login", "--with-token"], { input: token });
 }

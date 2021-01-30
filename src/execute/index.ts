@@ -6,6 +6,7 @@ import { runPrettier } from "./run-prettier";
 import { setupPrettierRepository } from "./setup-repository";
 import * as configuration from "../configuration";
 import * as git from "../tools/git";
+import * as logger from "../logger";
 
 const getTargetRepositoryPath = (targetRepositoryName: string) =>
   path.join(configuration.targetRepositoriesPath, targetRepositoryName);
@@ -28,8 +29,10 @@ export async function execute({
   );
 
   // Setup originalVersionPrettier
+  await logger.log("Setting up originalVersionPrettier...");
   await setupPrettierRepository(originalPrettier);
   // Run originalVersionPrettier
+  await logger.log("Running originalVersionPrettier...");
   await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) => {
       const targetRepositoryPath = getTargetRepositoryPath(
@@ -49,8 +52,10 @@ export async function execute({
   );
 
   // Setup alternativeVersionPrettier
+  await logger.log("Setting up alternativeVersionPrettier...");
   await setupPrettierRepository(alternativePrettier);
   // Run alternativeVersionPrettier
+  await logger.log("Running alternativeVersionPrettier...");
   await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) => {
       await runPrettier(
