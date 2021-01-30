@@ -42,9 +42,9 @@ export function getLogText(result: ExecuteResult, command: Command) {
   const logTitle = getLogTitle(command);
   let logText = logTitle + "\n\n";
   for (const targetRepositoryPrettyCommitHash of result.targetRepositoriesPrettyheadCommitHashList) {
-    logText = logText + `- ${targetRepositoryPrettyCommitHash}`;
+    logText = logText + `- ${targetRepositoryPrettyCommitHash}\n`;
   }
-  logText = logText + "\n\n";
+  logText = logText + "\n";
   if (configuration.isCI) {
     logText = logText + "```diff\n";
     logText = logText + result.diffString;
