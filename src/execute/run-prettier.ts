@@ -15,16 +15,11 @@ const targetRepositoryIgnorePathMap: Map<string, string> = new Map([
 
 export async function runPrettier(
   prettierRepositoryPath: string,
-  targetRepositoriesPath: string,
+  targetRepositoryPath: string,
   targetRepositoryName: string
 ) {
   const globPattern = targetRepositoryGlobPatternMap.get(targetRepositoryName);
   const ignorePath = targetRepositoryIgnorePathMap.get(targetRepositoryName);
-
-  const targetRepositoryPath = path.join(
-    targetRepositoriesPath,
-    targetRepositoryName
-  );
 
   const prettierRepositoryBinPath = path.join(
     prettierRepositoryPath,

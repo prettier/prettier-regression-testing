@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { Command, PrettierRepositorySource } from "../parse";
+import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash";
 import { runPrettier } from "./run-prettier";
 import {
   setupPullRequestNumber,
@@ -11,6 +12,8 @@ import {
 const cwd = process.cwd();
 const prettierRepositoryPath = path.join(cwd, "./prettier");
 const targetRepositoriesPath = path.join(cwd, "./repos");
+const getTargetRepositoryPath = (targetRepositoryName: string) =>
+  path.join(targetRepositoriesPath, targetRepositoryName);
 
 async function setupPrettierRepository(
   prettierRepositorySource: PrettierRepositorySource
@@ -58,11 +61,16 @@ export async function execute({
 
   const targetRepositoryNames = await fs.readdir(targetRepositoriesPath);
 
+  const prettierHeadCommitHashList = await Promise.all(
+    targetRepositoryNames.map(async (targetRepositoryName) =>
+      getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName))
+    )
+  );
   await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) => {
       await runPrettier(
         prettierRepositoryPath,
-        targetRepositoriesPath,
+        getTargetRepositoryPath(targetRepositoryName),
         targetRepositoryName
       );
     })
