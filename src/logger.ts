@@ -13,7 +13,6 @@ export async function log(logText: string) {
     });
   } else {
     await fs.writeFile("log.txt", logText);
-    console.log(logText);
   }
 }
 
@@ -27,8 +26,6 @@ export async function error(logText: string) {
       body: "## [Error]\n\n" + logText,
     });
   } else {
-    const _logText = "[Error]\n\n" + logText;
-    await fs.writeFile("log.txt", _logText);
-    console.error(_logText);
+    await fs.writeFile("log.txt", "[Error]\n\n" + logText);
   }
 }
