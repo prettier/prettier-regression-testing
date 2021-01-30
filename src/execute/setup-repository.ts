@@ -43,7 +43,7 @@ async function setupPullRequestNumber(
   cwd: string
 ) {
   await brew.install("gh");
-  await gh.authLoginWithToken(process.env.NODE_AUTH_TOKEN);
+  await gh.authLoginWithToken(configuration.authToken);
   await gh.prCheckout(repositortSource.prNumber, cwd);
   await yarn.install(cwd);
 }
@@ -58,7 +58,7 @@ async function setupRepositoryAndRef(
   const { remoteName, repositoryName, ref } = repositortSource;
   const repositoryUrlWithToken = getRepositoryUrlWithToken(
     repositoryName,
-    process.env.NODE_AUTH_TOKEN
+    configuration.authToken
   );
   await git.remoteAdd(remoteName, repositoryUrlWithToken, cwd);
   await git.fetch(remoteName, cwd);

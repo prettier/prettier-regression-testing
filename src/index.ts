@@ -8,7 +8,7 @@ import { parse } from "./parse";
 (async () => {
   let commandString;
   if (configuration.isCI) {
-    commandString = github.context.payload.comment.body;
+    commandString = github.context.payload.comment!.body as string;
   } else {
     commandString = process.argv.splice(2)[0];
   }

@@ -3,8 +3,8 @@ import * as configuration from "./configuration";
 
 export async function log(logText: string) {
   if (configuration.isCI) {
-    const { comment } = github.context.payload;
-    const octokit = github.getOctokit(process.env.NODE_AUTH_TOKEN);
+    const comment = github.context.payload.comment!;
+    const octokit = github.getOctokit(configuration.authToken);
     await octokit.issues.updateComment({
       ...github.context.repo,
       comment_id: comment.id,
