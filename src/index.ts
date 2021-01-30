@@ -6,6 +6,19 @@ import { execute } from "./execute";
 import { getLogText } from "./log-text";
 import { parse } from "./parse";
 
+process.on("unhandledRejection", function (reason) {
+  let errorText;
+  if ((reason as any).stderr) {
+    errorText =
+      "command: " + (reason as any).command + "\n" + (reason as any).stderr;
+  } else {
+    errorText = JSON.stringify(reason);
+  }
+  logger.error(errorText + "\n").then(() => {
+    process.exit(1);
+  });
+});
+
 async function main() {
   try {
     let commandString;
