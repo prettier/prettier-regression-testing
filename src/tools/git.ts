@@ -50,5 +50,5 @@ export async function commit(message: string, cwd: string) {
 }
 
 export async function resetHeadHard(cwd: string) {
-  return execa("git", ["reset", "head^", "--hard"]);
+  return execa("git", ["reset", "head^", "--hard"], { cwd });
 }
