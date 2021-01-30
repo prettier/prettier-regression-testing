@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { Command, PrettierRepositorySource } from "../parse";
+import { Command } from "../parse";
 import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash";
 import { runPrettier } from "./run-prettier";
 import { setupPrettierRepository } from "./setup-repository";
