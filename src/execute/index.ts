@@ -10,13 +10,14 @@ import * as git from "../tools/git";
 const getTargetRepositoryPath = (targetRepositoryName: string) =>
   path.join(configuration.targetRepositoriesPath, targetRepositoryName);
 
+export interface ExecuteResult {
+  targetRepositoriesPrettyheadCommitHashList: string[];
+  diffString: string;
+}
 export async function execute({
   alternativePrettier,
   originalPrettier,
-}: Command): Promise<{
-  targetRepositoriesPrettyheadCommitHashList: string[];
-  diffString: string;
-}> {
+}: Command): Promise<ExecuteResult> {
   const targetRepositoryNames = await fs.readdir(
     configuration.targetRepositoriesPath
   );
