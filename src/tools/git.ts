@@ -46,7 +46,7 @@ export async function add(pathspec: string, cwd: string) {
 }
 
 export async function commit(message: string, cwd: string) {
-  return execa("git", ["commit", "-m", message], { cwd });
+  return execa("git", ["commit", "-m", JSON.stringify(message)], { cwd });
 }
 
 export async function resetHeadHard(cwd: string) {

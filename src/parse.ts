@@ -40,7 +40,7 @@ export interface Command {
 
 const defaultPrettierRepositorySource = {
   type: sourceTypes.repositoryAndRef,
-  remoteName: "origin",
+  remoteName: "prettier",
   repositoryName: "prettier/prettier",
   ref: "main",
 };
