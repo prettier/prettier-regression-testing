@@ -9,6 +9,7 @@ import * as brew from "../tools/brew";
 import * as gh from "../tools/gh";
 import * as git from "../tools/git";
 import * as yarn from "../tools/yarn";
+import * as unix from "../tools/unix";
 
 export async function setupPrettierRepository(
   prettierRepositorySource: PrettierRepositorySource
@@ -38,11 +39,16 @@ export async function setupPrettierRepository(
   }
 }
 
+async function existsGh() {
+  return (await unix.which("gh")).includes("gh not found");
+}
 async function setupPullRequestNumber(
   repositortSource: PrettierRepositorySourcePrNumber,
   cwd: string
 ) {
-  await brew.install("gh");
+  if (!(await existsGh())) {
+    await brew.install("gh");
+  }
   await gh.authLoginWithToken(configuration.authToken);
   await gh.prCheckout(repositortSource.prNumber, cwd);
   await yarn.install(cwd);
