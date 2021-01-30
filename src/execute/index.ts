@@ -1,5 +1,7 @@
+import fs from "fs/promises";
 import path from "path";
 import { Command, PrettierRepositorySource } from "../parse";
+import { runPrettier } from "./run-prettier";
 import {
   setupPullRequestNumber,
   setupRepositoryAndRef,
@@ -8,6 +10,7 @@ import {
 
 const cwd = process.cwd();
 const prettierRepositoryPath = path.join(cwd, "./prettier");
+const targetRepositoriesPath = path.join(cwd, "./repos");
 
 async function setupPrettierRepository(
   prettierRepositorySource: PrettierRepositorySource
@@ -42,10 +45,26 @@ async function setupPrettierRepository(
 //      git checkout tags/1.1.0 する
 //      yarn install
 
-export function execute(command: Command) {
+export async function execute({
+  alternativePrettier,
+  originalPrettier,
+}: Command) {
   //  original
   //    まず original を リポジトリセットアップ手順 に従ってセットアップする
   //    original を各 projects に対して実行する
   //    各プロジェクトで変更差分をコミット(コミットメッセージは"Changed by 何かしら識別できる情報")
-  //
+  // Setup originalVersionPrettier
+  await setupPrettierRepository(originalPrettier);
+
+  const targetRepositoryNames = await fs.readdir(targetRepositoriesPath);
+
+  await Promise.all(
+    targetRepositoryNames.map(async (targetRepositoryName) => {
+      await runPrettier(
+        prettierRepositoryPath,
+        targetRepositoriesPath,
+        targetRepositoryName
+      );
+    })
+  );
 }
