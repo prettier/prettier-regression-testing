@@ -12,3 +12,4 @@ package-lock.json
 !.yarn/versions
 .pnp.*
 /build
+log.txt
