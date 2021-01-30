@@ -40,3 +40,15 @@ export async function diffSubmodule(directoryPath: string, cwd: string) {
   ]).then(({ stdout }) => stdout);
   return diffString;
 }
+
+export async function add(pathspec: string, cwd: string) {
+  return execa("git", ["add", pathspec], { cwd });
+}
+
+export async function commit(message: string, cwd: string) {
+  return execa("git", ["commit", "-m", message], { cwd });
+}
+
+export async function resetHeadHard(cwd: string) {
+  return execa("git", ["reset", "head^", "--hard"]);
+}
