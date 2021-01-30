@@ -2,13 +2,43 @@ import {
   PrettierRepositorySourceVersion,
   PrettierRepositorySourcePrNumber,
   PrettierRepositorySourceRepositoryAndRef,
+  PrettierRepositorySource,
 } from "../parse";
+import * as configuration from "../configuration";
 import * as brew from "../tools/brew";
 import * as gh from "../tools/gh";
 import * as git from "../tools/git";
 import * as yarn from "../tools/yarn";
 
-export async function setupPullRequestNumber(
+export async function setupPrettierRepository(
+  prettierRepositorySource: PrettierRepositorySource
+) {
+  switch (prettierRepositorySource.type) {
+    case "prNumber": {
+      setupPullRequestNumber(
+        prettierRepositorySource,
+        configuration.prettierRepositoryPath
+      );
+      break;
+    }
+    case "repositoryAndRef": {
+      setupRepositoryAndRef(
+        prettierRepositorySource,
+        configuration.prettierRepositoryPath
+      );
+      break;
+    }
+    case "version": {
+      setupVersion(
+        prettierRepositorySource,
+        configuration.prettierRepositoryPath
+      );
+      break;
+    }
+  }
+}
+
+async function setupPullRequestNumber(
   repositortSource: PrettierRepositorySourcePrNumber,
   cwd: string
 ) {
@@ -21,7 +51,7 @@ export async function setupPullRequestNumber(
 function getRepositoryUrlWithToken(repositoryName: string, token: string) {
   return `https://${token}@github.com/${repositoryName}.git`;
 }
-export async function setupRepositoryAndRef(
+async function setupRepositoryAndRef(
   repositortSource: PrettierRepositorySourceRepositoryAndRef,
   cwd: string
 ) {
@@ -36,7 +66,7 @@ export async function setupRepositoryAndRef(
   await yarn.install(cwd);
 }
 
-export async function setupVersion(
+async function setupVersion(
   repositortSource: PrettierRepositorySourceVersion,
   cwd: string
 ) {

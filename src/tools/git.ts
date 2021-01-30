@@ -31,3 +31,12 @@ export async function remoteGetUrl(cwd: string) {
   ).then(({ stdout }) => stdout);
   return remoteUrl;
 }
+
+export async function diffSubmodule(directoryPath: string, cwd: string) {
+  const diffString = await execa("git", [
+    "diff",
+    "--submodule=diff",
+    directoryPath,
+  ]).then(({ stdout }) => stdout);
+  return diffString;
+}

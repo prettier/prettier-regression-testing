@@ -3,36 +3,11 @@ import path from "path";
 import { Command, PrettierRepositorySource } from "../parse";
 import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash";
 import { runPrettier } from "./run-prettier";
-import {
-  setupPullRequestNumber,
-  setupRepositoryAndRef,
-  setupVersion,
-} from "./setup-repository";
+import { setupPrettierRepository } from "./setup-repository";
+import * as configuration from "../configuration";
 
-const cwd = process.cwd();
-const prettierRepositoryPath = path.join(cwd, "./prettier");
-const targetRepositoriesPath = path.join(cwd, "./repos");
 const getTargetRepositoryPath = (targetRepositoryName: string) =>
-  path.join(targetRepositoriesPath, targetRepositoryName);
-
-async function setupPrettierRepository(
-  prettierRepositorySource: PrettierRepositorySource
-) {
-  switch (prettierRepositorySource.type) {
-    case "prNumber": {
-      setupPullRequestNumber(prettierRepositorySource, prettierRepositoryPath);
-      break;
-    }
-    case "repositoryAndRef": {
-      setupRepositoryAndRef(prettierRepositorySource, prettierRepositoryPath);
-      break;
-    }
-    case "version": {
-      setupVersion(prettierRepositorySource, prettierRepositoryPath);
-      break;
-    }
-  }
-}
+  path.join(configuration.targetRepositoriesPath, targetRepositoryName);
 
 //  リポジトリセットアップ手順
 //    prNumber の場合
@@ -52,24 +27,24 @@ export async function execute({
   alternativePrettier,
   originalPrettier,
 }: Command) {
+  const targetRepositoryNames = await fs.readdir(
+    configuration.targetRepositoriesPath
+  );
+  const prettierHeadCommitHashList = await Promise.all(
+    targetRepositoryNames.map(async (targetRepositoryName) =>
+      getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName))
+    )
+  );
   //  original
   //    まず original を リポジトリセットアップ手順 に従ってセットアップする
   //    original を各 projects に対して実行する
   //    各プロジェクトで変更差分をコミット(コミットメッセージは"Changed by 何かしら識別できる情報")
   // Setup originalVersionPrettier
   await setupPrettierRepository(originalPrettier);
-
-  const targetRepositoryNames = await fs.readdir(targetRepositoriesPath);
-
-  const prettierHeadCommitHashList = await Promise.all(
-    targetRepositoryNames.map(async (targetRepositoryName) =>
-      getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName))
-    )
-  );
   await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) => {
       await runPrettier(
-        prettierRepositoryPath,
+        configuration.prettierRepositoryPath,
         getTargetRepositoryPath(targetRepositoryName),
         targetRepositoryName
       );
