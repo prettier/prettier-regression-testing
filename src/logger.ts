@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import github from "@actions/github";
 import * as configuration from "./configuration";
 
@@ -11,6 +12,7 @@ export async function log(logText: string) {
       body: logText,
     });
   } else {
+    await fs.writeFile("log.txt", logText);
     console.log(logText);
   }
 }
@@ -25,6 +27,8 @@ export async function error(logText: string) {
       body: "## [Error]\n\n" + logText,
     });
   } else {
-    console.error("[Error]\n\n" + logText);
+    const _logText = "[Error]\n\n" + logText;
+    await fs.writeFile("log.txt", _logText);
+    console.error(_logText);
   }
 }
