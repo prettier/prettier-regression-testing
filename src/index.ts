@@ -39,6 +39,7 @@ process.on("unhandledRejection", function (reason) {
     const result = await execute(command);
     const logText = getLogText(result, command);
     await logger.log(logText);
+    process.exit(0);
   } catch (error) {
     logger.error(error);
   }

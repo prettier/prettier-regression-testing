@@ -1,7 +1,6 @@
 import fs from "fs/promises";
 import github from "@actions/github";
 import * as configuration from "./configuration";
-import { getIssueComment } from "./get-issue-comment";
 import type { GitHub } from "@actions/github/lib/utils";
 
 type Octokit = InstanceType<typeof GitHub>;
@@ -13,16 +12,29 @@ function getOctokit(): Octokit {
   return octokit;
 }
 
-export async function log(logText: string): Promise<void> {
-  if (configuration.isCI) {
-    const comment = getIssueComment();
-    const octokit = getOctokit();
-    console.log(logText);
-    await octokit.issues.updateComment({
+let commentId: number | undefined;
+async function logToIssueComment(logText: string) {
+  const octokit = getOctokit();
+  if (commentId === undefined) {
+    const comment = await octokit.issues.createComment({
       ...github.context.repo,
-      comment_id: comment.id,
+      issue_number: github.context.issue.number,
       body: logText,
     });
+    commentId = comment.data.id;
+  } else {
+    await octokit.issues.updateComment({
+      ...github.context.repo,
+      comment_id: commentId,
+      body: logText,
+    });
+  }
+}
+
+export async function log(logText: string): Promise<void> {
+  if (configuration.isCI) {
+    console.log(logText);
+    await logToIssueComment(logText);
   } else {
     const fileData = await fs.readFile("log.txt", "utf-8");
     await fs.writeFile("log.txt", fileData + logText + "\n");
@@ -31,15 +43,9 @@ export async function log(logText: string): Promise<void> {
 
 export async function error(logText: string): Promise<void> {
   if (configuration.isCI) {
-    const comment = getIssueComment();
-    const octokit = getOctokit();
     const errorText = "## [Error]\n\n" + "```\n" + logText + "```";
     console.log(errorText);
-    await octokit.issues.updateComment({
-      ...github.context.repo,
-      comment_id: comment.id,
-      body: errorText,
-    });
+    await logToIssueComment(errorText);
   } else {
     await fs.writeFile("log.txt", "[Error]\n\n" + logText);
   }
