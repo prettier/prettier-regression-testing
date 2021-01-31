@@ -12,7 +12,6 @@ describe("parse", () => {
         originalPrettier: {
           type: "repositoryAndRef",
           ref: "ref",
-          remoteName: "sosukesuzuki",
           repositoryName: "sosukesuzuki/prettier",
         },
       });
@@ -27,7 +26,6 @@ describe("parse", () => {
         originalPrettier: {
           type: "repositoryAndRef",
           ref: "ref",
-          remoteName: "sosukesuzuki",
           repositoryName: "sosukesuzuki/prettier",
         },
       });
@@ -42,7 +40,6 @@ describe("parse", () => {
         originalPrettier: {
           type: "repositoryAndRef",
           ref: "main",
-          remoteName: "origin",
           repositoryName: "prettier/prettier",
         },
       });
@@ -92,7 +89,6 @@ describe("parse", () => {
       expect(source).toEqual({
         type: "repositoryAndRef",
         ref: "ref",
-        remoteName: "sosukesuzuki",
         repositoryName: "sosukesuzuki/prettier",
       });
     });
