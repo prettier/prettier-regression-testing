@@ -17,6 +17,7 @@ export async function log(logText: string): Promise<void> {
   if (configuration.isCI) {
     const comment = getIssueComment();
     const octokit = getOctokit();
+    console.log(logText);
     await octokit.issues.updateComment({
       ...github.context.repo,
       comment_id: comment.id,
@@ -33,6 +34,7 @@ export async function error(logText: string): Promise<void> {
     const comment = getIssueComment();
     const octokit = getOctokit();
     const errorText = "## [Error]\n\n" + "```\n" + logText + "```";
+    console.log(errorText);
     await octokit.issues.updateComment({
       ...github.context.repo,
       comment_id: comment.id,
