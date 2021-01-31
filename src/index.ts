@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import core from "@actions/core";
 import * as configuration from "./configuration";
 import * as logger from "./logger";
 import { execute } from "./execute";
@@ -6,8 +7,17 @@ import { getLogText } from "./log-text";
 import { parse } from "./parse";
 import { getIssueComment } from "./get-issue-comment";
 
+async function exit(error: Error | string) {
+  if (configuration.isCI) {
+    core.setFailed(error);
+  } else {
+    console.error(error);
+    process.exit(1);
+  }
+}
+
 process.on("unhandledRejection", function (reason) {
-  let errorText;
+  let errorText: string;
   // Handle an error thrown by execa
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if ((reason as any).stderr) {
@@ -18,7 +28,7 @@ process.on("unhandledRejection", function (reason) {
     errorText = JSON.stringify(reason);
   }
   logger.error(errorText + "\n").then(() => {
-    process.exit(1);
+    exit(errorText);
   });
 });
 
@@ -44,4 +54,8 @@ process.on("unhandledRejection", function (reason) {
     await logger.error(error);
     process.exit(1);
   }
-})();
+})().catch((error) => {
+  logger.error(JSON.stringify(error)).then(() => {
+    exit(error);
+  });
+});

@@ -43,7 +43,7 @@ export async function log(logText: string): Promise<void> {
 
 export async function error(logText: string): Promise<void> {
   if (configuration.isCI) {
-    const errorText = "## [Error]\n\n" + "```\n" + logText + "```";
+    const errorText = "## [Error]\n\n" + "```\n" + logText + "\n```";
     console.log(errorText);
     await logToIssueComment(errorText);
   } else {
