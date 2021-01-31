@@ -32,10 +32,11 @@ export async function error(logText: string): Promise<void> {
   if (configuration.isCI) {
     const comment = getIssueComment();
     const octokit = getOctokit();
+    const errorText = "## [Error]\n\n" + "```\n" + logText + "```";
     await octokit.issues.updateComment({
       ...github.context.repo,
       comment_id: comment.id,
-      body: "## [Error]\n\n" + logText,
+      body: errorText,
     });
   } else {
     await fs.writeFile("log.txt", "[Error]\n\n" + logText);
