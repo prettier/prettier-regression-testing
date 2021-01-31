@@ -20,7 +20,7 @@ process.on("unhandledRejection", function (reason) {
   });
 });
 
-async function main() {
+(async () => {
   try {
     let commandString;
     if (configuration.isCI) {
@@ -39,8 +39,4 @@ async function main() {
   } catch (error) {
     logger.error(error);
   }
-}
-
-(async () => {
-  await main();
 })();
