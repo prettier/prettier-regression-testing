@@ -61,10 +61,11 @@ async function setupRepositoryAndRef(
   repositortSource: PrettierRepositorySourceRepositoryAndRef,
   cwd: string
 ) {
-  const { remoteName, repositoryName, ref } = repositortSource;
+  const { repositoryName, ref } = repositortSource;
   const repositoryUrlWithToken = getRepositoryUrlWithToken(repositoryName);
-  await git.remoteAdd(remoteName, repositoryUrlWithToken, cwd);
-  await git.fetch(remoteName, cwd);
+  const uniq = "remote" + new Date().getTime();
+  await git.remoteAdd(uniq, repositoryUrlWithToken, cwd);
+  await git.fetch(uniq, cwd);
   await git.checkout(ref, cwd);
   await yarn.install(cwd);
 }

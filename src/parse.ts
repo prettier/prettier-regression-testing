@@ -12,8 +12,6 @@ export interface PrettierRepositorySourceVersion {
 }
 export interface PrettierRepositorySourceRepositoryAndRef {
   type: typeof sourceTypes.repositoryAndRef;
-  // like "sosukesuzuki"
-  remoteName: string;
   // like "sosukesuzuki/prettier"
   repositoryName: string;
   // like "main"
@@ -38,9 +36,8 @@ export interface Command {
   originalPrettier: PrettierRepositorySource;
 }
 
-const defaultPrettierRepositorySource = {
+const defaultPrettierRepositorySource: PrettierRepositorySource = {
   type: sourceTypes.repositoryAndRef,
-  remoteName: "prettier",
   repositoryName: "prettier/prettier",
   ref: "main",
 };
@@ -128,7 +125,6 @@ export function parseRepositorySource(token: Token): PrettierRepositorySource {
       const ref = splitted2[1];
       return {
         type: sourceTypes.repositoryAndRef,
-        remoteName,
         repositoryName,
         ref,
       };
