@@ -41,6 +41,7 @@ process.on("unhandledRejection", function (reason) {
     await logger.log(logText);
     process.exit(0);
   } catch (error) {
-    logger.error(error);
+    await logger.error(error);
+    process.exit(1);
   }
 })();
