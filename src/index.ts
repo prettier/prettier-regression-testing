@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import core from "@actions/core";
+import * as core from "@actions/core";
 import * as configuration from "./configuration";
 import * as logger from "./logger";
 import { execute } from "./execute";
