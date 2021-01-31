@@ -14,11 +14,9 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
-    "chalk": "^4.1.0",
     "ci-info": "^2.0.0",
     "execa": "^4.0.3",
-    "semver": "^7.3.4",
-    "string-width": "^4.2.0"
+    "semver": "^7.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

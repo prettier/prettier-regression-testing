@@ -10,7 +10,6 @@ import * as gh from "../tools/gh";
 import * as git from "../tools/git";
 import * as yarn from "../tools/yarn";
 import * as unix from "../tools/unix";
-import { log } from "../logger";
 
 export async function setupPrettierRepository(
   prettierRepositorySource: PrettierRepositorySource
@@ -55,18 +54,15 @@ async function setupPullRequestNumber(
   await yarn.install(cwd);
 }
 
-function getRepositoryUrlWithToken(repositoryName: string, token: string) {
-  return `https://${token}@github.com/${repositoryName}.git`;
+function getRepositoryUrlWithToken(repositoryName: string) {
+  return `https://${configuration.authToken}@github.com/${repositoryName}.git`;
 }
 async function setupRepositoryAndRef(
   repositortSource: PrettierRepositorySourceRepositoryAndRef,
   cwd: string
 ) {
   const { remoteName, repositoryName, ref } = repositortSource;
-  const repositoryUrlWithToken = getRepositoryUrlWithToken(
-    repositoryName,
-    configuration.authToken
-  );
+  const repositoryUrlWithToken = getRepositoryUrlWithToken(repositoryName);
   await git.remoteAdd(remoteName, repositoryUrlWithToken, cwd);
   await git.fetch(remoteName, cwd);
   await git.checkout(ref, cwd);
