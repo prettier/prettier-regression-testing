@@ -70,11 +70,13 @@ export async function execute({
     configuration.targetRepositoriesPath,
     configuration.cwd
   );
-  await Promise.all(
-    targetRepositoryNames.map(async (targetRepositoryName) => {
-      await git.resetHeadHard(getTargetRepositoryPath(targetRepositoryName));
-    })
-  );
+  if (!configuration.isCI) {
+    await Promise.all(
+      targetRepositoryNames.map(async (targetRepositoryName) => {
+        await git.resetHeadHard(getTargetRepositoryPath(targetRepositoryName));
+      })
+    );
+  }
 
   return {
     diffString,
