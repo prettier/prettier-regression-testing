@@ -8,6 +8,7 @@ import { parse } from "./parse";
 
 process.on("unhandledRejection", function (reason) {
   let errorText;
+  // Handle an error thrown by execa
   if ((reason as any).stderr) {
     errorText =
       "command: " + (reason as any).command + "\n" + (reason as any).stderr;
