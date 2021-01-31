@@ -1,5 +1,5 @@
 import execa from "execa";
 
-export function install(cwd: string) {
-  return execa("yarn", ["install"], { cwd });
+export async function install(cwd: string): Promise<void> {
+  await execa("yarn", ["install"], { cwd });
 }

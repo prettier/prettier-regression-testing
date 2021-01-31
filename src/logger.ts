@@ -1,11 +1,22 @@
 import fs from "fs/promises";
 import github from "@actions/github";
 import * as configuration from "./configuration";
+import { getIssueComment } from "./get-issue-comment";
+import type { GitHub } from "@actions/github/lib/utils";
 
-export async function log(logText: string) {
+type Octokit = InstanceType<typeof GitHub>;
+let octokit: Octokit | undefined;
+function getOctokit(): Octokit {
+  if (octokit === undefined) {
+    octokit = github.getOctokit(configuration.authToken);
+  }
+  return octokit;
+}
+
+export async function log(logText: string): Promise<void> {
   if (configuration.isCI) {
-    const comment = github.context.payload.comment!;
-    const octokit = github.getOctokit(configuration.authToken);
+    const comment = getIssueComment();
+    const octokit = getOctokit();
     await octokit.issues.updateComment({
       ...github.context.repo,
       comment_id: comment.id,
@@ -17,10 +28,10 @@ export async function log(logText: string) {
   }
 }
 
-export async function error(logText: string) {
+export async function error(logText: string): Promise<void> {
   if (configuration.isCI) {
-    const comment = github.context.payload.comment!;
-    const octokit = github.getOctokit(configuration.authToken);
+    const comment = getIssueComment();
+    const octokit = getOctokit();
     await octokit.issues.updateComment({
       ...github.context.repo,
       comment_id: comment.id,

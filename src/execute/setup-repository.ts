@@ -13,7 +13,7 @@ import * as unix from "../tools/unix";
 
 export async function setupPrettierRepository(
   prettierRepositorySource: PrettierRepositorySource
-) {
+): Promise<void> {
   switch (prettierRepositorySource.type) {
     case "prNumber": {
       setupPullRequestNumber(

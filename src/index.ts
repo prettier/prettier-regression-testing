@@ -1,17 +1,19 @@
 import fs from "fs/promises";
-import github from "@actions/github";
 import * as configuration from "./configuration";
 import * as logger from "./logger";
 import { execute } from "./execute";
 import { getLogText } from "./log-text";
 import { parse } from "./parse";
+import { getIssueComment } from "./get-issue-comment";
 
 process.on("unhandledRejection", function (reason) {
   let errorText;
   // Handle an error thrown by execa
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   if ((reason as any).stderr) {
     errorText =
       "command: " + (reason as any).command + "\n" + (reason as any).stderr;
+    /* eslint-enable  @typescript-eslint/no-explicit-any */
   } else {
     errorText = JSON.stringify(reason);
   }
@@ -24,7 +26,8 @@ process.on("unhandledRejection", function (reason) {
   try {
     let commandString;
     if (configuration.isCI) {
-      commandString = github.context.payload.comment!.body as string;
+      const comment = getIssueComment();
+      commandString = comment.body as string;
     } else {
       await fs.writeFile("log.txt", "");
       commandString = process.argv.splice(2)[0];

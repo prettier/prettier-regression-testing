@@ -17,7 +17,7 @@ export async function runPrettier(
   prettierRepositoryPath: string,
   targetRepositoryPath: string,
   targetRepositoryName: string
-) {
+): Promise<void> {
   const globPattern = targetRepositoryGlobPatternMap.get(targetRepositoryName);
   const ignorePath = targetRepositoryIgnorePathMap.get(targetRepositoryName);
 

@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "fix": "prettier . -w",
-    "lint": "eslint . --ext .js && prettier . --check",
+    "lint": "eslint src --ext .ts && prettier . --check",
     "test": "jest",
     "build": "tsc"
   },
@@ -26,6 +26,8 @@
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
     "@types/semver": "^7.3.4",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
     "babel-jest": "^26.6.3",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",

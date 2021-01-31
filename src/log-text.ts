@@ -38,7 +38,7 @@ function getLogTitle(command: Command): string {
   }
 }
 
-export function getLogText(result: ExecuteResult, command: Command) {
+export function getLogText(result: ExecuteResult, command: Command): string {
   let logText = "";
   if (!configuration.isCI) {
     logText = logText + "\n========= Result =========\n\n";
@@ -54,7 +54,7 @@ export function getLogText(result: ExecuteResult, command: Command) {
     logText = logText + "\n```";
   } else {
     logText = logText + result.diffString;
-    logText = logText + "\n\n========= END OF LOG =========\n";
+    logText = logText + "\n\n========= End of Result =========\n";
   }
   return logText;
 }

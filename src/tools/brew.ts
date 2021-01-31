@@ -1,5 +1,5 @@
 import execa from "execa";
 
-export function install(packageName: string) {
-  return execa("brew", ["install", packageName]);
+export async function install(packageName: string): Promise<void> {
+  await execa("brew", ["install", packageName]);
 }
