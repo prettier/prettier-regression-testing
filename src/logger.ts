@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import github from "@actions/github";
+import * as github from "@actions/github";
 import * as configuration from "./configuration";
 import type { GitHub } from "@actions/github/lib/utils";
 
