@@ -3,7 +3,7 @@ on:
     types: [created]
 jobs:
   regression_testing_job:
-    if: (github.event.comment.body == 'run') || startsWith(github.event.comment.body, 'run with checking out ') || startsWith(github.event.comment.body, 'run with pr ')
+    if: startsWith(github.event.comment.body, 'run')
     runs-on: ubuntu-latest
     name: a job for regression testing
     steps:
@@ -15,6 +15,7 @@ jobs:
         with:
           node-version: "14"
       - run: yarn install
-      - run: node ./index.js
+      - run: yarn build
+      - run: node ./build/index.js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

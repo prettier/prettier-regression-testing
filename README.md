@@ -1,8 +1,6 @@
 # prettier-regression-testing
 
-Automates the [prettier/prettier](https://github.com/prettier/prettier) regression checks with GitHub Actions.
-
-## Context
+## Motivation
 
 https://github.com/prettier/prettier/issues/9290
 
@@ -17,7 +15,40 @@ This is a lot of work, so we use GitHub Actions to automate it.
 
 ## Usage
 
-- Create a comment `run` on any issue.
-  - Or `run with checking out foo` to specify checking out.
-  - Or `run with checking out foo on sosukesuzuki/prettier` to specify cheking out and specify forked repository.
-- An issue comment that includes diffs will be created. (See [an issue for demo](https://github.com/sosukesuzuki/prettier-regression-testing/issues/6).)
+Create an issue comment like the one below:
+
+```
+run alternativeVersionPrettier vs originalVersionPrettier
+```
+
+### `alternativeVersionPrettier`
+
+Required.
+
+There are 3 ways to specify.
+
+1. Versions (e.g. `2.0.0`, `1.7.1`)
+2. Repository name + ref (e.g. `sosukesuzuki/prettier#2f3fc241f8cb1867a0a3073ceac9d662e4b25fab`).
+3. Pull Request number on [prettier/prettier](https://github.com/prettier/prettier) repository (e.g. `#110168`).
+
+### `originalVersionPrettier`
+
+Optional.
+
+In default, use `prettier/prettier#main`.
+
+Also, you can specify with the logic same as `alternativeVersionPrettier`.
+
+## Examples
+
+```
+run #110168
+```
+
+```
+run #110168 vs sosukesuzuki/prettier#main
+```
+
+```
+run sosukesuzuki/prettier#main vs 1.8.1
+```
