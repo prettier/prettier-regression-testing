@@ -14,7 +14,7 @@ function getPrettierRepositorySourceText(
     case "repositoryAndRef": {
       return configuration.isCI
         ? `${prettierRepositorySource.repositoryName}@${prettierRepositorySource.ref}`
-        : `https://github.com/prettier/prettier/blob/${prettierRepositorySource.ref}/README.md`;
+        : `https://github.com/${prettierRepositorySource.repositoryName}/blob/${prettierRepositorySource.ref}/README.md`;
     }
     case "version": {
       const versionUrl = `https://github.com/prettier/prettier/tree/${prettierRepositorySource.version}`;
