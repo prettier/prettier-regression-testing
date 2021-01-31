@@ -16,21 +16,21 @@ export async function setupPrettierRepository(
 ): Promise<void> {
   switch (prettierRepositorySource.type) {
     case "prNumber": {
-      setupPullRequestNumber(
+      await setupPullRequestNumber(
         prettierRepositorySource,
         configuration.prettierRepositoryPath
       );
       break;
     }
     case "repositoryAndRef": {
-      setupRepositoryAndRef(
+      await setupRepositoryAndRef(
         prettierRepositorySource,
         configuration.prettierRepositoryPath
       );
       break;
     }
     case "version": {
-      setupVersion(
+      await setupVersion(
         prettierRepositorySource,
         configuration.prettierRepositoryPath
       );
