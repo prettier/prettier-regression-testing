@@ -49,9 +49,9 @@ export function getLogText(result: ExecuteResult, command: Command): string {
   }
   logText = logText + "\n";
   if (configuration.isCI) {
-    logText = logText + "```diff\n";
+    logText = logText + "````diff\n";
     logText = logText + result.diffString;
-    logText = logText + "\n```";
+    logText = logText + "\n````";
   } else {
     logText = logText + result.diffString;
     logText = logText + "\n\n========= End of Result =========\n";
