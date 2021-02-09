@@ -49,7 +49,10 @@ async function setupPullRequestNumber(
   if (!(await existsGh())) {
     await brew.install("gh");
   }
-  await gh.authLoginWithToken(configuration.authToken);
+  if (configuration.authToken !== "nothing") {
+    // running locally, `gh` can be already authenticated
+    await gh.authLoginWithToken(configuration.authToken);
+  }
   await gh.prCheckout(repositortSource.prNumber, cwd);
   await yarn.install(cwd);
 }

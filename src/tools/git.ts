@@ -1,4 +1,5 @@
 import execa from "execa";
+import path from "path";
 
 export async function remoteAdd(
   remoteName: string,
@@ -32,14 +33,15 @@ export async function remoteGetUrl(cwd: string): Promise<string> {
   return remoteUrl;
 }
 
-export async function diffSubmodule(
-  directoryPath: string,
-  cwd: string
-): Promise<string> {
+export async function diffRepository(directoryPath: string): Promise<string> {
   const diffString = await execa(
     "git",
-    ["diff", "--submodule=diff", directoryPath],
-    { cwd }
+    [
+      "diff",
+      `--src-prefix=ORI/${path.basename(directoryPath)}/`,
+      `--dst-prefix=ALT/${path.basename(directoryPath)}/`,
+    ],
+    { cwd: directoryPath }
   ).then(({ stdout }) => stdout);
   return diffString;
 }
@@ -60,5 +62,5 @@ export async function commitAllowEmptyNoVerify(
 }
 
 export async function resetHeadHard(cwd: string): Promise<void> {
-  await execa("git", ["reset", "head^", "--hard"], { cwd });
+  await execa("git", ["reset", "HEAD^", "--hard"], { cwd });
 }
