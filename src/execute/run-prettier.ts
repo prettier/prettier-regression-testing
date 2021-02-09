@@ -4,7 +4,7 @@ import path from "path";
 const targetRepositoryGlobPatternMap: Map<string, string> = new Map([
   ["typescript-eslint", "./**/*.{ts,js,json,md}"],
   ["eslint-plugin-vue", "./**/*.js"],
-  ["babel", "./{packages,codemodes,eslint}/**/*.js"],
+  ["babel", "./{packages,codemods,eslint}/**/*.js"],
   ["excalidraw", "./**/*.{css,scss,json,md,html,yml}"],
   ["prettier", "."],
 ]);
