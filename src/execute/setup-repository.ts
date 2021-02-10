@@ -43,7 +43,7 @@ async function existsGh() {
   return !(await unix.which("gh")).includes("gh not found");
 }
 async function setupPullRequestNumber(
-  repositortSource: PrettierRepositorySourcePrNumber,
+  repositorySource: PrettierRepositorySourcePrNumber,
   cwd: string
 ) {
   if (!(await existsGh())) {
@@ -53,7 +53,7 @@ async function setupPullRequestNumber(
     // running locally, `gh` can be already authenticated
     await gh.authLoginWithToken(configuration.authToken);
   }
-  await gh.prCheckout(repositortSource.prNumber, cwd);
+  await gh.prCheckout(repositorySource.prNumber, cwd);
   await yarn.install(cwd);
 }
 
@@ -61,10 +61,10 @@ function getRepositoryUrlWithToken(repositoryName: string) {
   return `https://${configuration.authToken}@github.com/${repositoryName}.git`;
 }
 async function setupRepositoryAndRef(
-  repositortSource: PrettierRepositorySourceRepositoryAndRef,
+  repositorySource: PrettierRepositorySourceRepositoryAndRef,
   cwd: string
 ) {
-  const { repositoryName, ref } = repositortSource;
+  const { repositoryName, ref } = repositorySource;
   const repositoryUrlWithToken = getRepositoryUrlWithToken(repositoryName);
   const uniq = "remote" + new Date().getTime();
   await git.remoteAdd(uniq, repositoryUrlWithToken, cwd);
@@ -74,9 +74,9 @@ async function setupRepositoryAndRef(
 }
 
 async function setupVersion(
-  repositortSource: PrettierRepositorySourceVersion,
+  repositorySource: PrettierRepositorySourceVersion,
   cwd: string
 ) {
-  await git.checkout(`tags/${repositortSource.version}`, cwd);
+  await git.checkout(`tags/${repositorySource.version}`, cwd);
   await yarn.install(cwd);
 }

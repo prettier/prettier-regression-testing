@@ -107,7 +107,7 @@ export function parseRepositorySource(token: Token): PrettierRepositorySource {
 
   const { value } = token;
 
-  // lile "2.3.4"
+  // like "2.3.4"
   if (semver.valid(value)) {
     return {
       type: sourceTypes.version,
@@ -116,13 +116,13 @@ export function parseRepositorySource(token: Token): PrettierRepositorySource {
   }
 
   // like "sosukesuzuki/prettier#ref"
-  const splitted1 = value.split("/").filter(Boolean);
+  const split1 = value.split("/").filter(Boolean);
   if (value.split("/").length === 2) {
-    const splitted2 = splitted1[1].split("#").filter(Boolean);
-    if (splitted2.length === 2) {
-      const remoteName = splitted1[0];
-      const repositoryName = `${remoteName}/${splitted2[0]}`;
-      const ref = splitted2[1];
+    const split2 = split1[1].split("#").filter(Boolean);
+    if (split2.length === 2) {
+      const remoteName = split1[0];
+      const repositoryName = `${remoteName}/${split2[0]}`;
+      const ref = split2[1];
       return {
         type: sourceTypes.repositoryAndRef,
         repositoryName,
@@ -159,7 +159,7 @@ type Token =
     };
 export function tokenize(source: string): Token[] {
   const tokens: Token[] = [];
-  for (const word of source.split(" ").filter(Boolean)) {
+  for (const word of source.trim().split(" ").filter(Boolean)) {
     switch (word) {
       case "run":
         tokens.push({ kind: "run" });
