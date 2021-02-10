@@ -66,10 +66,12 @@ export async function execute({
     })
   );
 
-  const diffString = await git.diffSubmodule(
-    configuration.targetRepositoriesPath,
-    configuration.cwd
-  );
+  const diffString = (
+    await Promise.all(
+      targetRepositoryNames.map(getTargetRepositoryPath).map(git.diffRepository)
+    )
+  ).join("\n");
+
   if (!configuration.isCI) {
     await Promise.all(
       targetRepositoryNames.map(async (targetRepositoryName) => {
