@@ -38,6 +38,8 @@ function getLogTitle(command: Command): string {
   }
 }
 
+const LONG_DIFF_THRESHOLD_IN_LINES = 50;
+
 export function getLogText(result: ExecuteResult, command: Command): string {
   let logText = "";
   if (!configuration.isCI) {
@@ -49,12 +51,28 @@ export function getLogText(result: ExecuteResult, command: Command): string {
   }
   logText = logText + "\n";
   if (configuration.isCI) {
-    logText = logText + "````diff\n";
-    logText = logText + result.diffString;
-    logText = logText + "\n````";
+    const lineCount = result.diffString.match(/\n/g)?.length ?? 0;
+    const isLong = lineCount > LONG_DIFF_THRESHOLD_IN_LINES;
+    if (isLong) {
+      logText += `<details><summary>Diff (${lineCount} lines)</summary>\n\n`;
+    }
+    logText += codeBlock(result.diffString, "diff");
+    if (isLong) {
+      logText += "\n\n</details>";
+    }
   } else {
     logText = logText + result.diffString;
     logText = logText + "\n\n========= End of Result =========\n";
   }
   return logText;
+}
+
+function codeBlock(content: string, syntax?: string) {
+  const backtickSequences = content.match(/`+/g) || [];
+  const longestBacktickSequenceLength = Math.max(
+    ...backtickSequences.map(({ length }) => length)
+  );
+  const fenceLength = Math.max(3, longestBacktickSequenceLength + 1);
+  const fence = "`".repeat(fenceLength);
+  return [fence + (syntax || ""), content, fence].join("\n");
 }
