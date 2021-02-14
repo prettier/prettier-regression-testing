@@ -51,14 +51,18 @@ export function getLogText(result: ExecuteResult, command: Command): string {
   }
   logText = logText + "\n";
   if (configuration.isCI) {
-    const lineCount = result.diffString.match(/\n/g)?.length ?? 0;
-    const isLong = lineCount > LONG_DIFF_THRESHOLD_IN_LINES;
-    if (isLong) {
-      logText += `<details><summary>Diff (${lineCount} lines)</summary>\n\n`;
-    }
-    logText += codeBlock(result.diffString, "diff");
-    if (isLong) {
-      logText += "\n\n</details>";
+    if (result.diffString.trim()) {
+      const lineCount = result.diffString.match(/\n/g)?.length ?? 0;
+      const isLong = lineCount > LONG_DIFF_THRESHOLD_IN_LINES;
+      if (isLong) {
+        logText += `<details><summary>Diff (${lineCount} lines)</summary>\n\n`;
+      }
+      logText += codeBlock(result.diffString, "diff");
+      if (isLong) {
+        logText += "\n\n</details>";
+      }
+    } else {
+      logText += "**The diff is empty.**";
     }
   } else {
     logText = logText + result.diffString;
