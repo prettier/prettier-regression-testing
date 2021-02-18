@@ -12,7 +12,7 @@ const targetRepositoryGlobPatternMap: Map<string, string> = new Map([
 const targetRepositoryIgnorePathMap: Map<string, string> = new Map([
   ["excalidraw", ".eslintignore"],
   ["babel", ".eslintignore"],
-  ["vega-lite", ".eslintignore"]
+  ["vega-lite", ".eslintignore"],
 ]);
 
 export async function runPrettier(
