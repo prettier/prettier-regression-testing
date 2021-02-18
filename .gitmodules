@@ -16,3 +16,6 @@
 [submodule "repos/prettier"]
 	path = repos/prettier
 	url = git@github.com:prettier/prettier.git
+[submodule "repos/vega-lite"]
+	path = repos/vega-lite
+	url = https://github.com/vega/vega-lite.git

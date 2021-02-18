@@ -7,10 +7,12 @@ const targetRepositoryGlobPatternMap: Map<string, string> = new Map([
   ["babel", "./{packages,codemods,eslint}/**/*.js"],
   ["excalidraw", "./**/*.{css,scss,json,md,html,yml}"],
   ["prettier", "."],
+  ["vega-lite", "./**/*.ts"],
 ]);
 const targetRepositoryIgnorePathMap: Map<string, string> = new Map([
   ["excalidraw", ".eslintignore"],
   ["babel", ".eslintignore"],
+  ["vega-lite", ".eslintignore"],
 ]);
 
 export async function runPrettier(
