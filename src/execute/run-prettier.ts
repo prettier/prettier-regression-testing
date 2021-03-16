@@ -5,7 +5,7 @@ const targetRepositoryGlobPatternMap: Map<string, string> = new Map([
   ["typescript-eslint", "./**/*.{ts,js,json,md}"],
   ["eslint-plugin-vue", "./**/*.js"],
   ["babel", "./{packages,codemods,eslint}/**/*.js"],
-  ["excalidraw", "./**/*.{css,scss,json,md,html,yml}"],
+  ["excalidraw", "./**/*.{css,scss,json,md,html,yml,ts,tsx,js}"],
   ["prettier", "."],
   ["vega-lite", "./**/*.ts"],
 ]);
