@@ -70,8 +70,7 @@ export function getLogText(
   }
 
   return result.map(
-    ({ commitHash, diff }) =>
-      `${title}\n\n- ${commitHash}\n\n${formatDiff(diff)}`
+    ({ commitHash, diff }) => `${title} :: ${commitHash}\n\n${formatDiff(diff)}`
   );
 }
 
