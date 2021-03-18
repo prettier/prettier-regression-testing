@@ -13,9 +13,9 @@ function getOctokit(): Octokit {
 }
 
 let commentId: number | undefined;
-async function logToIssueComment(logText: string) {
+async function logToIssueComment(logText: string, separateComment = false) {
   const octokit = getOctokit();
-  if (commentId === undefined) {
+  if (commentId === undefined || separateComment) {
     const comment = await octokit.issues.createComment({
       ...github.context.repo,
       issue_number: github.context.issue.number,
@@ -31,10 +31,13 @@ async function logToIssueComment(logText: string) {
   }
 }
 
-export async function log(logText: string): Promise<void> {
+export async function log(
+  logText: string,
+  separateComment = false
+): Promise<void> {
   if (configuration.isCI) {
     console.log(logText);
-    await logToIssueComment(logText);
+    await logToIssueComment(logText, separateComment);
   } else {
     const fileData = await fs.readFile("log.txt", "utf-8");
     await fs.writeFile("log.txt", fileData + logText + "\n");

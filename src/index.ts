@@ -48,7 +48,13 @@ process.on("unhandledRejection", function (reason) {
     const command = parse(commandString);
     const result = await execute(command);
     const logText = getLogText(result, command);
-    await logger.log(logText);
+    if (typeof logText === "string") {
+      await logger.log(logText);
+    } else {
+      for (let index = 0; index < logText.length; index++) {
+        await logger.log(logText[index], index > 0);
+      }
+    }
     process.exit(0);
   } catch (error) {
     await logger.error(error);

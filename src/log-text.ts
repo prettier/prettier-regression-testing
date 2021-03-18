@@ -1,5 +1,5 @@
 import * as configuration from "./configuration";
-import { ExecuteResult } from "./execute";
+import { ExecuteResultEntry } from "./execute";
 import { Command, PrettierRepositorySource } from "./parse";
 
 function getPrettierRepositorySourceText(
@@ -40,35 +40,49 @@ function getLogTitle(command: Command): string {
 
 const LONG_DIFF_THRESHOLD_IN_LINES = 50;
 
-export function getLogText(result: ExecuteResult, command: Command): string {
-  let logText = "";
+const TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS = 60000;
+
+export function getLogText(
+  result: ExecuteResultEntry[],
+  command: Command
+): string | string[] {
+  const title = getLogTitle(command);
+
+  const joinedHeader =
+    title +
+    "\n\n" +
+    result.map(({ commitHash }) => `- ${commitHash}`).join("\n") +
+    "\n\n";
+
+  const joinedDiff = result.map(({ diff }) => diff).join("\n");
+
   if (!configuration.isCI) {
-    logText = logText + "\n========= Result =========\n\n";
+    return (
+      "\n========= Result =========\n\n" +
+      joinedHeader +
+      joinedDiff +
+      "\n\n========= End of Result =========\n"
+    );
   }
-  logText = logText + getLogTitle(command) + "\n\n";
-  for (const targetRepositoryPrettyCommitHash of result.targetRepositoriesPrettyheadCommitHashList) {
-    logText = logText + `- ${targetRepositoryPrettyCommitHash}\n`;
+
+  if (joinedDiff.length < TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS) {
+    return joinedHeader + formatDiff(joinedDiff);
   }
-  logText = logText + "\n";
-  if (configuration.isCI) {
-    if (result.diffString.trim()) {
-      const lineCount = result.diffString.match(/\n/g)?.length ?? 0;
-      const isLong = lineCount > LONG_DIFF_THRESHOLD_IN_LINES;
-      if (isLong) {
-        logText += `<details><summary>Diff (${lineCount} lines)</summary>\n\n`;
-      }
-      logText += codeBlock(result.diffString, "diff");
-      if (isLong) {
-        logText += "\n\n</details>";
-      }
-    } else {
-      logText += "**The diff is empty.**";
-    }
-  } else {
-    logText = logText + result.diffString;
-    logText = logText + "\n\n========= End of Result =========\n";
+
+  return result.map(
+    ({ commitHash, diff }) => `${title} :: ${commitHash}\n\n${formatDiff(diff)}`
+  );
+}
+
+function formatDiff(content: string) {
+  if (!content.trim()) {
+    return "**The diff is empty.**";
   }
-  return logText;
+  const lineCount = content.match(/\n/g)?.length ?? 0;
+  const code = codeBlock(content, "diff");
+  return lineCount > LONG_DIFF_THRESHOLD_IN_LINES
+    ? `<details><summary>Diff (${lineCount} lines)</summary>\n\n${code}\n\n</details>`
+    : code;
 }
 
 function codeBlock(content: string, syntax?: string) {

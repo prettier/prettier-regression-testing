@@ -11,18 +11,19 @@ import * as logger from "../logger";
 const getTargetRepositoryPath = (targetRepositoryName: string) =>
   path.join(configuration.targetRepositoriesPath, targetRepositoryName);
 
-export interface ExecuteResult {
-  targetRepositoriesPrettyheadCommitHashList: string[];
-  diffString: string;
+export interface ExecuteResultEntry {
+  commitHash: string;
+  diff: string;
 }
+
 export async function execute({
   alternativePrettier,
   originalPrettier,
-}: Command): Promise<ExecuteResult> {
+}: Command): Promise<ExecuteResultEntry[]> {
   const targetRepositoryNames = await fs.readdir(
     configuration.targetRepositoriesPath
   );
-  const targetRepositoriesPrettyheadCommitHashList = await Promise.all(
+  const commitHashes = await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) =>
       getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName))
     )
@@ -66,11 +67,9 @@ export async function execute({
     })
   );
 
-  const diffString = (
-    await Promise.all(
-      targetRepositoryNames.map(getTargetRepositoryPath).map(git.diffRepository)
-    )
-  ).join("\n");
+  const diffs = await Promise.all(
+    targetRepositoryNames.map(getTargetRepositoryPath).map(git.diffRepository)
+  );
 
   if (!configuration.isCI) {
     await Promise.all(
@@ -80,8 +79,8 @@ export async function execute({
     );
   }
 
-  return {
-    diffString,
-    targetRepositoriesPrettyheadCommitHashList,
-  };
+  return targetRepositoryNames.map((_, i) => ({
+    commitHash: commitHashes[i],
+    diff: diffs[i],
+  }));
 }
