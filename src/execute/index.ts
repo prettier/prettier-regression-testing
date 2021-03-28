@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import { existsSync, promises as fs } from "fs";
 import path from "path";
 import { Command } from "../parse";
 import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash";
@@ -16,6 +16,17 @@ export interface ExecuteResultEntry {
   diff: string;
 }
 
+async function clonePrettier() {
+  if (!existsSync(configuration.prettierRepositoryPath)) {
+    await logger.log("Cloning Prettier repository...");
+    await git.clone(
+      "https://github.com/prettier/prettier.git",
+      "./prettier",
+      configuration.cwd
+    );
+  }
+}
+
 export async function execute({
   alternativePrettier,
   originalPrettier,
@@ -28,6 +39,8 @@ export async function execute({
       getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName))
     )
   );
+
+  await clonePrettier();
 
   // Setup originalVersionPrettier
   await logger.log("Setting up originalVersionPrettier...");
