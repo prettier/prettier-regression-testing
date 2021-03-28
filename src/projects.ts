@@ -1,5 +1,6 @@
 import path from "path";
 import { existsSync, promises as fs } from "fs";
+import * as logger from "./logger";
 import * as configuration from "./configuration";
 import * as git from "./tools/git";
 
@@ -48,7 +49,8 @@ export const projects: { [key: string]: Project } = {
 } as const;
 /* eslint-disable sort-keys */
 
-export async function setupProjects(): Promise<void> {
+export async function cloneProjects(): Promise<void> {
+  await logger.log("Cloning repositories...");
   if (!existsSync(configuration.targetRepositoriesPath)) {
     await fs.mkdir(configuration.targetRepositoriesPath);
   }
