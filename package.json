@@ -10,6 +10,7 @@
     "lint": "run-p lint:*",
     "lint:eslint": "eslint src --ext .ts",
     "lint:prettier": "prettier . --check",
+    "lint:tsc": "tsc --noEmit",
     "test": "jest",
     "build": "tsc"
   },
