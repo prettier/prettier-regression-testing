@@ -7,7 +7,10 @@
   "main": "index.js",
   "scripts": {
     "fix": "prettier . -w",
-    "lint": "eslint src --ext .ts && prettier . --check",
+    "lint": "run-p lint:*",
+    "lint:eslint": "eslint src --ext .ts",
+    "lint:prettier": "prettier . --check",
+    "lint:tsc": "tsc --noEmit",
     "test": "jest",
     "build": "tsc"
   },
@@ -32,6 +35,7 @@
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "jest": "^26.6.3",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "typescript": "^4.1.3"
   }

@@ -55,10 +55,4 @@ run sosukesuzuki/prettier#main vs 1.8.1
 
 ## Add new project
 
-Add a repository as a git submodule.
-
-```
-git submodule add https://github.com/sosukesuzuki/example.git repos/example
-```
-
-Update `targetRepositoryGlobPatternMap` and `targetRepositoryIgnorePathMap`(https://github.com/prettier/prettier-regression-testing/blob/0fc90188909b6c949961b83f038f8e8374aedc68/src/execute/run-prettier.ts#L4-L14).
+Add a project info to `projects` object in `./src/projects.ts`.
