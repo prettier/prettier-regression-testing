@@ -1,4 +1,5 @@
 import path from "path";
+import { existsSync, promises as fs } from "fs";
 import * as configuration from "./configuration";
 import * as git from "./tools/git";
 
@@ -48,10 +49,17 @@ export const projects: { [key: string]: Project } = {
 /* eslint-disable sort-keys */
 
 export async function setupProjects(): Promise<void> {
+  const repos = path.join(configuration.cwd, "./repos");
+  if (!existsSync(repos)) {
+    await fs.mkdir(repos);
+  }
   await Promise.all(
     Object.entries(projects).map(async ([name, project]) => {
-      await git.clone(project.url, configuration.cwd);
-      await git.checkout(project.commit, path.join(configuration.cwd, name));
+      const repo = path.join(repos, name);
+      if (!existsSync(repo)) {
+        await git.clone(project.url, `./repos/${name}`, configuration.cwd);
+      }
+      await git.checkout(project.commit, path.join(repos, name));
     })
   );
 }

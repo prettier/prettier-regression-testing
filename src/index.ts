@@ -6,6 +6,7 @@ import { execute } from "./execute";
 import { getLogText } from "./log-text";
 import { parse } from "./parse";
 import { getIssueComment } from "./get-issue-comment";
+import { setupProjects } from "./projects";
 
 async function exit(error: Error | string) {
   if (configuration.isCI) {
@@ -45,6 +46,7 @@ process.on("unhandledRejection", function (reason) {
     if (!commandString) {
       throw new Error("Please enter some commands.");
     }
+    await setupProjects();
     const command = parse(commandString);
     const result = await execute(command);
     const logText = getLogText(result, command);

@@ -65,6 +65,10 @@ export async function resetHeadHard(cwd: string): Promise<void> {
   await execa("git", ["reset", "HEAD^", "--hard"], { cwd });
 }
 
-export async function clone(url: string, cwd: string): Promise<void> {
-  await execa("git", ["clone", url], { cwd });
+export async function clone(
+  url: string,
+  dirname: string,
+  cwd: string
+): Promise<void> {
+  await execa("git", ["clone", url, dirname], { cwd });
 }
