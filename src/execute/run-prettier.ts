@@ -1,40 +1,30 @@
 import execa from "execa";
 import path from "path";
-
-const targetRepositoryGlobPatternMap: Map<string, string> = new Map([
-  ["typescript-eslint", "./**/*.{ts,js,json,md}"],
-  ["eslint-plugin-vue", "./**/*.js"],
-  ["babel", "./{packages,codemods,eslint}/**/*.js"],
-  ["excalidraw", "./**/*.{css,scss,json,md,html,yml,ts,tsx,js}"],
-  ["prettier", "."],
-  ["vega-lite", "./**/*.ts"],
-]);
-const targetRepositoryIgnorePathMap: Map<string, string> = new Map([
-  ["excalidraw", ".eslintignore"],
-  ["babel", ".eslintignore"],
-  ["vega-lite", ".eslintignore"],
-]);
+import { projects } from "../projects";
 
 export async function runPrettier(
   prettierRepositoryPath: string,
-  targetRepositoryPath: string,
-  targetRepositoryName: string
+  repositoryPath: string,
+  repositoryName: string
 ): Promise<void> {
-  const globPattern = targetRepositoryGlobPatternMap.get(targetRepositoryName);
-  const ignorePath = targetRepositoryIgnorePathMap.get(targetRepositoryName);
+  const project = projects[repositoryName];
+  if (!project) {
+    throw new Error(`Repository name '${repositoryName}' is invalid`);
+  }
+  const { ignore, glob } = project;
 
   const prettierRepositoryBinPath = path.join(
     prettierRepositoryPath,
     "./bin/prettier.js"
   );
 
-  const prettierArgs = ["--write"];
-  prettierArgs.push(JSON.stringify(globPattern));
-  if (ignorePath) {
-    prettierArgs.push("--ignore-path", ignorePath);
+  const args = ["--write"];
+  args.push(JSON.stringify(glob));
+  if (ignore) {
+    args.push("--ignore-path", ignore);
   }
-  await execa(prettierRepositoryBinPath, prettierArgs, {
-    cwd: targetRepositoryPath,
+  await execa(prettierRepositoryBinPath, args, {
+    cwd: repositoryPath,
     shell: true,
   });
 }
