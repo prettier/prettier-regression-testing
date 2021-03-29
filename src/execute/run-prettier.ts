@@ -38,6 +38,8 @@ export async function runPrettier(
         cwd: repositoryPath,
         shell: true,
       });
+    } else {
+      throw error;
     }
   }
 }
