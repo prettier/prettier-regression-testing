@@ -49,6 +49,14 @@ export const projects: { [key: string]: Project } = {
 } as const;
 /* eslint-disable sort-keys */
 
+async function shallowClone(project: Project, cwd: string) {
+  await fs.mkdir(cwd);
+  await git.init(cwd);
+  await git.remoteAdd("origin", project.url, cwd);
+  await git.fetchDepth1("origin", project.commit, cwd);
+  await git.checkout("FETCH_HEAD", cwd);
+}
+
 export async function cloneProjects(): Promise<void> {
   await logger.log("Cloning repositories...");
   if (!existsSync(configuration.targetRepositoriesPath)) {
@@ -58,12 +66,8 @@ export async function cloneProjects(): Promise<void> {
     Object.entries(projects).map(async ([name, project]) => {
       const repo = path.join(configuration.targetRepositoriesPath, name);
       if (!existsSync(repo)) {
-        await git.clone(project.url, `./repos/${name}`, configuration.cwd);
+        await shallowClone(project, repo);
       }
-      await git.checkout(
-        project.commit,
-        path.join(configuration.targetRepositoriesPath, name)
-      );
     })
   );
 }

@@ -13,6 +13,16 @@ export async function fetch(remoteName: string, cwd: string): Promise<void> {
   await execa("git", ["fetch", remoteName], { cwd });
 }
 
+export async function fetchDepth1(
+  remoteName: string,
+  commitHash: string,
+  cwd: string
+): Promise<void> {
+  await execa("git", ["fetch", "--depth", "1", remoteName, commitHash], {
+    cwd,
+  });
+}
+
 export async function checkout(ref: string, cwd: string): Promise<void> {
   await execa("git", ["checkout", ref], { cwd });
 }
@@ -71,4 +81,8 @@ export async function clone(
   cwd: string
 ): Promise<void> {
   await execa("git", ["clone", url, dirname], { cwd });
+}
+
+export async function init(cwd: string): Promise<void> {
+  await execa("git", ["init"], { cwd });
 }
