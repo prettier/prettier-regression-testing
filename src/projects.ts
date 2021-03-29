@@ -58,12 +58,8 @@ export async function cloneProjects(): Promise<void> {
     Object.entries(projects).map(async ([name, project]) => {
       const repo = path.join(configuration.targetRepositoriesPath, name);
       if (!existsSync(repo)) {
-        await git.clone(project.url, `./repos/${name}`, configuration.cwd);
+        await git.shallowClone(project.url, project.commit, repo);
       }
-      await git.checkout(
-        project.commit,
-        path.join(configuration.targetRepositoriesPath, name)
-      );
     })
   );
 }

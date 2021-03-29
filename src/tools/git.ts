@@ -1,5 +1,6 @@
 import execa from "execa";
 import path from "path";
+import fs from "fs/promises";
 
 export async function remoteAdd(
   remoteName: string,
@@ -11,6 +12,16 @@ export async function remoteAdd(
 
 export async function fetch(remoteName: string, cwd: string): Promise<void> {
   await execa("git", ["fetch", remoteName], { cwd });
+}
+
+export async function fetchDepth1(
+  remoteName: string,
+  commitHash: string,
+  cwd: string
+): Promise<void> {
+  await execa("git", ["fetch", "--depth", "1", remoteName, commitHash], {
+    cwd,
+  });
 }
 
 export async function checkout(ref: string, cwd: string): Promise<void> {
@@ -71,4 +82,20 @@ export async function clone(
   cwd: string
 ): Promise<void> {
   await execa("git", ["clone", url, dirname], { cwd });
+}
+
+export async function init(cwd: string): Promise<void> {
+  await execa("git", ["init"], { cwd });
+}
+
+export async function shallowClone(
+  url: string,
+  commit: string,
+  cwd: string
+): Promise<void> {
+  await fs.mkdir(cwd);
+  await init(cwd);
+  await remoteAdd("origin", url, cwd);
+  await fetchDepth1("origin", commit, cwd);
+  await checkout("FETCH_HEAD", cwd);
 }
