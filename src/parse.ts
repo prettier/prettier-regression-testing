@@ -118,7 +118,7 @@ export function parseRepositorySource(token: Token): PrettierRepositorySource {
   // like "sosukesuzuki/prettier#ref"
   const split1 = value.split("/").filter(Boolean);
   if (value.split("/").length === 2) {
-    const split2 = split1[1].split("#").filter(Boolean);
+    const split2 = split1[1].split(/#|@/).filter(Boolean);
     if (split2.length === 2) {
       const remoteName = split1[0];
       const repositoryName = `${remoteName}/${split2[0]}`;
