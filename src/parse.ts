@@ -160,7 +160,7 @@ type Token =
 export function tokenize(source: string): Token[] {
   const tokens: Token[] = [];
   for (const word of source.trim().split(" ").filter(Boolean)) {
-    switch (word) {
+    switch (word.toLowerCase()) {
       case "run":
         tokens.push({ kind: "run" });
         break;
