@@ -6,7 +6,7 @@ import * as git from "./tools/git";
 
 export interface Project {
   url: string;
-  glob: string;
+  glob: string | readonly string[];
   ignore?: string;
   commit: string;
 }
@@ -34,6 +34,15 @@ export const projects: { [key: string]: Project } = {
     commit: "5f8bad8275a589ec903bddeacd484123c7db54ab",
     glob: ".",
     url: "https://github.com/prettier/prettier.git",
+  },
+  "react-admin": {
+    commit: "43c4fafc8bcedebc386c7d3dc3b63cfd56420a17",
+    glob: [
+      "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
+      "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
+      "cypress/**/*.{js,ts,json,tsx,css,md}",
+    ],
+    url: "https://github.com/marmelab/react-admin.git",
   },
   "typescript-eslint": {
     commit: "d0d71862efd7e079694fa9513ea983cc908ec6f6",
