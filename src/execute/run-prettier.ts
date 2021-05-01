@@ -20,7 +20,11 @@ export async function runPrettier(
   );
 
   const args = ["--write"];
-  args.push(JSON.stringify(glob));
+  if (Array.isArray(glob)) {
+    args.push(...glob.map((pattern) => JSON.stringify(pattern)));
+  } else {
+    args.push(JSON.stringify(glob));
+  }
   if (ignore) {
     args.push("--ignore-path", ignore);
   }
