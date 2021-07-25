@@ -3,7 +3,7 @@ on:
     types: [created]
 jobs:
   regression_testing_job:
-    if: startsWith(github.event.comment.body, 'run')
+    if: ${{ startsWith(github.event.comment.body, 'run') }}
     runs-on: ubuntu-latest
     name: a job for regression testing
     steps:
