@@ -5,7 +5,7 @@ import * as github from "@actions/github";
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const projectsJsonPath = path.join(__dirname, "projects.json");
+const projectsJsonPath = path.join(__dirname, "..", "projects.json");
 
 const projects = JSON.parse(await fs.readFile(projectsJsonPath, "utf-8"));
 
