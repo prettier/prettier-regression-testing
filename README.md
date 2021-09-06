@@ -55,4 +55,4 @@ run sosukesuzuki/prettier#main vs 1.8.1
 
 ## Add new project
 
-Add a project info to `projects` object in `./src/projects.ts`.
+Add a project info to `projects.json`.
