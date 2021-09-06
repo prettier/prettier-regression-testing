@@ -26,6 +26,8 @@ jobs:
 
       - name: Run update-projects-commits.mjs
         uses: actions/github-script@v4
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
