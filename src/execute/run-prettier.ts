@@ -1,6 +1,6 @@
 import execa from "execa";
 import path from "path";
-import { projects } from "../projects";
+import { getProjects } from "../projects";
 import * as yarn from "../tools/yarn";
 
 export async function runPrettier(
@@ -8,6 +8,7 @@ export async function runPrettier(
   repositoryPath: string,
   repositoryName: string
 ): Promise<void> {
+  const projects = await getProjects();
   const project = projects[repositoryName];
   if (!project) {
     throw new Error(`Repository name '${repositoryName}' is invalid`);
