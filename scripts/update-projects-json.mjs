@@ -7,10 +7,18 @@ import * as github from "@actions/github";
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+let octokit;
+function getOctokit() {
+  if (!octokit) {
+    octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+  }
+  return octokit;
+}
+
 async function updateProjectsJsonFile() {
   const projectsJsonPath = path.join(__dirname, "..", "projects.json");
   const projects = JSON.parse(await fs.readFile(projectsJsonPath, "utf-8"));
-  const octokit = github.getOctokit(process.env.NODE_AUTH_TOKEN);
+  const octokit = getOctokit();
   const latestCommits = new Map();
   await Promise.all(
     Object.entries(projects).map(async ([projectName, { url }]) => {
@@ -64,7 +72,7 @@ async function createPullRequest() {
     await execa("git", ["add", "."]);
     await execa("git", ["commit", "-m", `"Update projects.json"`]);
     await execa("git", ["push", "origin", branchName]);
-    const octokit = github.getOctokit(process.env.NODE_AUTH_TOKEN);
+    const octokit = getOctokit();
     await octokit.pulls.create({
       ...github.context.repo,
       title: `Update projects.json (${formattedDate})`,

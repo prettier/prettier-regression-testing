@@ -27,3 +27,5 @@ jobs:
 
       - name: Run update-projects-json.mjs
         run: node ./scripts/update-projects-json.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
