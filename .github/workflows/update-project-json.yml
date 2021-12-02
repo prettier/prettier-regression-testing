@@ -16,6 +16,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
+
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.0
         with:
@@ -24,41 +25,5 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run update-projects-commits.mjs
-        uses: actions/github-script@v5
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const execa = require("execa");
-            const date = new Date();
-            const dateStr =
-              date.getFullYear() +
-              "-" +
-              ("0" + (date.getMonth() + 1)).slice(-2) +
-              "-" +
-              ("0" + date.getDate()).slice(-2) +
-              "-" +
-              ("0" + date.getHours()).slice(-2) +
-              "-" +
-              ("0" + date.getMinutes()).slice(-2);
-            const branch = `update-projects-json-${dateStr}`;
-            await execa("git", ["checkout", "-b", branch]);
-            console.log("Run ./scripts/update-projects-json.mjs")
-            await execa("node", ["./scripts/update-projects-json.mjs"]);
-            const { stdout: diff } = await execa("git", ["diff", "--name-only"]);
-            if (diff.includes("projects.json")) {
-              await execa("git", ["add", "."]);
-              await execa("git", ["commit", "-m", `"Update projects.json"`]);
-              console.log("Push to remote...");
-              await execa("git", ["push", "origin", branch]);
-              console.log("Create a pull request...");
-              await github.pulls.create({
-                ...context.repo,
-                title: `Update projects.json (${dateStr})`,
-                head: branch,
-                base: "master",
-                maintainer_can_modify: true,
-              });
-            }
+      - name: Run update-projects-json.mjs
+        run: node ./scripts/update-projects-json.mjs
