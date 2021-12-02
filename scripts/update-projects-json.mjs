@@ -75,6 +75,10 @@ async function createPullRequest() {
   }
 }
 
+process.on("unhandledRejection", function (reason) {
+  throw reason;
+});
+
 createPullRequest()
   .then(() => {
     console.log("done");
