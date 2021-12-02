@@ -17,7 +17,7 @@
     "url": "https://github.com/excalidraw/excalidraw.git"
   },
   "prettier": {
-    "commit": "2160e11061eac84c10d6b0200e29a6eb2408de8c",
+    "commit": "16b682517271fe2ca57e8583c360b8bb15f53136",
     "glob": ".",
     "url": "https://github.com/prettier/prettier.git"
   },
@@ -31,7 +31,7 @@
     "url": "https://github.com/marmelab/react-admin.git"
   },
   "typescript-eslint": {
-    "commit": "8377e6ea422ee2d52455da8955ff055e09c238d3",
+    "commit": "833f8221ce00aecb7d08c519bab9568353850f48",
     "glob": "./**/*.{ts,js,json,md}",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git"
   },
