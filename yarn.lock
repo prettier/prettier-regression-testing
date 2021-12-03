@@ -3910,10 +3910,10 @@ nice-try@^1.0.4:
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-node-actionlint@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/node-actionlint/-/node-actionlint-1.0.1.tgz#a489277414ee61e6f9bff24188bf5a4cff611128"
-  integrity sha512-ZzMPIh77U2Cg3Narilchd3hpsRhOjPrrw2CrgrS3VLEiMFnCD8yF1IY9+KeIm70yVcOc6BM1yRKWvfJpFINx7g==
+node-actionlint@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/node-actionlint/-/node-actionlint-1.2.1.tgz#bba9c13e10a7af97029b0dd19aa82337c116989a"
+  integrity sha512-X7fvwzx5dQx2/ElgLiAfdn+5f9UadpyeQt6Mwsct/UQ3Ysk4vQ91AVNXFQOu5c12ob7kD5VpZx8AM86xGsFHvg==
   dependencies:
     "@babel/code-frame" "^7.14.5"
     chalk "^4.1.1"
