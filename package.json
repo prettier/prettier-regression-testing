@@ -20,7 +20,7 @@
     "@actions/github": "^4.0.0",
     "ajv": "^8.6.2",
     "ci-info": "^2.0.0",
-    "execa": "^4.0.3",
+    "execa": "^6.0.0",
     "semver": "^7.3.5"
   },
   "devDependencies": {
