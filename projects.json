@@ -1,28 +1,28 @@
 {
   "babel": {
-    "commit": "4e0e5f9ad6ca1c8b305dd2bc3aba9a28f1239837",
+    "commit": "954177842c0082447b47d9c77a44a7df6e4df8f6",
     "glob": "./{packages,codemods,eslint}/**/*.js",
     "ignore": ".eslintignore",
     "url": "https://github.com/babel/babel.git"
   },
   "eslint-plugin-vue": {
-    "commit": "508ea0e14ef2c882623f812b7a0237369b532a66",
+    "commit": "1ce68fa9def2c7d6da7aa5020c731860d7027459",
     "glob": "./**/*.js",
     "url": "https://github.com/vuejs/eslint-plugin-vue.git"
   },
   "excalidraw": {
-    "commit": "49172ac2d309790d5ab5d55bdbd9ebf549ee5b01",
+    "commit": "9ba7ca38456094e699c885a37e800cbb537ee870",
     "glob": "./**/*.{css,scss,json,md,html,yml,ts,tsx,js}",
     "ignore": ".eslintignore",
     "url": "https://github.com/excalidraw/excalidraw.git"
   },
   "prettier": {
-    "commit": "e949a54e595e7bb20b2ea8e85736fbf030701404",
+    "commit": "b6796fbdce1e96a0d605f33e01baecb45f991ab9",
     "glob": ".",
     "url": "https://github.com/prettier/prettier.git"
   },
   "react-admin": {
-    "commit": "5ae855aa958ba54438b144bf0907b1437c5a5d77",
+    "commit": "3073119e145e71faecc432f3c83ff595cac47041",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -31,12 +31,12 @@
     "url": "https://github.com/marmelab/react-admin.git"
   },
   "typescript-eslint": {
-    "commit": "9d47a8b94577540ae445e5ec17373da25423eeb8",
+    "commit": "363fb0ae4d5e203ce37e739b6d7713edf36e057f",
     "glob": "./**/*.{ts,js,json,md}",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git"
   },
   "vega-lite": {
-    "commit": "16bc9138a2470274f2a2e6c964b9a03822c7dd5c",
+    "commit": "657717f8dc24b899d26b23e330360b4ab203580f",
     "glob": "./**/*.ts",
     "ignore": ".eslintignore",
     "url": "https://github.com/vega/vega-lite.git"
