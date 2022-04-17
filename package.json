@@ -21,7 +21,7 @@
     "ajv": "^8.6.2",
     "ci-info": "^2.0.0",
     "execa": "^4.0.3",
-    "semver": "^7.3.5"
+    "semver": "^7.3.7"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
