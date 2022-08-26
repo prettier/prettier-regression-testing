@@ -19,7 +19,7 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
     "@excalidraw/prettier-config": "^1.0.2",
-    "ajv": "^8.6.2",
+    "ajv": "^8.11.0",
     "ci-info": "^2.0.0",
     "execa": "^4.0.3",
     "semver": "^7.3.5"
