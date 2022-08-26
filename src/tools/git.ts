@@ -8,6 +8,7 @@ export async function remoteAdd(
   cwd: string
 ): Promise<void> {
   await execa("git", ["remote", "add", remoteName, repositoryUrl], { cwd });
+  await execa("git", ["config", "checkout.defaultRemote", remoteName], { cwd });
 }
 
 export async function fetch(remoteName: string, cwd: string): Promise<void> {
