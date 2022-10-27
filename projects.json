@@ -1,7 +1,7 @@
 {
   "babel": {
     "commit": "4e0e5f9ad6ca1c8b305dd2bc3aba9a28f1239837",
-    "glob": "./{packages,codemods,eslint}/**/*.js",
+    "glob": "./{packages,codemods,eslint}/**/*.{js,ts}",
     "ignore": ".eslintignore",
     "url": "https://github.com/babel/babel.git"
   },
