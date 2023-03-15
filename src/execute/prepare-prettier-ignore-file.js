@@ -5,7 +5,7 @@ import { getProjects } from "../projects";
 export async function preparePrettierIgnoreFile(
   repositoryPath: string,
   repositoryName: string
-): void {
+): Promise<void> {
   const projects = await getProjects();
   const project = projects[repositoryName];
   if (!project) {
