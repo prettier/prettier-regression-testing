@@ -8,7 +8,8 @@ import * as git from "./tools/git";
 export interface Project {
   url: string;
   glob: string | readonly string[];
-  ignore?: string;
+  ignoreFile?: string;
+  ignore?: string | readonly string[];
   commit: string;
 }
 
@@ -19,7 +20,10 @@ const projectSchema = {
     glob: {
       oneOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
     },
-    ignore: { type: "string" },
+    ignoreFile: { type: "string" },
+    ignore: {
+      oneOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
+    },
     url: { type: "string" },
   },
   required: ["commit", "glob", "url"],
