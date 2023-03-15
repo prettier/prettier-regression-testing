@@ -21,9 +21,9 @@ export async function runPrettier(
     "./bin/prettier.js"
   );
 
-  const prettierIgnoreFile = path.join(repositoryPath, "./prettierignore");
-  let prettierIgnoreFileContent = fs.existsSync(ignoreFile)
-    ? await fs.promises.readFile(ignoreFile, "utf8")
+  const prettierIgnoreFile = path.join(repositoryPath, "./.prettierignore");
+  let prettierIgnoreFileContent = fs.existsSync(prettierIgnoreFile)
+    ? await fs.promises.readFile(prettierIgnoreFile, "utf8")
     : "";
   if (ignoreFile) {
     prettierIgnoreFileContent +=
