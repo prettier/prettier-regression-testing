@@ -2,6 +2,7 @@ import { existsSync, promises as fs } from "fs";
 import path from "path";
 import { Command } from "../parse";
 import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash";
+import { preparePrettierIgnoreFile } from "./prepare-prettier-ignore-file";
 import { runPrettier } from "./run-prettier";
 import { setupPrettierRepository } from "./setup-repository";
 import * as configuration from "../configuration";
@@ -50,6 +51,10 @@ export async function execute({
   await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) => {
       const targetRepositoryPath = getTargetRepositoryPath(
+        targetRepositoryName
+      );
+      await preparePrettierIgnoreFile(
+        targetRepositoryPath,
         targetRepositoryName
       );
       await runPrettier(
