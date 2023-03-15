@@ -1,5 +1,6 @@
 import execa from "execa";
 import path from "path";
+import fs from "fs";
 import { getProjects } from "../projects";
 import * as yarn from "../tools/yarn";
 
@@ -13,21 +14,36 @@ export async function runPrettier(
   if (!project) {
     throw new Error(`Repository name '${repositoryName}' is invalid`);
   }
-  const { ignore, glob } = project;
+  const { ignore, ignoreFile, glob } = project;
 
   const prettierRepositoryBinPath = path.join(
     prettierRepositoryPath,
     "./bin/prettier.js"
   );
 
+  const prettierIgnoreFile = path.join(repositoryPath, "./prettierignore");
+  let prettierIgnoreFileContent = fs.existsSync(ignoreFile)
+    ? await fs.promises.readFile(ignoreFile, "utf8")
+    : "";
+  if (ignoreFile) {
+    prettierIgnoreFileContent +=
+      "\n" +
+      (await fs.promises.readFile(
+        path.join(repositoryPath, ignoreFile),
+        "utf8"
+      ));
+  }
+  if (ignore) {
+    prettierIgnoreFileContent +=
+      "\n" + (Array.isArray(ignore) ? ignore.join("\n") : ignore);
+  }
+  await fs.promises.writeFile(prettierIgnoreFile, prettierIgnoreFileContent);
+
   const args = ["--write"];
   if (Array.isArray(glob)) {
     args.push(...glob.map((pattern) => JSON.stringify(pattern)));
   } else {
     args.push(JSON.stringify(glob));
-  }
-  if (ignore) {
-    args.push("--ignore-path", ignore);
   }
   try {
     await execa(prettierRepositoryBinPath, args, {

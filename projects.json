@@ -2,7 +2,7 @@
   "babel": {
     "commit": "859daa3c185d18901106d8e6c39898ba1ce8e8f4",
     "glob": "./{packages,codemods,eslint}/**/*.{js,ts}",
-    "ignore": ".eslintignore",
+    "ignoreFile": ".eslintignore",
     "url": "https://github.com/babel/babel.git"
   },
   "eslint-plugin-vue": {
@@ -13,7 +13,7 @@
   "excalidraw": {
     "commit": "66bbfda460af4d5c68903623e7daf742d8749435",
     "glob": "./**/*.{css,scss,json,md,html,yml,ts,tsx,js}",
-    "ignore": ".eslintignore",
+    "ignoreFile": ".eslintignore",
     "url": "https://github.com/excalidraw/excalidraw.git"
   },
   "prettier": {
@@ -33,13 +33,13 @@
   "typescript-eslint": {
     "commit": "0af822abb44c566fc05f52d78c0783282fe5556d",
     "glob": "./**/*.{ts,js,json,md}",
-    "ignore": **/fixtures/**/*",
+    "ignore": ["**/fixtures/**/*"],
     "url": "https://github.com/typescript-eslint/typescript-eslint.git"
   },
   "vega-lite": {
     "commit": "60e1e40202440f4af3ea61777fa422e7c9ddfd5b",
     "glob": "./**/*.ts",
-    "ignore": ".eslintignore",
+    "ignoreFile": ".eslintignore",
     "url": "https://github.com/vega/vega-lite.git"
   }
 }
