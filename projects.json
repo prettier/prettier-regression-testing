@@ -16,6 +16,11 @@
     "ignoreFile": ".eslintignore",
     "url": "https://github.com/excalidraw/excalidraw.git"
   },
+  "mdn/content": {
+    "commit": "3cc0def14c4949cc883399baaab2442057964abd",
+    "glob": "./**/*.md",
+    "url": "https://github.com/mdn/content.git"
+  },
   "prettier": {
     "commit": "655a161d0f96dbacb8de6921b840643369e98fcc",
     "glob": ".",
