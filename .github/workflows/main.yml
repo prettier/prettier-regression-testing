@@ -21,6 +21,6 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: main action
-        uses: ./github/actions/main
+        uses: ./.github/actions/main
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
