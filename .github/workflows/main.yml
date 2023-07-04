@@ -20,6 +20,7 @@ jobs:
           git config --global user.name "GitHub Actions"
       - run: npm ci
       - run: npm run build
-      - run: node ./build/index.js
+      - name: main action
+        uses: ./github/actions/main
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

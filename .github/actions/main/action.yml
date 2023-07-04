@@ -1,0 +1,5 @@
+name: "Main Action"
+description: "This is main action"
+runs:
+  using: "node18"
+  main: "../../../build/index.js"
