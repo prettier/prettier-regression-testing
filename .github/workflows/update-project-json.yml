@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
 
       - name: Configure git user
         run: |
@@ -18,12 +18,12 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2.5.0
+        uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version-file: "package.json"
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Run update-projects-json.mjs
         run: node ./scripts/update-projects-json.mjs
