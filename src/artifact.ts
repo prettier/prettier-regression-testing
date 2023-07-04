@@ -45,5 +45,5 @@ export async function uploadToArtifact(
 
   const artifactData = artifacts.find((a) => a.name === artifactName);
 
-  return artifactData?.archive_download_url;
+  return artifactData?.url;
 }
