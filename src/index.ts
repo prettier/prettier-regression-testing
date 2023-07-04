@@ -58,7 +58,10 @@ process.on("unhandledRejection", function (reason) {
       }
     }
     process.exit(0);
-  } catch (error) {
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
     await logger.error(error);
     process.exit(1);
   }
