@@ -3,7 +3,7 @@ import { ExecuteResultEntry } from "./execute";
 import { Command, PrettierRepositorySource } from "./parse";
 
 function getPrettierRepositorySourceText(
-  prettierRepositorySource: PrettierRepositorySource
+  prettierRepositorySource: PrettierRepositorySource,
 ) {
   switch (prettierRepositorySource.type) {
     case "prNumber": {
@@ -26,10 +26,10 @@ function getPrettierRepositorySourceText(
 }
 function getLogTitle(command: Command): string {
   const alternativePrettierRepositoryText = getPrettierRepositorySourceText(
-    command.alternativePrettier
+    command.alternativePrettier,
   );
   const originalPrettierRepositoryText = getPrettierRepositorySourceText(
-    command.originalPrettier
+    command.originalPrettier,
   );
   if (configuration.isCI) {
     return `**${alternativePrettierRepositoryText} VS ${originalPrettierRepositoryText}**`;
@@ -44,7 +44,7 @@ const TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS = 60000;
 
 export function getLogText(
   result: ExecuteResultEntry[],
-  command: Command
+  command: Command,
 ): string | string[] {
   const title = getLogTitle(command);
 
@@ -70,7 +70,8 @@ export function getLogText(
   }
 
   return result.map(
-    ({ commitHash, diff }) => `${title} :: ${commitHash}\n\n${formatDiff(diff)}`
+    ({ commitHash, diff }) =>
+      `${title} :: ${commitHash}\n\n${formatDiff(diff)}`,
   );
 }
 
@@ -88,7 +89,7 @@ function formatDiff(content: string) {
 function codeBlock(content: string, syntax?: string) {
   const backtickSequences = content.match(/`+/g) || [];
   const longestBacktickSequenceLength = Math.max(
-    ...backtickSequences.map(({ length }) => length)
+    ...backtickSequences.map(({ length }) => length),
   );
   const fenceLength = Math.max(3, longestBacktickSequenceLength + 1);
   const fence = "`".repeat(fenceLength);

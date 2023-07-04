@@ -4,7 +4,7 @@ import { getProjects } from "../projects";
 
 export async function preparePrettierIgnoreFile(
   repositoryPath: string,
-  repositoryName: string
+  repositoryName: string,
 ): Promise<void> {
   const projects = await getProjects();
   const project = projects[repositoryName];
@@ -23,7 +23,7 @@ export async function preparePrettierIgnoreFile(
       "\n" +
       (await fs.promises.readFile(
         path.join(repositoryPath, ignoreFile),
-        "utf8"
+        "utf8",
       ));
   }
   if (ignore) {

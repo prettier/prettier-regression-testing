@@ -33,7 +33,7 @@ async function logToIssueComment(logText: string, separateComment = false) {
 
 export async function log(
   logText: string,
-  separateComment = false
+  separateComment = false,
 ): Promise<void> {
   if (configuration.isCI) {
     console.log(logText);

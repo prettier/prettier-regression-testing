@@ -34,7 +34,7 @@ async function updateProjectsJsonFile() {
       });
       const sha = latestCommit.data.sha;
       latestCommits.set(projectName, sha);
-    })
+    }),
   );
   const newProjects = { ...projects };
   for (const [projectName, sha] of latestCommits) {
@@ -42,7 +42,7 @@ async function updateProjectsJsonFile() {
   }
   await fs.writeFile(
     projectsJsonPath,
-    JSON.stringify(newProjects, null, 2) + "\n"
+    JSON.stringify(newProjects, null, 2) + "\n",
   );
 }
 

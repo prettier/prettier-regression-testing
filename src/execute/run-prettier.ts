@@ -6,7 +6,7 @@ import * as yarn from "../tools/yarn";
 export async function runPrettier(
   prettierRepositoryPath: string,
   repositoryPath: string,
-  repositoryName: string
+  repositoryName: string,
 ): Promise<void> {
   const projects = await getProjects();
   const project = projects[repositoryName];
@@ -17,7 +17,7 @@ export async function runPrettier(
 
   const prettierRepositoryBinPath = path.join(
     prettierRepositoryPath,
-    "./bin/prettier.js"
+    "./bin/prettier.js",
   );
 
   const args = ["--write"];

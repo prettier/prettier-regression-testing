@@ -23,7 +23,7 @@ async function clonePrettier() {
     await git.clone(
       "https://github.com/prettier/prettier.git",
       "./prettier",
-      configuration.cwd
+      configuration.cwd,
     );
   }
 }
@@ -33,12 +33,12 @@ export async function execute({
   originalPrettier,
 }: Command): Promise<ExecuteResultEntry[]> {
   const targetRepositoryNames = await fs.readdir(
-    configuration.targetRepositoriesPath
+    configuration.targetRepositoriesPath,
   );
   const commitHashes = await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) =>
-      getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName))
-    )
+      getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName)),
+    ),
   );
 
   await clonePrettier();
@@ -50,24 +50,23 @@ export async function execute({
   await logger.log("Running originalVersionPrettier...");
   await Promise.all(
     targetRepositoryNames.map(async (targetRepositoryName) => {
-      const targetRepositoryPath = getTargetRepositoryPath(
-        targetRepositoryName
-      );
+      const targetRepositoryPath =
+        getTargetRepositoryPath(targetRepositoryName);
       await preparePrettierIgnoreFile(
         targetRepositoryPath,
-        targetRepositoryName
+        targetRepositoryName,
       );
       await runPrettier(
         configuration.prettierRepositoryPath,
         targetRepositoryPath,
-        targetRepositoryName
+        targetRepositoryName,
       );
       await git.add(".", targetRepositoryPath);
       await git.commitAllowEmptyNoVerify(
         "Fixed by originalVersionPrettier",
-        targetRepositoryPath
+        targetRepositoryPath,
       );
-    })
+    }),
   );
 
   // Setup alternativeVersionPrettier
@@ -80,20 +79,20 @@ export async function execute({
       await runPrettier(
         configuration.prettierRepositoryPath,
         getTargetRepositoryPath(targetRepositoryName),
-        targetRepositoryName
+        targetRepositoryName,
       );
-    })
+    }),
   );
 
   const diffs = await Promise.all(
-    targetRepositoryNames.map(getTargetRepositoryPath).map(git.diffRepository)
+    targetRepositoryNames.map(getTargetRepositoryPath).map(git.diffRepository),
   );
 
   if (!configuration.isCI) {
     await Promise.all(
       targetRepositoryNames.map(async (targetRepositoryName) => {
         await git.resetHeadHard(getTargetRepositoryPath(targetRepositoryName));
-      })
+      }),
     );
   }
 

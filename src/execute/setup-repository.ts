@@ -12,27 +12,27 @@ import * as yarn from "../tools/yarn";
 import * as unix from "../tools/unix";
 
 export async function setupPrettierRepository(
-  prettierRepositorySource: PrettierRepositorySource
+  prettierRepositorySource: PrettierRepositorySource,
 ): Promise<void> {
   switch (prettierRepositorySource.type) {
     case "prNumber": {
       await setupPullRequestNumber(
         prettierRepositorySource,
-        configuration.prettierRepositoryPath
+        configuration.prettierRepositoryPath,
       );
       break;
     }
     case "repositoryAndRef": {
       await setupRepositoryAndRef(
         prettierRepositorySource,
-        configuration.prettierRepositoryPath
+        configuration.prettierRepositoryPath,
       );
       break;
     }
     case "version": {
       await setupVersion(
         prettierRepositorySource,
-        configuration.prettierRepositoryPath
+        configuration.prettierRepositoryPath,
       );
       break;
     }
@@ -44,7 +44,7 @@ async function existsGh() {
 }
 async function setupPullRequestNumber(
   repositorySource: PrettierRepositorySourcePrNumber,
-  cwd: string
+  cwd: string,
 ) {
   if (!(await existsGh())) {
     await brew.install("gh");
@@ -62,7 +62,7 @@ function getRepositoryUrlWithToken(repositoryName: string) {
 }
 async function setupRepositoryAndRef(
   repositorySource: PrettierRepositorySourceRepositoryAndRef,
-  cwd: string
+  cwd: string,
 ) {
   const { repositoryName, ref } = repositorySource;
   const repositoryUrlWithToken = getRepositoryUrlWithToken(repositoryName);
@@ -75,7 +75,7 @@ async function setupRepositoryAndRef(
 
 async function setupVersion(
   repositorySource: PrettierRepositorySourceVersion,
-  cwd: string
+  cwd: string,
 ) {
   await git.checkout(`tags/${repositorySource.version}`, cwd);
   await yarn.install(cwd);

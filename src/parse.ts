@@ -45,7 +45,8 @@ export function parse(source: string): Command {
   const tokens = tokenize(source);
 
   let alternativePrettier: PrettierRepositorySource | undefined = undefined;
-  let originalPrettier: PrettierRepositorySource = defaultPrettierRepositorySource;
+  let originalPrettier: PrettierRepositorySource =
+    defaultPrettierRepositorySource;
 
   for (const [index, token] of tokenize(source).entries()) {
     const lookahead = (): Token => {
@@ -65,7 +66,7 @@ export function parse(source: string): Command {
     if (match("run")) {
       if (lookahead().kind !== "source") {
         throw new SyntaxError(
-          "A prettier repository source must be specified for 'run'."
+          "A prettier repository source must be specified for 'run'.",
         );
       }
       continue;
@@ -74,7 +75,7 @@ export function parse(source: string): Command {
     if (match("vs")) {
       if (lookahead().kind !== "source") {
         throw new SyntaxError(
-          "A prettier repository source must be specified for 'vs'."
+          "A prettier repository source must be specified for 'vs'.",
         );
       }
       continue;
@@ -91,7 +92,7 @@ export function parse(source: string): Command {
         originalPrettier = parseRepositorySource(token);
       } else {
         throw new SyntaxError(
-          `Unexpected token '${token.kind}', expect 'run' or 'vs'.`
+          `Unexpected token '${token.kind}', expect 'run' or 'vs'.`,
         );
       }
     }

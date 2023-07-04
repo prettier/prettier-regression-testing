@@ -46,22 +46,22 @@ describe("parse", () => {
     });
     it("throws syntax error for non-first run", () => {
       expect(() => parse("2.0.0 run")).toThrow(
-        "A command must start with 'run'."
+        "A command must start with 'run'.",
       );
     });
     it("throws syntax error for 'run' that has no source", () => {
       expect(() => parse("run on")).toThrow(
-        "A prettier repository source must be specified for 'run'."
+        "A prettier repository source must be specified for 'run'.",
       );
     });
     it("throws syntax error for 'vs' that has no after source", () => {
       expect(() => parse("run 2.0.0 vs on")).toThrow(
-        "A prettier repository source must be specified for 'vs'."
+        "A prettier repository source must be specified for 'vs'.",
       );
     });
     it("throw syntax error for unsupported 'on'", () => {
       expect(() => parse("run 2.0.0 on")).toThrow(
-        "We haven't supported 'on' yet."
+        "We haven't supported 'on' yet.",
       );
     });
   });
@@ -94,10 +94,10 @@ describe("parse", () => {
     });
     it("throws syntax error for invalid source token", () => {
       expect(() =>
-        parseRepositorySource({ kind: "source", value: "" })
+        parseRepositorySource({ kind: "source", value: "" }),
       ).toThrow("Unexpected source value ''.");
       expect(() =>
-        parseRepositorySource({ kind: "source", value: "foobar" })
+        parseRepositorySource({ kind: "source", value: "foobar" }),
       ).toThrow("Unexpected source value 'foobar'.");
     });
   });

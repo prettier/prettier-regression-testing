@@ -69,6 +69,6 @@ export async function cloneProjects(): Promise<void> {
       if (!existsSync(repo)) {
         await git.shallowClone(project.url, project.commit, repo);
       }
-    })
+    }),
   );
 }
