@@ -1,16 +1,7 @@
 import fs from "fs/promises";
 import * as github from "@actions/github";
 import * as configuration from "./configuration";
-import type { GitHub } from "@actions/github/lib/utils";
-
-type Octokit = InstanceType<typeof GitHub>;
-let octokit: Octokit | undefined;
-function getOctokit(): Octokit {
-  if (octokit === undefined) {
-    octokit = github.getOctokit(configuration.authToken);
-  }
-  return octokit;
-}
+import { getOctokit } from "./octokit";
 
 let commentId: number | undefined;
 async function logToIssueComment(logText: string, separateComment = false) {

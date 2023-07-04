@@ -38,9 +38,7 @@
   "typescript-eslint": {
     "commit": "4bf2d7360eaf74c9ef87b196ff4c459b8f50800b",
     "glob": "./**/*.{ts,js,json,md}",
-    "ignore": [
-      "**/fixtures/**/*"
-    ],
+    "ignore": ["**/fixtures/**/*"],
     "url": "https://github.com/typescript-eslint/typescript-eslint.git"
   },
   "vega-lite": {
