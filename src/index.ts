@@ -7,6 +7,9 @@ import { getLogText } from "./log-text";
 import { parse } from "./parse";
 import { getIssueComment } from "./get-issue-comment";
 import { cloneProjects } from "./projects";
+import { uploadToArtifact } from "./artifact";
+
+const TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS = 60000;
 
 async function exit(error: Error | string) {
   if (configuration.isCI) {
@@ -53,8 +56,25 @@ process.on("unhandledRejection", function (reason) {
     if (typeof logText === "string") {
       await logger.log(logText);
     } else {
+      const largeTexts: string[] = [];
       for (let index = 0; index < logText.length; index++) {
-        await logger.log(logText[index], index > 0);
+        const text = logText[index];
+        const shouldSeparate = index > 0;
+        if (
+          text.length >= TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS &&
+          configuration.isCI
+        ) {
+          largeTexts.push(text);
+        } else {
+          await logger.log(logText[index], shouldSeparate);
+        }
+      }
+      const artifactUrl = await uploadToArtifact(largeTexts);
+      if (artifactUrl) {
+        await logger.log(
+          "Uploaded too large log.\n" +
+            `You can download it from ${artifactUrl} .`,
+        );
       }
     }
     process.exit(0);
