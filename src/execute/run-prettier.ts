@@ -31,7 +31,10 @@ export async function runPrettier(
       cwd: repositoryPath,
       shell: true,
     });
-  } catch (error) {
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
     // if another packages is required to run Prettier
     // e.g. excalidraw: https://github.com/excalidraw/excalidraw/blob/a21db08cae608692d9525fff97f109fb24fec20c/package.json#L83
     if (error.message.includes("Cannot find module")) {
