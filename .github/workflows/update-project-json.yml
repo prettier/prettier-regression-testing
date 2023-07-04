@@ -23,7 +23,7 @@ jobs:
           node-version: "14"
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Run update-projects-json.mjs
         run: node ./scripts/update-projects-json.mjs
