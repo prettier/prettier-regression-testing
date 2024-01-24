@@ -2,7 +2,6 @@
   "babel": {
     "commit": "bc503ccab7c4052ccef80b2981eb98af22467e4e",
     "glob": "./{packages,codemods,eslint}/**/*.{js,ts}",
-    "ignoreFile": ".eslintignore",
     "url": "https://github.com/babel/babel.git"
   },
   "eslint-plugin-vue": {
