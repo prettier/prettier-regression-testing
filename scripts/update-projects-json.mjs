@@ -1,3 +1,4 @@
+import * as prettier from "prettier";
 import fs from "fs/promises";
 import path from "path";
 import url from "url";
@@ -42,7 +43,7 @@ async function updateProjectsJsonFile() {
   }
   await fs.writeFile(
     projectsJsonPath,
-    JSON.stringify(newProjects, null, 2) + "\n",
+    await prettier.format(JSON.stringify(newProjects)),
   );
 }
 
