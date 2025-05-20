@@ -78,7 +78,7 @@ async function createPullRequest() {
       ...github.context.repo,
       title: `Update projects.json (${formattedDate})`,
       head: branchName,
-      base: "master",
+      base: "main",
       maintainer_can_modify: true,
     });
   }
