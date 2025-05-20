@@ -25,5 +25,10 @@ jobs:
 
       - name: Run update-projects-json.mjs
         run: node ./scripts/update-projects-json.mjs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'Update projects.json'
+          branch: automated-update-projects
+          branch-suffix: timestamp
+          title: 'Update projects.json'
