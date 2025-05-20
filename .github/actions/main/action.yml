@@ -1,5 +1,5 @@
 name: "Main Action"
 description: "This is main action"
 runs:
-  using: "node16"
+  using: "node24"
   main: "../../../build/index.js"
