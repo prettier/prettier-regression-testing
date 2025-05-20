@@ -16,12 +16,12 @@ async function updateProjectsJsonFile() {
       ]);
       const [sha] = stdout.trim().split(/\s/);
       project.commit = sha;
-    })
+    }),
   );
 
   await fs.writeFile(
     projectsJsonFile,
-    await prettier.format(JSON.stringify(projects), { parser: "json" })
+    await prettier.format(JSON.stringify(projects), { parser: "json" }),
   );
 }
 
