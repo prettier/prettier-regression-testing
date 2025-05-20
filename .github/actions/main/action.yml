@@ -1,5 +1,0 @@
-name: "Main Action"
-description: "This is main action"
-runs:
-  using: "node20"
-  main: "../../../build/index.js"
