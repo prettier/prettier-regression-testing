@@ -21,7 +21,7 @@
     "@excalidraw/prettier-config": "^1.0.2",
     "ajv": "^8.6.2",
     "ci-info": "^3.8.0",
-    "execa": "^4.0.3",
+    "execa": "^9.6.0",
     "semver": "^7.5.4"
   },
   "devDependencies": {
