@@ -1,97 +1,30 @@
 import * as prettier from "prettier";
 import fs from "fs/promises";
-import path from "path";
-import url from "url";
 import execa from "execa";
-import * as github from "@actions/github";
-
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-let octokit;
-function getOctokit() {
-  if (!octokit) {
-    octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-  }
-  return octokit;
-}
 
 async function updateProjectsJsonFile() {
-  const projectsJsonPath = path.join(__dirname, "..", "projects.json");
-  const projects = JSON.parse(await fs.readFile(projectsJsonPath, "utf-8"));
-  const octokit = getOctokit();
-  const latestCommits = new Map();
+  const projectsJsonFile = new URL("../projects.json", import.meta.url);
+  const projects = JSON.parse(await fs.readFile(projectsJsonFile, "utf-8"));
+
   await Promise.all(
-    Object.entries(projects).map(async ([projectName, { url }]) => {
-      const splitted = url.split("/");
-      const owner = splitted[3];
-      const repo = splitted[4].slice(0, -4);
-      const repository = await octokit.repos.get({ owner, repo });
-      const defaultBranch = repository.data.default_branch;
-      const latestCommit = await octokit.repos.getCommit({
-        owner,
-        repo,
-        ref: defaultBranch,
-      });
-      const sha = latestCommit.data.sha;
-      latestCommits.set(projectName, sha);
+    Object.values(projects).map(async (project) => {
+      const { stdout } = await execa("git", [
+        "ls-remote",
+        "--exit-code",
+        project.url,
+        "HEAD",
+      ]);
+      const [sha] = stdout.trim().split(/\s/);
+      project.commit = sha;
     }),
   );
-  const newProjects = { ...projects };
-  for (const [projectName, sha] of latestCommits) {
-    newProjects[projectName].commit = sha;
-  }
+
   await fs.writeFile(
-    projectsJsonPath,
-    await prettier.format(JSON.stringify(newProjects)),
+    projectsJsonFile,
+    await prettier.format(JSON.stringify(projects), { parser: "json" }),
   );
 }
 
-function getFormattedDate() {
-  const date = new Date();
-  const dateStr =
-    date.getFullYear() +
-    "-" +
-    ("0" + (date.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + date.getDate()).slice(-2) +
-    "-" +
-    ("0" + date.getHours()).slice(-2) +
-    "-" +
-    ("0" + date.getMinutes()).slice(-2);
-  return dateStr;
-}
+await updateProjectsJsonFile();
 
-async function createPullRequest() {
-  const formattedDate = getFormattedDate();
-  const branchName = `update-projects-json-${formattedDate}`;
-  await execa("git", ["checkout", "-b", branchName]);
-  await updateProjectsJsonFile();
-
-  const { stdout: diff } = await execa("git", ["diff", "--name-only"]);
-  if (diff.includes("projects.json")) {
-    await execa("git", ["add", "."]);
-    await execa("git", ["commit", "-m", `"Update projects.json"`]);
-    await execa("git", ["push", "origin", branchName]);
-    const octokit = getOctokit();
-    await octokit.pulls.create({
-      ...github.context.repo,
-      title: `Update projects.json (${formattedDate})`,
-      head: branchName,
-      base: "main",
-      maintainer_can_modify: true,
-    });
-  }
-}
-
-process.on("unhandledRejection", function (reason) {
-  throw reason;
-});
-
-createPullRequest()
-  .then(() => {
-    console.log("done");
-  })
-  .catch((e) => {
-    throw e;
-  });
+console.log("done");
