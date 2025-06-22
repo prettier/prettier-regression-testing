@@ -75,7 +75,7 @@
   "vega-lite": {
     "commit": "a573af5aef8ce2d90309b5030aa435ca5e926fe9",
     "glob": "./**/*.ts",
-    "ignoreFile": ".eslintignore",
+    "ignoreFile": ".prettierignore",
     "url": "https://github.com/vega/vega-lite.git"
   }
 }
