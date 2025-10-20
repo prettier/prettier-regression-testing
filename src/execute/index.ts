@@ -8,10 +8,12 @@ import { setupPrettierRepository } from "./setup-repository";
 import * as configuration from "../configuration";
 import * as git from "../tools/git";
 import * as logger from "../logger";
-import { getProjects, getProjectName, type Project } from "../projects";
-
-const getTargetRepositoryPath = (project: Project) =>
-  path.join(configuration.targetRepositoriesPath, getProjectName(project));
+import {
+  getProjects,
+  getProjectName,
+  type Project,
+  getTargetRepositoryPath,
+} from "../projects";
 
 export interface ExecuteResultEntry {
   commitHash: string;
@@ -51,10 +53,7 @@ export async function execute({
     projects.map(async (project) => {
       const targetRepositoryName = getProjectName(project);
       const targetRepositoryPath = getTargetRepositoryPath(project);
-      await preparePrettierIgnoreFile(
-        targetRepositoryPath,
-        targetRepositoryName,
-      );
+      await preparePrettierIgnoreFile(project);
       await runPrettier(
         configuration.prettierRepositoryPath,
         targetRepositoryPath,

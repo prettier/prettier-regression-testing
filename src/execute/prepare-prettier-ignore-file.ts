@@ -1,13 +1,16 @@
 import path from "path";
 import fs from "fs";
-import { getProjects } from "../projects";
+import {
+  getProjectName,
+  type Project,
+  getTargetRepositoryPath,
+} from "../projects";
 
 export async function preparePrettierIgnoreFile(
-  repositoryPath: string,
-  repositoryName: string,
+  project: Project,
 ): Promise<void> {
-  const projects = await getProjects();
-  const project = projects[repositoryName];
+  const repositoryName = getProjectName(project);
+  const repositoryPath = getTargetRepositoryPath(project);
   if (!project) {
     throw new Error(`Repository name '${repositoryName}' is invalid`);
   }

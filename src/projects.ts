@@ -56,6 +56,8 @@ export async function getProjects(): Promise<Project[]> {
 
 export const getProjectName = (project: Project): string =>
   new URL(project.repository).pathname.slice(1).replace(/\.git$/, "");
+export const getTargetRepositoryPath = (project: Project) =>
+  path.join(configuration.targetRepositoriesPath, getProjectName(project));
 
 export async function cloneProjects(): Promise<void> {
   await logger.log("Cloning repositories...");
