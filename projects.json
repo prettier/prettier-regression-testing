@@ -1,7 +1,7 @@
 [
   {
     "repository": "https://github.com/babel/babel.git",
-    "commit": "7f57d3a2e97b7e2800fb82cff9284a3591377971",
+    "commit": "ce8d9885635b254c86cec68706b1fe46e5a28bfe",
     "glob": "./{packages,codemods,eslint}/**/*.{js,ts}",
     "ignore": [
       "# TODO: Read from https://github.com/babel/babel/blob/dfa4cc652718e1ce7905eaa2260cafa3392e052f/eslint.config.js#L34 ?",
@@ -36,28 +36,28 @@
   },
   {
     "repository": "https://github.com/vuejs/eslint-plugin-vue.git",
-    "commit": "305100da6b0ee701e2023bf86ccf03dc7399726a",
+    "commit": "917787c46a268b1910b9c77e091656a428d70a89",
     "glob": "./**/*.js"
   },
   {
     "repository": "https://github.com/excalidraw/excalidraw.git",
-    "commit": "ae89608985dfe5975b5fa0103d5aec64cb4fb83f",
+    "commit": "4e0441eeb413ad7234f65cbb8fbb397bc715ff46",
     "glob": "./**/*.{css,scss,json,md,html,yml,ts,tsx,js}",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "https://github.com/mdn/content.git",
-    "commit": "7e485799ece786b3f565b6017380d483084f3efa",
+    "commit": "7412889f55f9031f986b6487a81a739187b679c0",
     "glob": "./**/*.md"
   },
   {
     "repository": "https://github.com/prettier/prettier.git",
-    "commit": "4c84764c9ec314bab93ce0efcaaa2229a701f969",
+    "commit": "7eb39eafc077868411d0632c4dadfcaaf2941b3d",
     "glob": "."
   },
   {
     "repository": "https://github.com/marmelab/react-admin.git",
-    "commit": "4231cabf244a6178202588a386e8df4d052c25fe",
+    "commit": "b5e262fa34300b276a355b4b896c3c4136e0d3ef",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -66,13 +66,13 @@
   },
   {
     "repository": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "commit": "264ca2fad49a298a2963de83746f8e8044229a3b",
+    "commit": "55ca033ee88cc95cfac4ad6dea2257fbeb1d4657",
     "glob": "./**/*.{ts,js,json,md}",
     "ignore": ["**/fixtures/**/*"]
   },
   {
     "repository": "https://github.com/vega/vega-lite.git",
-    "commit": "0780bf184c6bb51d3dc7d7c3f35edcce951c2e4f",
+    "commit": "5ba092c00a0d83091a872510487c28662b98004c",
     "glob": "./**/*.ts",
     "ignoreFile": ".prettierignore"
   },
