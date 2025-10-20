@@ -1,10 +1,6 @@
 import path from "path";
 import execa from "execa";
-import {
-  type Project,
-  getTargetRepositoryPath,
-  getProjectName,
-} from "../projects";
+import { type Project, getTargetRepositoryPath } from "../projects";
 import * as yarn from "../tools/yarn";
 
 export async function runPrettier(

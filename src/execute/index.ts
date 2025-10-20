@@ -1,5 +1,4 @@
-import { existsSync, promises as fs } from "fs";
-import path from "path";
+import { existsSync } from "fs";
 import { Command } from "../parse";
 import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash";
 import { preparePrettierIgnoreFile } from "./prepare-prettier-ignore-file";
@@ -8,12 +7,7 @@ import { setupPrettierRepository } from "./setup-repository";
 import * as configuration from "../configuration";
 import * as git from "../tools/git";
 import * as logger from "../logger";
-import {
-  getProjects,
-  getProjectName,
-  type Project,
-  getTargetRepositoryPath,
-} from "../projects";
+import { getProjects, getTargetRepositoryPath } from "../projects";
 
 export interface ExecuteResultEntry {
   commitHash: string;
@@ -51,7 +45,6 @@ export async function execute({
   await logger.log("Running originalVersionPrettier...");
   await Promise.all(
     projects.map(async (project) => {
-      const targetRepositoryName = getProjectName(project);
       const targetRepositoryPath = getTargetRepositoryPath(project);
       await preparePrettierIgnoreFile(project);
       await runPrettier(configuration.prettierRepositoryPath, project);

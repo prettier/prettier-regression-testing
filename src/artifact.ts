@@ -10,11 +10,12 @@ export async function uploadToArtifact(
   if (texts.length === 0) {
     return undefined;
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE!;
+
   const filePaths = texts.map((text) => ({
-    filePath: path.join(
-      process.env.GITHUB_WORKSPACE!,
-      Date.now().toString() + ".txt",
-    ),
+    filePath: path.join(GITHUB_WORKSPACE, Date.now().toString() + ".txt"),
     text,
   }));
 
@@ -28,7 +29,7 @@ export async function uploadToArtifact(
   await artifactClient.uploadArtifact(
     artifactName,
     filePaths.map(({ filePath }) => filePath),
-    process.env.GITHUB_WORKSPACE!,
+    GITHUB_WORKSPACE,
     {
       continueOnError: true,
     },
