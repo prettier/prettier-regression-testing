@@ -11,7 +11,7 @@ async function updateProjectsJsonFile() {
       const { stdout } = await execa("git", [
         "ls-remote",
         "--exit-code",
-        project.url,
+        project.repository,
         "HEAD",
       ]);
       const [sha] = stdout.trim().split(/\s/);
