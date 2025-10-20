@@ -8,9 +8,10 @@ import { setupPrettierRepository } from "./setup-repository";
 import * as configuration from "../configuration";
 import * as git from "../tools/git";
 import * as logger from "../logger";
+import { getProjects, getProjectName, type Project } from "../projects";
 
-const getTargetRepositoryPath = (targetRepositoryName: string) =>
-  path.join(configuration.targetRepositoriesPath, targetRepositoryName);
+const getTargetRepositoryPath = (project: Project) =>
+  path.join(configuration.targetRepositoriesPath, getProjectName(project));
 
 export interface ExecuteResultEntry {
   commitHash: string;
@@ -32,12 +33,10 @@ export async function execute({
   alternativePrettier,
   originalPrettier,
 }: Command): Promise<ExecuteResultEntry[]> {
-  const targetRepositoryNames = await fs.readdir(
-    configuration.targetRepositoriesPath,
-  );
+  const projects = await getProjects();
   const commitHashes = await Promise.all(
-    targetRepositoryNames.map(async (targetRepositoryName) =>
-      getPrettyHeadCommitHash(getTargetRepositoryPath(targetRepositoryName)),
+    projects.map(async (project) =>
+      getPrettyHeadCommitHash(getTargetRepositoryPath(project)),
     ),
   );
 
@@ -49,9 +48,9 @@ export async function execute({
   // Run originalVersionPrettier
   await logger.log("Running originalVersionPrettier...");
   await Promise.all(
-    targetRepositoryNames.map(async (targetRepositoryName) => {
-      const targetRepositoryPath =
-        getTargetRepositoryPath(targetRepositoryName);
+    projects.map(async (project) => {
+      const targetRepositoryName = getProjectName(project);
+      const targetRepositoryPath = getTargetRepositoryPath(project);
       await preparePrettierIgnoreFile(
         targetRepositoryPath,
         targetRepositoryName,
@@ -75,28 +74,28 @@ export async function execute({
   // Run alternativeVersionPrettier
   await logger.log("Running alternativeVersionPrettier...");
   await Promise.all(
-    targetRepositoryNames.map(async (targetRepositoryName) => {
+    projects.map(async (project) => {
       await runPrettier(
         configuration.prettierRepositoryPath,
-        getTargetRepositoryPath(targetRepositoryName),
-        targetRepositoryName,
+        getTargetRepositoryPath(project),
+        getProjectName(project),
       );
     }),
   );
 
   const diffs = await Promise.all(
-    targetRepositoryNames.map(getTargetRepositoryPath).map(git.diffRepository),
+    projects.map(getTargetRepositoryPath).map(git.diffRepository),
   );
 
   if (!configuration.isCI) {
     await Promise.all(
-      targetRepositoryNames.map(async (targetRepositoryName) => {
-        await git.resetHeadHard(getTargetRepositoryPath(targetRepositoryName));
+      projects.map(async (project) => {
+        await git.resetHeadHard(getTargetRepositoryPath(project));
       }),
     );
   }
 
-  return targetRepositoryNames.map((_, i) => ({
+  return projects.map((_, i) => ({
     commitHash: commitHashes[i],
     diff: diffs[i],
   }));

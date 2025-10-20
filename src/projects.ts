@@ -6,7 +6,7 @@ import * as configuration from "./configuration";
 import * as git from "./tools/git";
 
 export interface Project {
-  url: string;
+  repository: string;
   glob: string | readonly string[];
   ignoreFile?: string;
   ignore?: string | readonly string[];
@@ -16,6 +16,7 @@ export interface Project {
 const projectSchema = {
   type: "object",
   properties: {
+    repository: { type: "string" },
     commit: { type: "string" },
     glob: {
       oneOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
@@ -24,50 +25,54 @@ const projectSchema = {
     ignore: {
       oneOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
     },
-    url: { type: "string" },
   },
-  required: ["commit", "glob", "url"],
+  required: ["commit", "glob", "repository"],
   additionalProperties: false,
 };
 
 const schema = {
-  type: "object",
-  patternProperties: {
-    ".+": projectSchema,
-  },
-  additionalProperties: false,
+  type: "array",
+  items: projectSchema,
 } as const;
 
 const ajv = new Ajv();
 
 export const validateProjects = ajv.compile(schema);
 
-let data: { [project: string]: Project };
+let data: Project[];
 
-export async function getProjects(): Promise<{ [project: string]: Project }> {
+export async function getProjects(): Promise<Project[]> {
   if (data) {
     return data;
   }
   const projectJsonPath = path.join(__dirname, "..", "projects.json");
   data = JSON.parse(await fs.readFile(projectJsonPath, "utf-8"));
   if (validateProjects(data)) {
-    return data as { [project: string]: Project };
+    return data as Project[];
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   throw validateProjects.errors![0] as DefinedError;
 }
 
+export const getProjectName = (project: Project): string =>
+  new URL(project.repository).pathname.slice(1).replace(/\.git$/, "");
+
 export async function cloneProjects(): Promise<void> {
   await logger.log("Cloning repositories...");
-  if (!existsSync(configuration.targetRepositoriesPath)) {
-    await fs.mkdir(configuration.targetRepositoriesPath);
-  }
   const projects = await getProjects();
   await Promise.all(
-    Object.entries(projects).map(async ([name, project]) => {
-      const repo = path.join(configuration.targetRepositoriesPath, name);
-      if (!existsSync(repo)) {
-        await git.shallowClone(project.url, project.commit, repo);
+    projects.map(async (project) => {
+      const directoryName = getProjectName(project);
+      const directory = path.join(
+        configuration.targetRepositoriesPath,
+        directoryName,
+      );
+      const parentDirectory = path.join(directory, "../");
+      if (!existsSync(parentDirectory)) {
+        await fs.mkdir(parentDirectory, { recursive: true });
+      }
+      if (!existsSync(directory)) {
+        await git.shallowClone(project.repository, project.commit, directory);
       }
     }),
   );

@@ -11,13 +11,13 @@ describe("getProjects", () => {
   });
 
   it("doesn't throw for correct project", () => {
-    const projects = {
-      foo: {
+    const projects = [
+      {
+        repository: "http://example.com",
         commit: "foo",
         glob: "foo",
-        url: "http://example.com",
       },
-    };
+    ];
     expect(validateProjects(projects)).toBe(true);
   });
 

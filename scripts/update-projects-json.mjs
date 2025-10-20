@@ -4,10 +4,10 @@ import execa from "execa";
 
 async function updateProjectsJsonFile() {
   const projectsJsonFile = new URL("../projects.json", import.meta.url);
-  const projects = JSON.parse(await fs.readFile(projectsJsonFile, "utf-8"));
+  let projects = JSON.parse(await fs.readFile(projectsJsonFile, "utf-8"));
 
-  await Promise.all(
-    Object.values(projects).map(async (project) => {
+  projects = await Promise.all(
+    projects.map(async (project) => {
       const { stdout } = await execa("git", [
         "ls-remote",
         "--exit-code",
@@ -15,7 +15,7 @@ async function updateProjectsJsonFile() {
         "HEAD",
       ]);
       const [sha] = stdout.trim().split(/\s/);
-      project.commit = sha;
+      return { ...project, commit: sha };
     }),
   );
 
