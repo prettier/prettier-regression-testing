@@ -75,5 +75,11 @@
     "commit": "0780bf184c6bb51d3dc7d7c3f35edcce951c2e4f",
     "glob": "./**/*.ts",
     "ignoreFile": ".prettierignore"
+  },
+  {
+    "repository": "https://github.com/vuejs/core.git",
+    "commit": "45547e69b25baa99a0ed52ba5110c5bd8b4a35e4",
+    "glob": "./**/*.ts",
+    "ignoreFile": ".prettierignore"
   }
 ]
