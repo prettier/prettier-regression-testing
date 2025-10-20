@@ -1,18 +1,17 @@
 import path from "path";
 import execa from "execa";
-import { getProjects } from "../projects";
+import {
+  type Project,
+  getTargetRepositoryPath,
+  getProjectName,
+} from "../projects";
 import * as yarn from "../tools/yarn";
 
 export async function runPrettier(
   prettierRepositoryPath: string,
-  repositoryPath: string,
-  repositoryName: string,
+  project: Project,
 ): Promise<void> {
-  const projects = await getProjects();
-  const project = projects[repositoryName];
-  if (!project) {
-    throw new Error(`Repository name '${repositoryName}' is invalid`);
-  }
+  const repositoryPath = getTargetRepositoryPath(project);
   const { glob } = project;
 
   const prettierRepositoryBinPath = path.join(

@@ -54,11 +54,7 @@ export async function execute({
       const targetRepositoryName = getProjectName(project);
       const targetRepositoryPath = getTargetRepositoryPath(project);
       await preparePrettierIgnoreFile(project);
-      await runPrettier(
-        configuration.prettierRepositoryPath,
-        targetRepositoryPath,
-        targetRepositoryName,
-      );
+      await runPrettier(configuration.prettierRepositoryPath, project);
       await git.add(".", targetRepositoryPath);
       await git.commitAllowEmptyNoVerify(
         "Fixed by originalVersionPrettier",
@@ -74,11 +70,7 @@ export async function execute({
   await logger.log("Running alternativeVersionPrettier...");
   await Promise.all(
     projects.map(async (project) => {
-      await runPrettier(
-        configuration.prettierRepositoryPath,
-        getTargetRepositoryPath(project),
-        getProjectName(project),
-      );
+      await runPrettier(configuration.prettierRepositoryPath, project);
     }),
   );
 
