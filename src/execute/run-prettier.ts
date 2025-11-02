@@ -15,7 +15,7 @@ export async function runPrettier(
     "./bin/prettier.js",
   );
 
-  const args = ["--write"];
+  const args = ["--write", "--no-color"];
   if (Array.isArray(glob)) {
     args.push(...glob.map((pattern) => JSON.stringify(pattern)));
   } else {
