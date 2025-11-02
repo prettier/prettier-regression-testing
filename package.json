@@ -12,7 +12,9 @@
     "lint:prettier": "prettier . --check",
     "lint:tsc": "tsc --noEmit",
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "add-project": "node scripts/add-project.mjs",
+    "update-projects": "node scripts/update-projects-json.mjs"
   },
   "dependencies": {
     "@actions/artifact": "^1.1.1",
