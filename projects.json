@@ -81,5 +81,15 @@
     "commit": "45547e69b25baa99a0ed52ba5110c5bd8b4a35e4",
     "glob": "./**/*.ts",
     "ignoreFile": ".prettierignore"
+  },
+  {
+    "repository": "https://github.com/microsoft/vscode.git",
+    "commit": "d5d90bed7bb1ebe1d3fc39d4a24cadfb944ae1e9",
+    "glob": "."
+  },
+  {
+    "repository": "https://github.com/vitejs/vite.git",
+    "commit": "b1fd6161886caeb31ac646d6544116d37efe46d0",
+    "glob": "."
   }
 ]
