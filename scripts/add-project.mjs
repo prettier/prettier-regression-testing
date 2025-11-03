@@ -2,7 +2,7 @@ import * as readline from "node:readline/promises";
 import process from "node:process";
 import * as prettier from "prettier";
 import fs from "fs/promises";
-import execa from "execa";
+import spawn from "nano-spawn";
 
 async function addProject() {
   const rl = new readline.Interface({
@@ -29,7 +29,7 @@ async function addProject() {
     throw new Error(`Project '${project}' already exists.`);
   }
 
-  const { stdout } = await execa("git", [
+  const { stdout } = await spawn("git", [
     "ls-remote",
     "--exit-code",
     repository,

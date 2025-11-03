@@ -1,5 +1,5 @@
-import execa from "execa";
+import spawn from "nano-spawn";
 
 export async function install(cwd: string): Promise<void> {
-  await execa("yarn", [], { cwd });
+  await spawn("yarn", [], { cwd });
 }

@@ -1,9 +1,9 @@
-import execa from "execa";
+import spawn from "nano-spawn";
 
 export async function prCheckout(prNumber: string, cwd: string): Promise<void> {
-  await execa("gh", ["pr", "checkout", prNumber], { cwd });
+  await spawn("gh", ["pr", "checkout", prNumber], { cwd });
 }
 
 export async function authLoginWithToken(token: string): Promise<void> {
-  await execa("gh", ["auth", "login", "--with-token"], { input: token });
+  await spawn("gh", ["auth", "login", "--with-token"], { stdin: token });
 }

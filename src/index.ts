@@ -22,7 +22,7 @@ async function exit(error: Error | string) {
 
 process.on("unhandledRejection", function (reason) {
   let errorText: string;
-  // Handle an error thrown by execa
+  // Handle an error thrown by spawn
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if ((reason as any).stderr) {
     errorText =

@@ -14,4 +14,4 @@ jobs:
     permissions: {}
     with:
       repository: prettier/prettier-regression-testing
-      script: npm ci && npm run fix
+      script: yarn && yarn fix
