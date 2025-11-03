@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { getProjects, validateProjects } from "../src/projects";
-import{describe, it, expect} from 'vitest'
+import { describe, it, expect } from "vitest";
 
 describe("getProjects", () => {
   it("gets projects from json file", async () => {
