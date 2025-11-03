@@ -45,7 +45,18 @@ const TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS = 60000;
 export function getLogText(
   result: ExecuteResultEntry[],
   command: Command,
-): string | string[] {
+):
+  | string
+  | {
+      length: number;
+      results: {
+        head: string;
+        diff: string;
+        shouldUpload: boolean;
+        result: ExecuteResultEntry;
+        length: number;
+      }[];
+    }[] {
   const title = getLogTitle(command);
 
   const joinedHeader =
@@ -65,14 +76,48 @@ export function getLogText(
     );
   }
 
-  if (joinedDiff.length < TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS) {
-    return joinedHeader + formatDiff(joinedDiff);
+  const formattedResults = result.map((report) => {
+    const head = `${title} :: ${report.commitHash}`;
+    const diff = formatDiff(report.diff);
+    const length = head.length + diff.length;
+    const shouldUpload = length > TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS;
+    return {
+      head,
+      diff,
+      shouldUpload,
+      result: report,
+      length: shouldUpload ? 20 : length,
+    };
+  });
+
+  const group: { length: number; results: typeof formattedResults }[] = [];
+  for (const formattedResult of formattedResults) {
+    const lastGroup = group.at(-1);
+
+    if (!lastGroup) {
+      group.push({
+        length: formattedResult.length,
+        results: [formattedResult],
+      });
+      continue;
+    }
+
+    if (
+      formattedResult.length + lastGroup?.length >
+      TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS
+    ) {
+      group.push({
+        length: formattedResult.length,
+        results: [formattedResult],
+      });
+      continue;
+    }
+
+    lastGroup.length += formattedResult.length;
+    lastGroup.results.push(formattedResult);
   }
 
-  return result.map(
-    ({ commitHash, diff }) =>
-      `${title} :: ${commitHash}\n\n${formatDiff(diff)}`,
-  );
+  return group;
 }
 
 function formatDiff(content: string) {

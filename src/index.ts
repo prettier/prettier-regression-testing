@@ -56,25 +56,39 @@ process.on("unhandledRejection", function (reason) {
     if (typeof logText === "string") {
       await logger.log(logText);
     } else {
-      const largeTexts: string[] = [];
-      for (let index = 0; index < logText.length; index++) {
-        const text = logText[index];
-        const shouldSeparate = index > 0;
-        if (
-          text.length >= TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS &&
-          configuration.isCI
-        ) {
-          largeTexts.push(text);
-        } else {
-          await logger.log(logText[index], shouldSeparate);
+      const filesToUpload = logText
+        .flatMap((group) =>
+          group.results.filter((report) => report.shouldUpload),
+        )
+        .map((report) => report.diff);
+
+      let artifactUrl: string | undefined;
+
+      if (configuration.isCI) {
+        try {
+          artifactUrl = await uploadToArtifact(filesToUpload);
+        } catch (error) {
+          console.log(error);
         }
       }
-      const artifactUrl = await uploadToArtifact(largeTexts);
-      if (artifactUrl) {
-        await logger.log(
-          "Uploaded too large log.\n" +
-            `You can download it from ${artifactUrl} .`,
-        );
+
+      for (let index = 0; index < logText.length; index++) {
+        const report = logText[index];
+        const shouldSeparate = index > 0;
+        const text = (
+          await Promise.all(
+            report.results.map(
+              (report) =>
+                report.head +
+                "\n\n" +
+                (report.shouldUpload
+                  ? (artifactUrl ?? "**The diff is to big.**")
+                  : report.diff),
+            ),
+          )
+        ).join("\n\n");
+
+        await logger.log(text, shouldSeparate);
       }
     }
     process.exit(0);
