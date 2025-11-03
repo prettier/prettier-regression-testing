@@ -1,5 +1,5 @@
-import execa from "execa";
+import spawn from "nano-spawn";
 
 export async function install(packageName: string): Promise<void> {
-  await execa("brew", ["install", packageName]);
+  await spawn("brew", ["install", packageName]);
 }

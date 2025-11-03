@@ -1,6 +1,6 @@
 import * as prettier from "prettier";
 import fs from "fs/promises";
-import execa from "execa";
+import spawn from "nano-spawn";
 
 async function updateProjectsJsonFile() {
   const projectsJsonFile = new URL("../projects.json", import.meta.url);
@@ -8,7 +8,7 @@ async function updateProjectsJsonFile() {
 
   projects = await Promise.all(
     projects.map(async (project) => {
-      const { stdout } = await execa("git", [
+      const { stdout } = await spawn("git", [
         "ls-remote",
         "--exit-code",
         project.repository,

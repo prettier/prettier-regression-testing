@@ -23,16 +23,13 @@ export async function uploadToArtifact(
     fs.writeFileSync(filePath, text, "utf-8");
   }
 
-  const artifactClient = artifact.create();
+  const artifactClient = new artifact.DefaultArtifactClient();
   const artifactName = "artifact" + Date.now().toString();
 
   await artifactClient.uploadArtifact(
     artifactName,
     filePaths.map(({ filePath }) => filePath),
     GITHUB_WORKSPACE,
-    {
-      continueOnError: true,
-    },
   );
 
   const octokit = getOctokit();

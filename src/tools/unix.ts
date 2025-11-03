@@ -1,6 +1,6 @@
-import execa from "execa";
+import spawn from "nano-spawn";
 
 export async function which(cmd: string): Promise<string> {
-  const res = await execa("which", [cmd]).then(({ stdout }) => stdout);
+  const res = await spawn("which", [cmd]).then(({ stdout }) => stdout);
   return res;
 }

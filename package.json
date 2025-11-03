@@ -19,11 +19,11 @@
   "dependencies": {
     "@actions/artifact": "^4.0.0",
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.1",
+    "@actions/github": "^4.0.0",
     "@excalidraw/prettier-config": "^1.0.2",
     "ajv": "^8.17.1",
     "ci-info": "^4.3.1",
-    "execa": "^9.6.0",
+    "nano-spawn": "^2.0.0",
     "semver": "^7.7.3"
   },
   "devDependencies": {
@@ -37,6 +37,7 @@
     "@typescript-eslint/parser": "^8.46.2",
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.5.0",
     "jest": "^30.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "3.6.2",

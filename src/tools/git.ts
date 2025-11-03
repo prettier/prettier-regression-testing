@@ -1,4 +1,4 @@
-import execa from "execa";
+import spawn from "nano-spawn";
 import path from "path";
 import fs from "fs/promises";
 
@@ -7,12 +7,12 @@ export async function remoteAdd(
   repositoryUrl: string,
   cwd: string,
 ): Promise<void> {
-  await execa("git", ["remote", "add", remoteName, repositoryUrl], { cwd });
-  await execa("git", ["config", "checkout.defaultRemote", remoteName], { cwd });
+  await spawn("git", ["remote", "add", remoteName, repositoryUrl], { cwd });
+  await spawn("git", ["config", "checkout.defaultRemote", remoteName], { cwd });
 }
 
 export async function fetch(remoteName: string, cwd: string): Promise<void> {
-  await execa("git", ["fetch", remoteName], { cwd });
+  await spawn("git", ["fetch", remoteName], { cwd });
 }
 
 export async function fetchDepth1(
@@ -20,24 +20,24 @@ export async function fetchDepth1(
   commitHash: string,
   cwd: string,
 ): Promise<void> {
-  await execa("git", ["fetch", "--depth", "1", remoteName, commitHash], {
+  await spawn("git", ["fetch", "--depth", "1", remoteName, commitHash], {
     cwd,
   });
 }
 
 export async function checkout(ref: string, cwd: string): Promise<void> {
-  await execa("git", ["checkout", ref], { cwd });
+  await spawn("git", ["checkout", ref], { cwd });
 }
 
 export async function revParseHead(cwd: string): Promise<string> {
-  const headCommitHash = await execa("git", ["rev-parse", "HEAD"], {
+  const headCommitHash = await spawn("git", ["rev-parse", "HEAD"], {
     cwd,
   }).then(({ stdout }) => stdout);
   return headCommitHash;
 }
 
 export async function remoteGetUrl(cwd: string): Promise<string> {
-  const remoteUrl = await execa(
+  const remoteUrl = await spawn(
     "git",
     ["remote", "get-url", "--all", "origin"],
     { cwd },
@@ -46,7 +46,7 @@ export async function remoteGetUrl(cwd: string): Promise<string> {
 }
 
 export async function diffRepository(directoryPath: string): Promise<string> {
-  const diffString = await execa(
+  const diffString = await spawn(
     "git",
     [
       "diff",
@@ -59,14 +59,14 @@ export async function diffRepository(directoryPath: string): Promise<string> {
 }
 
 export async function add(pathspec: string, cwd: string): Promise<void> {
-  await execa("git", ["add", pathspec], { cwd });
+  await spawn("git", ["add", pathspec], { cwd });
 }
 
 export async function commitAllowEmptyNoVerify(
   message: string,
   cwd: string,
 ): Promise<void> {
-  await execa(
+  await spawn(
     "git",
     ["commit", "--allow-empty", "--no-verify", "-m", JSON.stringify(message)],
     { cwd },
@@ -74,7 +74,7 @@ export async function commitAllowEmptyNoVerify(
 }
 
 export async function resetHeadHard(cwd: string): Promise<void> {
-  await execa("git", ["reset", "HEAD^", "--hard"], { cwd });
+  await spawn("git", ["reset", "HEAD^", "--hard"], { cwd });
 }
 
 export async function clone(
@@ -82,11 +82,11 @@ export async function clone(
   dirname: string,
   cwd: string,
 ): Promise<void> {
-  await execa("git", ["clone", url, dirname], { cwd });
+  await spawn("git", ["clone", url, dirname], { cwd });
 }
 
 export async function init(cwd: string): Promise<void> {
-  await execa("git", ["init"], { cwd });
+  await spawn("git", ["init"], { cwd });
 }
 
 export async function shallowClone(

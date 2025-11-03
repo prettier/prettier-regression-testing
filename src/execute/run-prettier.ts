@@ -1,5 +1,5 @@
 import path from "path";
-import execa from "execa";
+import spawn from "nano-spawn";
 import { type Project, getTargetRepositoryPath } from "../projects";
 import * as yarn from "../tools/yarn";
 
@@ -22,7 +22,7 @@ export async function runPrettier(
     args.push(JSON.stringify(glob));
   }
   try {
-    await execa(prettierRepositoryBinPath, args, {
+    await spawn(prettierRepositoryBinPath, args, {
       cwd: repositoryPath,
       shell: true,
     });
@@ -34,7 +34,7 @@ export async function runPrettier(
     // e.g. excalidraw: https://github.com/excalidraw/excalidraw/blob/a21db08cae608692d9525fff97f109fb24fec20c/package.json#L83
     if (error.message.includes("Cannot find module")) {
       await yarn.install(repositoryPath);
-      await execa(prettierRepositoryBinPath, args, {
+      await spawn(prettierRepositoryBinPath, args, {
         cwd: repositoryPath,
         shell: true,
       });
