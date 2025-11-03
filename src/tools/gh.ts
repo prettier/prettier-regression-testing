@@ -5,5 +5,5 @@ export async function prCheckout(prNumber: string, cwd: string): Promise<void> {
 }
 
 export async function authLoginWithToken(token: string): Promise<void> {
-  await spawn("gh", ["auth", "login", "--with-token"], { stdin: token });
+  await spawn('echo', [token]).pipe("gh", ["auth", "login", "--with-token"])
 }

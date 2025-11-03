@@ -51,7 +51,7 @@ async function setupPullRequestNumber(
   }
   if (configuration.authToken !== "nothing") {
     // running locally, `gh` can be already authenticated
-    // await gh.authLoginWithToken(configuration.authToken);
+    await gh.authLoginWithToken(configuration.authToken);
   }
   await gh.prCheckout(repositorySource.prNumber, cwd);
   await yarn.install(cwd);
