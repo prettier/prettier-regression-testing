@@ -11,7 +11,7 @@
     "lint:eslint": "eslint",
     "lint:prettier": "prettier . --check",
     "lint:tsc": "tsc --noEmit",
-    "test": "jest",
+    "test": "vitest",
     "build": "tsc",
     "add-project": "node scripts/add-project.mjs",
     "update-projects": "node scripts/update-projects-json.mjs"
@@ -28,9 +28,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
-    "@swc/core": "^1.14.0",
-    "@swc/jest": "^0.2.39",
-    "@types/jest": "^30.0.0",
     "@types/node": "^24.9.2",
     "@types/semver": "^7.7.1",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
@@ -38,11 +35,11 @@
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
-    "jest": "^30.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "3.6.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2"
+    "typescript-eslint": "^8.46.2",
+    "vitest": "^4.0.6"
   },
   "packageManager": "yarn@4.10.3"
 }
