@@ -14,6 +14,10 @@ export async function uploadToArtifact(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE!;
 
+  if (!process.env.ACTIONS_RUNTIME_TOKEN ) {
+    process.env.ACTIONS_RUNTIME_TOKEN = 'dummy';
+  }
+
   const filePaths = texts.map((text) => ({
     filePath: path.join(GITHUB_WORKSPACE, Date.now().toString() + ".txt"),
     text,
