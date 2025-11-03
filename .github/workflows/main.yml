@@ -8,7 +8,7 @@ jobs:
     name: a job for regression testing
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
       - name: configure git
         run: |
           git config --global user.email "actions@github.com"
