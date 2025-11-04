@@ -8,9 +8,8 @@ export async function getPrettyHeadCommitHash(
 ): Promise<string> {
   const headCommitHash = await git.revParseHead(repositoryPath);
   const remoteUrl = await git.remoteGetUrl(repositoryPath);
+  const projectUrl = remoteUrl.replace(".git", "")
   // like "sosukesuzuki/prettier"
-  const prettyRepositoryName = remoteUrl
-    .replace("https://github.com/", "")
-    .replace(".git", "");
-  return `${prettyRepositoryName}@${headCommitHash}`;
+  const prettyRepositoryName = projectUrl.replace("https://github.com/", "");
+  return `[${prettyRepositoryName}@${headCommitHash}](${projectUrl}/tree/${headCommitHash})`;
 }
