@@ -77,7 +77,7 @@ process.on("unhandledRejection", function (reason) {
             if (artifactUrl) {
               body = `**Visit [this link](${artifactUrl}) to download**`;
             } else {
-              body = "!!The diff is to big, and failed to upload.!!";
+              body = "💥💥 The diff is to big, and failed to upload. 💥💥";
             }
           }
 
