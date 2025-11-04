@@ -89,14 +89,25 @@ process.on("unhandledRejection", function (reason) {
         })
         .join("\n\n");
 
-      await logger.log(
-        outdent`
+      try {
+        await logger.log(
+          outdent`
         #### ${title}
         
         ${text}
         `,
-        shouldSeparate,
-      );
+          shouldSeparate,
+        );
+      } catch (error) {
+        const isTextTooLongError =
+          error instanceof Error &&
+          error.message.includes("The text is too long");
+        if (isTextTooLongError) {
+          console.log(
+            `Reports contains ${report.results} repos, lengths: ${JSON.stringify(report.results.map(({ length }) => length))}`,
+          );
+        }
+      }
     }
     process.exit(0);
   } catch (
