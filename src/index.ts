@@ -8,8 +8,7 @@ import { parse } from "./parse";
 import { getIssueComment } from "./get-issue-comment";
 import { cloneProjects } from "./projects";
 import { uploadToArtifact } from "./artifact";
-
-const TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS = 60000;
+import { outdent } from "outdent";
 
 async function exit(error: Error | string) {
   if (configuration.isCI) {
@@ -52,44 +51,45 @@ process.on("unhandledRejection", function (reason) {
     await cloneProjects();
     const command = parse(commandString);
     const result = await execute(command);
-    const logText = getLogText(result, command);
-    if (typeof logText === "string") {
-      await logger.log(logText);
-    } else {
-      const filesToUpload = logText
-        .flatMap((group) =>
-          group.results.filter((report) => report.shouldUpload),
-        )
-        .map((report) => report.diff);
+    const reports = getLogText(result, command);
+    const filesToUpload = reports
+      .flatMap((group) => group.results.filter((report) => report.shouldUpload))
+      .map((report) => report.diff);
+    const { isCI } = configuration;
 
-      let artifactUrl: string | undefined;
+    let artifactUrl: string | undefined;
 
-      if (configuration.isCI) {
-        try {
-          artifactUrl = await uploadToArtifact(filesToUpload);
-        } catch (error) {
-          console.log(error);
-        }
+    if (isCI && filesToUpload.length > 0) {
+      try {
+        artifactUrl = await uploadToArtifact(filesToUpload);
+      } catch (error) {
+        console.log(error);
       }
+    }
 
-      for (let index = 0; index < logText.length; index++) {
-        const report = logText[index];
-        const shouldSeparate = index > 0;
-        const text = (
-          await Promise.all(
-            report.results.map(
-              (report) =>
-                report.head +
-                "\n\n" +
-                (report.shouldUpload
-                  ? (artifactUrl ?? "**The diff is to big.**")
-                  : report.diff),
-            ),
-          )
-        ).join("\n\n");
+    for (let index = 0; index < reports.length; index++) {
+      const report = reports[index];
+      const shouldSeparate = index > 0;
+      const text = report.results
+        .map((report) => {
+          let body = report.diff;
+          if (!isCI) {
+            if (artifactUrl) {
+              body = `**Visit [this link](${artifactUrl}) to download**`;
+            } else {
+              body = "!!The diff is to big, and failed to upload.!!";
+            }
+          }
 
-        await logger.log(text, shouldSeparate);
-      }
+          return outdent`
+            ${report.head}
+
+            ${body}
+            `;
+        })
+        .join("\n\n");
+
+      await logger.log(text, shouldSeparate);
     }
     process.exit(0);
   } catch (

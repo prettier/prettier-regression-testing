@@ -45,36 +45,21 @@ const TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS = 60000;
 export function getLogText(
   result: ExecuteResultEntry[],
   command: Command,
-):
-  | string
-  | {
-      length: number;
-      results: {
-        head: string;
-        diff: string;
-        shouldUpload: boolean;
-        result: ExecuteResultEntry;
-        length: number;
-      }[];
-    }[] {
+): {
+  length: number;
+  results: {
+    head: string;
+    diff: string;
+    shouldUpload: boolean;
+    result: ExecuteResultEntry;
+    length: number;
+  }[];
+}[] {
   const title = getLogTitle(command);
 
-  const joinedHeader =
-    title +
-    "\n\n" +
-    result.map(({ commitHash }) => `- ${commitHash}`).join("\n") +
-    "\n\n";
-
-  const joinedDiff = result.map(({ diff }) => diff).join("\n");
-
-  if (!configuration.isCI) {
-    return (
-      "\n========= Result =========\n\n" +
-      joinedHeader +
-      joinedDiff +
-      "\n\n========= End of Result =========\n"
-    );
-  }
+  result = result.toSorted(
+    (resultA, resultB) => resultB.diff.length - resultA.diff.length,
+  );
 
   const formattedResults = result.map((report) => {
     const head = `${title} :: ${report.commitHash}`;

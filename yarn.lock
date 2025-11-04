@@ -3550,6 +3550,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"outdent@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "outdent@npm:0.8.0"
+  checksum: 10c0/d8a6c38b838b7ac23ebf1cc50442312f4efe286b211dbe5c71fa84d5daa2512fb94a8f2df1389313465acb0b4e5fa72270dd78f519f3d4db5bc22b2762c86827
+  languageName: node
+  linkType: hard
+
 "p-limit@npm:^3.0.2":
   version: 3.1.0
   resolution: "p-limit@npm:3.1.0"
@@ -3730,6 +3737,7 @@ __metadata:
     globals: "npm:^16.5.0"
     nano-spawn: "npm:^2.0.0"
     npm-run-all: "npm:^4.1.5"
+    outdent: "npm:^0.8.0"
     prettier: "npm:3.6.2"
     semver: "npm:^7.7.3"
     typescript: "npm:^5.9.3"
