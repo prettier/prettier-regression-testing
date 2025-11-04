@@ -5,6 +5,12 @@ import { getOctokit } from "./octokit";
 
 let commentId: number | undefined;
 async function logToIssueComment(logText: string, separateComment = false) {
+  if (logText.length > configuration.MAXIMUM_GITHUB_COMMENT_LENGTH) {
+    throw new Error(
+      `The text is too long (maximum is ${configuration.MAXIMUM_GITHUB_COMMENT_LENGTH} characters, actual ${logText.length} characters)"}`,
+    );
+  }
+
   const octokit = getOctokit();
   if (commentId === undefined || separateComment) {
     const comment = await octokit.issues.createComment({

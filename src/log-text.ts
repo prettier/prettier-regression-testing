@@ -40,8 +40,6 @@ function getLogTitle(command: Command): string {
 
 const LONG_DIFF_THRESHOLD_IN_LINES = 50;
 
-const MAXIMUM_GITHUB_COMMENT_LENGTH = 65536;
-
 export function getLogText(
   result: ExecuteResultEntry[],
   command: Command,
@@ -72,7 +70,7 @@ export function getLogText(
       head.length +
       diff.length +
       /* Some room for blank lines */ 50;
-    const shouldUpload = length > MAXIMUM_GITHUB_COMMENT_LENGTH;
+    const shouldUpload = length > configuration.MAXIMUM_GITHUB_COMMENT_LENGTH;
     return {
       head,
       diff,
@@ -101,7 +99,7 @@ export function getLogText(
       formattedResult.length +
         lastGroup.length +
         /* Some room for blank lines */ 50 >
-      MAXIMUM_GITHUB_COMMENT_LENGTH
+      configuration.MAXIMUM_GITHUB_COMMENT_LENGTH
     ) {
       group.push({
         length: formattedResult.length,
