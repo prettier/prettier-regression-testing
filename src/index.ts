@@ -73,7 +73,7 @@ process.on("unhandledRejection", function (reason) {
       const text = report.results
         .map((report) => {
           let body = report.diff;
-          if (!isCI) {
+          if (isCI) {
             if (artifactUrl) {
               body = `**Visit [this link](${artifactUrl}) to download**`;
             } else {
