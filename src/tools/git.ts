@@ -30,7 +30,7 @@ export async function checkout(ref: string, cwd: string): Promise<void> {
 }
 
 export async function revParseHead(cwd: string): Promise<string> {
-  const headCommitHash = await spawn("git", ["rev-parse", "HEAD"], {
+  const headCommitHash = await spawn("git", ["rev-parse", "--short", "HEAD"], {
     cwd,
   }).then(({ stdout }) => stdout);
   return headCommitHash;
