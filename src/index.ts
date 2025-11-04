@@ -51,7 +51,7 @@ process.on("unhandledRejection", function (reason) {
     await cloneProjects();
     const command = parse(commandString);
     const result = await execute(command);
-    const reports = getLogText(result, command);
+    const { title, reports } = getLogText(result, command);
     const filesToUpload = reports
       .flatMap((group) => group.results.filter((report) => report.shouldUpload))
       .map((report) => report.diff);
@@ -89,7 +89,14 @@ process.on("unhandledRejection", function (reason) {
         })
         .join("\n\n");
 
-      await logger.log(text, shouldSeparate);
+      await logger.log(
+        outdent`
+        #### ${title}
+        
+        ${text}
+        `,
+        shouldSeparate,
+      );
     }
     process.exit(0);
   } catch (

@@ -46,15 +46,18 @@ export function getLogText(
   result: ExecuteResultEntry[],
   command: Command,
 ): {
-  length: number;
-  results: {
-    head: string;
-    diff: string;
-    shouldUpload: boolean;
-    result: ExecuteResultEntry;
+  title: string;
+  reports: {
     length: number;
+    results: {
+      head: string;
+      diff: string;
+      shouldUpload: boolean;
+      result: ExecuteResultEntry;
+      length: number;
+    }[];
   }[];
-}[] {
+} {
   const title = getLogTitle(command);
 
   result = result.toSorted(
@@ -62,7 +65,7 @@ export function getLogText(
   );
 
   const formattedResults = result.map((report) => {
-    const head = `${title} :: ${report.commitHash}`;
+    const head = report.commitHash;
     const diff = formatDiff(report.diff);
     const length = head.length + diff.length;
     const shouldUpload = length > TOO_LONG_DIFF_THRESHOLD_IN_CHARACTERS;
@@ -102,7 +105,7 @@ export function getLogText(
     lastGroup.results.push(formattedResult);
   }
 
-  return group;
+  return { title, reports: group };
 }
 
 function formatDiff(content: string) {
