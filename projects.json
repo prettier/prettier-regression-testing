@@ -127,7 +127,9 @@
       "**/test/automation/out/**",
       "**/typings/**",
       "**/.build/**",
-      "resources/**/*.yaml"
+      "resources/**/*.yaml",
+      "**/build/**/*",
+      "src/vs/**/*"
     ]
   },
   {
