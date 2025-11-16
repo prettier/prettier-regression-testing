@@ -129,7 +129,8 @@
       "**/.build/**",
       "resources/**/*.yaml",
       "**/build/**/*",
-      "src/vs/**/*"
+      "src/vs/**/*",
+      "extensions/**/*"
     ]
   },
   {
