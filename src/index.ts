@@ -12,10 +12,10 @@ import { uploadToArtifact } from "./artifact";
 import { outdent } from "outdent";
 
 async function exit(error: Error | string) {
+  console.error(error);
   if (configuration.isCI) {
     core.setFailed(error);
   } else {
-    console.error(error);
     process.exit(1);
   }
 }
