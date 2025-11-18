@@ -6,7 +6,7 @@ import { describe, it, expect } from "vitest";
 describe("getProjects", () => {
   it("gets projects from json file", async () => {
     const projects = await getProjects();
-    const projectsJsonPath = path.join(__dirname, "..", "projects.json");
+    const projectsJsonPath = path.join(import.meta.dirname, "../projects.json");
     const data = JSON.parse(await fs.readFile(projectsJsonPath, "utf-8"));
     expect(projects).toEqual(data);
   });

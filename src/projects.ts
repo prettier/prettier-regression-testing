@@ -45,7 +45,7 @@ export async function getProjects(): Promise<Project[]> {
   if (data) {
     return data;
   }
-  const projectJsonPath = path.join(__dirname, "..", "projects.json");
+  const projectJsonPath = path.join(import.meta.dirname, "../projects.json");
   data = JSON.parse(await fs.readFile(projectJsonPath, "utf-8"));
   if (validateProjects(data)) {
     return data as Project[];
