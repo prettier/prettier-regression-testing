@@ -22,7 +22,12 @@
   },
   {
     "repository": "https://github.com/marmelab/react-admin.git",
-    "commit": "12f822ff01ea201ea2a923925357953dab3d4d38"
+    "commit": "12f822ff01ea201ea2a923925357953dab3d4d38",
+    "glob": [
+      "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
+      "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
+      "cypress/**/*.{js,ts,json,tsx,css,md}"
+    ]
   },
   {
     "repository": "https://github.com/typescript-eslint/typescript-eslint.git",
