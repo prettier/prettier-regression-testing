@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import {inspect} from 'node:util'
 import * as core from "@actions/core";
 import * as configuration from "./configuration";
 import * as logger from "./logger";
@@ -118,7 +119,7 @@ process.on("unhandledRejection", function (reason) {
     process.exit(1);
   }
 })().catch((error) => {
-  logger.error(JSON.stringify(error)).then(() => {
+  logger.error(inspect(error)).then(() => {
     exit(error);
   });
 });
