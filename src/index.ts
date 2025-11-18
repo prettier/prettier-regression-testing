@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import {inspect} from 'node:util'
+import { inspect } from "node:util";
 import * as core from "@actions/core";
 import * as configuration from "./configuration.ts";
 import * as logger from "./logger.ts";
