@@ -115,7 +115,7 @@ process.on("unhandledRejection", function (reason) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     error: any
   ) {
-    await logger.error(error);
+    await logger.error(inspect(error));
     process.exit(1);
   }
 })().catch((error) => {
