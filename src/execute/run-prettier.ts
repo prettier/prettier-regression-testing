@@ -22,9 +22,8 @@ export async function runPrettier(
     args.push(JSON.stringify(glob));
   }
   try {
-    await spawn(prettierRepositoryBinPath, args, {
+    await spawn(process.execPath, [prettierRepositoryBinPath, ...args], {
       cwd: repositoryPath,
-      shell: true,
     });
   } catch (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,9 +33,8 @@ export async function runPrettier(
     // e.g. excalidraw: https://github.com/excalidraw/excalidraw/blob/a21db08cae608692d9525fff97f109fb24fec20c/package.json#L83
     if (error.message.includes("Cannot find module")) {
       await yarn.install(repositoryPath);
-      await spawn(prettierRepositoryBinPath, args, {
+      await spawn(process.execPath, [prettierRepositoryBinPath, ...args], {
         cwd: repositoryPath,
-        shell: true,
       });
     } else {
       throw error;
