@@ -2,7 +2,6 @@
   {
     "repository": "https://github.com/babel/babel.git",
     "commit": "813a148f4eac2f1efe0e24df03b26418c5162ed2",
-    "glob": "./{packages,codemods,eslint}/**/*.{js,ts}",
     "ignore": [
       "# TODO: Read from https://github.com/babel/babel/blob/dfa4cc652718e1ce7905eaa2260cafa3392e052f/eslint.config.js#L34 ?",
       "/lib",
@@ -36,24 +35,20 @@
   },
   {
     "repository": "https://github.com/vuejs/eslint-plugin-vue.git",
-    "commit": "5ec36ce61a9d82f65da22403117373f8ec0c6f0c",
-    "glob": "./**/*.js"
+    "commit": "5ec36ce61a9d82f65da22403117373f8ec0c6f0c"
   },
   {
     "repository": "https://github.com/excalidraw/excalidraw.git",
     "commit": "8d8f69662877a3b7a9d11869392efa778235b785",
-    "glob": "./**/*.{css,scss,json,md,html,yml,ts,tsx,js}",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "https://github.com/mdn/content.git",
-    "commit": "cab5b3fe7b9cf0f5e20557b2aa1133a979147e21",
-    "glob": "./**/*.md"
+    "commit": "cab5b3fe7b9cf0f5e20557b2aa1133a979147e21"
   },
   {
     "repository": "https://github.com/prettier/prettier.git",
-    "commit": "55d8df886ee322c28e40408405fc45a21a501321",
-    "glob": "."
+    "commit": "55d8df886ee322c28e40408405fc45a21a501321"
   },
   {
     "repository": "https://github.com/marmelab/react-admin.git",
@@ -68,19 +63,16 @@
   {
     "repository": "https://github.com/typescript-eslint/typescript-eslint.git",
     "commit": "bb451a1d342f169bc9b697ad97db5dfe2eb288c3",
-    "glob": "./**/*.{ts,js,json,md}",
     "ignore": ["**/fixtures/**/*"]
   },
   {
     "repository": "https://github.com/vega/vega-lite.git",
     "commit": "2744a3f8800268352b148824f9ca8c727d7ae8f0",
-    "glob": "./**/*.ts",
     "ignoreFile": ".prettierignore"
   },
   {
     "repository": "https://github.com/vuejs/core.git",
     "commit": "45547e69b25baa99a0ed52ba5110c5bd8b4a35e4",
-    "glob": "./**/*.ts",
     "ignoreFile": ".prettierignore"
   },
   {
@@ -136,7 +128,6 @@
   },
   {
     "repository": "https://github.com/vitejs/vite.git",
-    "commit": "b1fd6161886caeb31ac646d6544116d37efe46d0",
-    "glob": "."
+    "commit": "b1fd6161886caeb31ac646d6544116d37efe46d0"
   }
 ]

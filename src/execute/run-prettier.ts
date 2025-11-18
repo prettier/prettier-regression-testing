@@ -8,21 +8,21 @@ export async function runPrettier(
   project: Project,
 ): Promise<void> {
   const repositoryPath = getTargetRepositoryPath(project);
-  const { glob } = project;
+  const glob = project ?? ['.']
 
   const prettierRepositoryBinPath = path.join(
     prettierRepositoryPath,
     "./bin/prettier.js",
   );
 
-  const args = ["--write", "--no-color"];
-  if (Array.isArray(glob)) {
-    args.push(...glob.map((pattern) => JSON.stringify(pattern)));
-  } else {
-    args.push(JSON.stringify(glob));
-  }
+  const args = [
+    prettierRepositoryBinPath,
+    "--write",
+    "--no-color",
+    ...(Array.isArray(glob) ? glob : [glob]),
+  ];
   try {
-    await spawn(process.execPath, [prettierRepositoryBinPath, ...args], {
+    await spawn(process.execPath, args, {
       cwd: repositoryPath,
     });
   } catch (
@@ -33,7 +33,7 @@ export async function runPrettier(
     // e.g. excalidraw: https://github.com/excalidraw/excalidraw/blob/a21db08cae608692d9525fff97f109fb24fec20c/package.json#L83
     if (error.message.includes("Cannot find module")) {
       await yarn.install(repositoryPath);
-      await spawn(process.execPath, [prettierRepositoryBinPath, ...args], {
+      await spawn(process.execPath, args, {
         cwd: repositoryPath,
       });
     } else {
