@@ -8,7 +8,7 @@ export async function runPrettier(
   project: Project,
 ): Promise<void> {
   const repositoryPath = getTargetRepositoryPath(project);
-  const glob = project ?? ["."];
+  const glob = project.glob ?? ["."];
 
   const prettierRepositoryBinPath = path.join(
     prettierRepositoryPath,
