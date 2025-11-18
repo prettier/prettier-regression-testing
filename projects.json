@@ -1,37 +1,7 @@
 [
   {
     "repository": "https://github.com/babel/babel.git",
-    "commit": "813a148f4eac2f1efe0e24df03b26418c5162ed2",
-    "ignore": [
-      "# TODO: Read from https://github.com/babel/babel/blob/dfa4cc652718e1ce7905eaa2260cafa3392e052f/eslint.config.js#L34 ?",
-      "/lib",
-      "/build",
-      "/.git",
-      "package.json",
-      "packages/babel-runtime",
-      "packages/babel-runtime-corejs2",
-      "packages/babel-runtime-corejs3",
-      "packages/*/node_modules",
-      "packages/*/lib",
-      "packages/*/test/fixtures",
-      "packages/*/test/tmp",
-      "codemods/*/node_modules",
-      "codemods/*/lib",
-      "codemods/*/test/fixtures",
-      "codemods/*/test/tmp",
-      "packages/babel-compat-data/build",
-      "packages/babel-preset-env/test/debug-fixtures",
-      "packages/babel-standalone/babel.js",
-      "packages/babel-standalone/babel.min.js",
-      "packages/babel-parser/test/expressions",
-      "packages/babel-core/src/vendor",
-      "eslint/*/lib",
-      "eslint/*/node_modules",
-      "eslint/*/test/fixtures",
-      "test/runtime-integration/*/output.js",
-      "test/runtime-integration/*/output-absolute.js",
-      "Makefile.js"
-    ]
+    "commit": "813a148f4eac2f1efe0e24df03b26418c5162ed2"
   },
   {
     "repository": "https://github.com/vuejs/eslint-plugin-vue.git",
@@ -52,13 +22,7 @@
   },
   {
     "repository": "https://github.com/marmelab/react-admin.git",
-    "commit": "12f822ff01ea201ea2a923925357953dab3d4d38",
-    "glob": [
-      "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
-      "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
-      "cypress/**/*.{js,ts,json,tsx,css,md}"
-    ],
-    "ignoreFile": ".prettierignore"
+    "commit": "12f822ff01ea201ea2a923925357953dab3d4d38"
   },
   {
     "repository": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -67,18 +31,15 @@
   },
   {
     "repository": "https://github.com/vega/vega-lite.git",
-    "commit": "2744a3f8800268352b148824f9ca8c727d7ae8f0",
-    "ignoreFile": ".prettierignore"
+    "commit": "2744a3f8800268352b148824f9ca8c727d7ae8f0"
   },
   {
     "repository": "https://github.com/vuejs/core.git",
-    "commit": "45547e69b25baa99a0ed52ba5110c5bd8b4a35e4",
-    "ignoreFile": ".prettierignore"
+    "commit": "45547e69b25baa99a0ed52ba5110c5bd8b4a35e4"
   },
   {
     "repository": "https://github.com/microsoft/vscode.git",
     "commit": "d5d90bed7bb1ebe1d3fc39d4a24cadfb944ae1e9",
-    "glob": ".",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
