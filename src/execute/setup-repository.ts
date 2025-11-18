@@ -3,13 +3,13 @@ import {
   PrettierRepositorySourcePrNumber,
   PrettierRepositorySourceRepositoryAndRef,
   PrettierRepositorySource,
-} from "../parse";
-import * as configuration from "../configuration";
-import * as brew from "../tools/brew";
-import * as gh from "../tools/gh";
-import * as git from "../tools/git";
-import * as yarn from "../tools/yarn";
-import * as unix from "../tools/unix";
+} from "../parse.ts";
+import * as configuration from "../configuration.ts";
+import * as brew from "../tools/brew.ts";
+import * as gh from "../tools/gh.ts";
+import * as git from "../tools/git.ts";
+import * as yarn from "../tools/yarn.ts";
+import * as unix from "../tools/unix.ts";
 
 export async function setupPrettierRepository(
   prettierRepositorySource: PrettierRepositorySource,

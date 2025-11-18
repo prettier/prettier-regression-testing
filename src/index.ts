@@ -1,14 +1,14 @@
 import fs from "fs/promises";
 import {inspect} from 'node:util'
 import * as core from "@actions/core";
-import * as configuration from "./configuration";
-import * as logger from "./logger";
-import { execute } from "./execute";
-import { getLogText } from "./log-text";
-import { parse } from "./parse";
-import { getIssueComment } from "./get-issue-comment";
-import { cloneProjects } from "./projects";
-import { uploadToArtifact } from "./artifact";
+import * as configuration from "./configuration.ts";
+import * as logger from "./logger.ts";
+import { execute } from "./execute/index.ts";
+import { getLogText } from "./log-text.ts";
+import { parse } from "./parse.ts";
+import { getIssueComment } from "./get-issue-comment.ts";
+import { cloneProjects } from "./projects.ts";
+import { uploadToArtifact } from "./artifact.ts";
 import { outdent } from "outdent";
 
 async function exit(error: Error | string) {

@@ -5,6 +5,7 @@
   "license": "MIT",
   "author": "sosukesuzuki <aosukeke@gmail.com>",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "fix": "prettier . -w",
     "lint": "run-p \"lint:*\"",

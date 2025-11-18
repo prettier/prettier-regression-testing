@@ -1,5 +1,5 @@
 import * as github from "@actions/github";
-import * as configuration from "./configuration";
+import * as configuration from "./configuration.ts";
 import type { GitHub } from "@actions/github/lib/utils";
 
 type Octokit = InstanceType<typeof GitHub>;

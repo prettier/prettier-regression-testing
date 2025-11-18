@@ -1,9 +1,9 @@
 import path from "path";
 import { existsSync, promises as fs } from "fs";
 import Ajv, { DefinedError } from "ajv";
-import * as logger from "./logger";
-import * as configuration from "./configuration";
-import * as git from "./tools/git";
+import * as logger from "./logger.ts";
+import * as configuration from "./configuration.ts";
+import * as git from "./tools/git.ts";
 
 export interface Project {
   repository: string;

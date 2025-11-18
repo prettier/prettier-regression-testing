@@ -1,4 +1,4 @@
-import * as git from "../tools/git";
+import * as git from "../tools/git.ts";
 
 /**
  * Returns head commit hash and repository name like "sosukesuzuki/prettier@foo"

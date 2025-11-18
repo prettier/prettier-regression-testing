@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import * as github from "@actions/github";
-import * as configuration from "./configuration";
-import { getOctokit } from "./octokit";
+import * as configuration from "./configuration.ts";
+import { getOctokit } from "./octokit.ts";
 
 let commentId: number | undefined;
 async function logToIssueComment(logText: string, separateComment = false) {

@@ -1,6 +1,6 @@
-import * as configuration from "./configuration";
-import { ExecuteResultEntry } from "./execute";
-import { Command, PrettierRepositorySource } from "./parse";
+import * as configuration from "./configuration.ts";
+import { ExecuteResultEntry } from "./execute/index.ts";
+import { Command, PrettierRepositorySource } from "./parse.ts";
 
 function getPrettierRepositorySourceText(
   prettierRepositorySource: PrettierRepositorySource,

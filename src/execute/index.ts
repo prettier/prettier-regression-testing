@@ -1,13 +1,13 @@
 import { existsSync } from "fs";
-import { Command } from "../parse";
-import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash";
-import { preparePrettierIgnoreFile } from "./prepare-prettier-ignore-file";
-import { runPrettier } from "./run-prettier";
-import { setupPrettierRepository } from "./setup-repository";
-import * as configuration from "../configuration";
-import * as git from "../tools/git";
-import * as logger from "../logger";
-import { getProjects, getTargetRepositoryPath } from "../projects";
+import { Command } from "../parse.ts";
+import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash.ts";
+import { preparePrettierIgnoreFile } from "./prepare-prettier-ignore-file.ts";
+import { runPrettier } from "./run-prettier.ts";
+import { setupPrettierRepository } from "./setup-repository.ts";
+import * as configuration from "../configuration.ts";
+import * as git from "../tools/git.ts";
+import * as logger from "../logger.ts";
+import { getProjects, getTargetRepositoryPath } from "../projects.ts";
 
 export interface ExecuteResultEntry {
   commitHash: string;

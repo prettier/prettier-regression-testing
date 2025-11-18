@@ -2,7 +2,7 @@ import * as artifact from "@actions/artifact";
 import * as github from "@actions/github";
 import * as path from "path";
 import * as fs from "fs";
-import { getOctokit } from "./octokit";
+import { getOctokit } from "./octokit.ts";
 
 export async function uploadToArtifact(
   texts: string[],

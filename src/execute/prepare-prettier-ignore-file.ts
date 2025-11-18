@@ -4,7 +4,7 @@ import {
   getProjectName,
   type Project,
   getTargetRepositoryPath,
-} from "../projects";
+} from "../projects.ts";
 
 export async function preparePrettierIgnoreFile(
   project: Project,
