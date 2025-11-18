@@ -26,7 +26,7 @@ const projectSchema = {
       oneOf: [{ type: "string" }, { type: "array", items: { type: "string" } }],
     },
   },
-  required: ["commit", "glob", "repository"],
+  required: ["commit", "repository"],
   additionalProperties: false,
 };
 
