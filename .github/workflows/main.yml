@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: a job for regression testing
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v5
       - name: configure git
         run: |
