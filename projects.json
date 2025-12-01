@@ -1,28 +1,28 @@
 [
   {
     "repository": "https://github.com/babel/babel.git",
-    "commit": "813a148f4eac2f1efe0e24df03b26418c5162ed2"
+    "commit": "7958603449cf9b17296f6bce58801a832bc55b09"
   },
   {
     "repository": "https://github.com/vuejs/eslint-plugin-vue.git",
-    "commit": "5ec36ce61a9d82f65da22403117373f8ec0c6f0c"
+    "commit": "701bb0931778a63b1b0a85f0d68d4390a222f359"
   },
   {
     "repository": "https://github.com/excalidraw/excalidraw.git",
-    "commit": "8d8f69662877a3b7a9d11869392efa778235b785",
+    "commit": "210dc85c8cd43da0f78b84b59b650de7db1a00a8",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "https://github.com/mdn/content.git",
-    "commit": "cab5b3fe7b9cf0f5e20557b2aa1133a979147e21"
+    "commit": "ca26363fcc6fc861103d40ac0205e5c5b79eb2fa"
   },
   {
     "repository": "https://github.com/prettier/prettier.git",
-    "commit": "55d8df886ee322c28e40408405fc45a21a501321"
+    "commit": "363a20e1c182784de7664d8c782137daf5548312"
   },
   {
     "repository": "https://github.com/marmelab/react-admin.git",
-    "commit": "12f822ff01ea201ea2a923925357953dab3d4d38",
+    "commit": "905f248948e443a75c91da82bf28efe446117b79",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -31,20 +31,20 @@
   },
   {
     "repository": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "commit": "bb451a1d342f169bc9b697ad97db5dfe2eb288c3",
+    "commit": "906cc3c892cbd7cc929a797557a234f64e8bf539",
     "ignore": ["**/fixtures/**/*"]
   },
   {
     "repository": "https://github.com/vega/vega-lite.git",
-    "commit": "2744a3f8800268352b148824f9ca8c727d7ae8f0"
+    "commit": "e7f55118e7c149c42436c800d053423cdd10bb1a"
   },
   {
     "repository": "https://github.com/vuejs/core.git",
-    "commit": "45547e69b25baa99a0ed52ba5110c5bd8b4a35e4"
+    "commit": "25ebe3a42cd80ac0256355c2740a0258cdd7419d"
   },
   {
     "repository": "https://github.com/microsoft/vscode.git",
-    "commit": "d5d90bed7bb1ebe1d3fc39d4a24cadfb944ae1e9",
+    "commit": "9bd6a8310aea6ada3e02a307c31ed05e5e4dabec",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -94,6 +94,6 @@
   },
   {
     "repository": "https://github.com/vitejs/vite.git",
-    "commit": "b1fd6161886caeb31ac646d6544116d37efe46d0"
+    "commit": "df5a30d2690a2ebc4824a79becdcef30538dc602"
   }
 ]
