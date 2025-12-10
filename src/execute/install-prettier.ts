@@ -6,6 +6,7 @@ import * as gh from "../tools/gh.ts";
 import * as yarn from "../tools/yarn.ts";
 import * as npm from "../tools/npm.ts";
 import * as unix from "../tools/unix.ts";
+import * as git from "../tools/git.ts";
 import {
   createTemporaryDirectory,
   type TemporaryDirectory,
@@ -56,6 +57,7 @@ async function getPullRequest(
 
   const directory = await createTemporaryDirectory();
 
+  await git.init(directory.path);
   await gh.prCheckout(pullRequestNumber, directory.path);
   const { stdout } = await npm.pack({ cwd: directory.path });
 

@@ -1,4 +1,3 @@
-import path from "path";
 import spawn from "nano-spawn";
 import { type Project, getTargetRepositoryPath } from "../projects.ts";
 import * as yarn from "../tools/yarn.ts";
