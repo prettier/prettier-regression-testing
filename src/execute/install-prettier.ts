@@ -36,7 +36,6 @@ export async function installPrettier(
   return {
     dispatch: () => {directory.dispatch()},
     bin: path.join(cwd, 'node_modules/prettier/bin/prettier.cjs'),
-    name: prettierVersion.raw
   }
 }
 
