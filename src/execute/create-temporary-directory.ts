@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises'
-import os from 'node:os'
-import path from 'node:path';
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import crypto from "node:crypto";
 
 export async function createTemporaryDirectory() {
@@ -16,12 +16,14 @@ export async function createTemporaryDirectory() {
 
   return {
     path: directory,
-    dispatch: () => destroyTemporaryDirectory(directory)
+    dispatch: () => destroyTemporaryDirectory(directory),
   };
 }
 
 async function destroyTemporaryDirectory(directory: string) {
-  await fs.rm(directory, {recursive: true, force: true})
+  await fs.rm(directory, { recursive: true, force: true });
 }
 
-export type TemporaryDirectory = Awaited<ReturnType<typeof createTemporaryDirectory>>
+export type TemporaryDirectory = Awaited<
+  ReturnType<typeof createTemporaryDirectory>
+>;
