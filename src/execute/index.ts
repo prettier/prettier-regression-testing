@@ -6,17 +6,22 @@ import * as configuration from "../configuration.ts";
 import * as git from "../tools/git.ts";
 import * as logger from "../logger.ts";
 import { getProjects, getTargetRepositoryPath } from "../projects.ts";
-import {installPrettier} from './install-prettier.ts'
+import { installPrettier } from "./install-prettier.ts";
 
 export interface ExecuteResultEntry {
   commitHash: string;
   diff: string;
 }
 
-export async function execute({
-  originalPrettier: originalPrettierVersion,
-  alternativePrettier: alternativePrettierVersion,
-}: Command): Promise<ExecuteResultEntry[]> {
+export async function execute(command: Command): Promise<ExecuteResultEntry[]> {
+  // Install Prettier
+  await logger.log("Installing Prettier...");
+  const [originalPrettier, alternativePrettier] = await Promise.all(
+    [command.original, command.alternative].map((prettierVersion) =>
+      installPrettier(prettierVersion),
+    ),
+  );
+
   const projects = await getProjects();
   const commitHashes = await Promise.all(
     projects.map(async (project) =>
@@ -24,9 +29,6 @@ export async function execute({
     ),
   );
 
-  // Setup originalVersionPrettier
-  await logger.log("Setting up originalVersionPrettier...");
-  const originalPrettier = await installPrettier(originalPrettierVersion);
   // Run originalVersionPrettier
   await logger.log("Running originalVersionPrettier...");
   await Promise.all(
@@ -42,11 +44,9 @@ export async function execute({
     }),
   );
 
-  await originalPrettier.dispatch()
+  await originalPrettier.dispatch();
 
   // Setup alternativeVersionPrettier
-  await logger.log("Setting up alternativeVersionPrettier...");
-  const alternativePrettier = await installPrettier(alternativePrettierVersion);
   // Run alternativeVersionPrettier
   await logger.log("Running alternativeVersionPrettier...");
   await Promise.all(
@@ -54,7 +54,8 @@ export async function execute({
       await runPrettier(alternativePrettier, project);
     }),
   );
-  await alternativePrettier.dispatch()
+
+  await alternativePrettier.dispatch();
 
   const diffs = await Promise.all(
     projects.map(getTargetRepositoryPath).map(git.diffRepository),

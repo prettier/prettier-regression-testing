@@ -1,32 +1,29 @@
 export const sourceTypes = {
-  pullRequest: 'pull-request',
-  package: 'package',
+  pullRequest: "pull-request",
+  package: "package",
 } as const;
 
 export interface PrettierPackage {
   type: typeof sourceTypes.package;
-  version: string,
+  version: string;
   raw: string;
 }
 
 export interface PrettierPullRequest {
   type: typeof sourceTypes.pullRequest;
-  number: string,
+  number: string;
   raw: string;
 }
 
-
-export type PrettierVersion =
-  | PrettierPackage
-  | PrettierPullRequest;
+export type PrettierVersion = PrettierPackage | PrettierPullRequest;
 
 export type Project = {
   repositoryUrl: string;
 };
 
 export interface Command {
-  alternativePrettier: PrettierVersion;
-  originalPrettier: PrettierVersion;
+  alternative: PrettierVersion;
+  original: PrettierVersion;
 }
 
 const defaultPrettierRepositorySource: PrettierVersion = {
@@ -38,8 +35,7 @@ export function parse(source: string): Command {
   const tokens = tokenize(source);
 
   let alternativePrettier: PrettierVersion | undefined = undefined;
-  let originalPrettier: PrettierVersion =
-    defaultPrettierRepositorySource;
+  let originalPrettier: PrettierVersion = defaultPrettierRepositorySource;
 
   for (const [index, token] of tokenize(source).entries()) {
     const lookahead = (): Token => {
@@ -99,7 +95,7 @@ export function parseRepositorySource(token: Token): PrettierVersion {
     throw new Error(`Unexpected token '${token.kind}', expect 'source'.`);
   }
 
-  const raw = token.value
+  const raw = token.value;
 
   // like "#3465"
   if (/^#\d+$/.test(raw)) {
@@ -112,10 +108,10 @@ export function parseRepositorySource(token: Token): PrettierVersion {
 
   // Any source yarn accepts https://yarnpkg.com/cli/add
   // `sosukesuzuki/prettier#ref`, `3.0.0`, ... and so on
-  const packagePrefix = 'prettier@'
-  let version = raw
+  const packagePrefix = "prettier@";
+  let version = raw;
   if (version.startsWith(packagePrefix)) {
-    version = version.slice(packagePrefix.length)
+    version = version.slice(packagePrefix.length);
   }
 
   return {

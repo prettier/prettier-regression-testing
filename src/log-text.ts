@@ -1,18 +1,16 @@
 import * as configuration from "./configuration.ts";
 import { ExecuteResultEntry } from "./execute/index.ts";
 import { Command } from "./parse.ts";
-import {sourceTypes,type PrettierVersion} from './parse.ts'
+import { sourceTypes, type PrettierVersion } from "./parse.ts";
 
-function getPrettierRepositorySourceText(
-  prettier: PrettierVersion,
-) {
+function getPrettierRepositorySourceText(prettier: PrettierVersion) {
   if (prettier.type === sourceTypes.pullRequest) {
-     return configuration.isCI
-        ? `prettier/prettier#${prettier.number}`
-        : `https://github.com/prettier/prettier/pull/${prettier.number}`;
+    return configuration.isCI
+      ? `prettier/prettier#${prettier.number}`
+      : `https://github.com/prettier/prettier/pull/${prettier.number}`;
   }
 
-  return `prettier@${prettier.version} ${(prettier.raw)}`
+  return `prettier@${prettier.version} ${prettier.raw}`;
 }
 
 function getLogTitle(command: Command): string {
