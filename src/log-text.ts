@@ -3,7 +3,7 @@ import { ExecuteResultEntry } from "./execute/index.ts";
 import { Command } from "./parse.ts";
 import { sourceTypes, type PrettierVersion } from "./parse.ts";
 
-function getPrettierRepositorySourceText(prettier: PrettierVersion) {
+function getPrettierVersionDescription(prettier: PrettierVersion) {
   if (prettier.type === sourceTypes.pullRequest) {
     return configuration.isCI
       ? `prettier/prettier#${prettier.number}`
@@ -14,17 +14,11 @@ function getPrettierRepositorySourceText(prettier: PrettierVersion) {
 }
 
 function getLogTitle(command: Command): string {
-  const alternativePrettierRepositoryText = getPrettierRepositorySourceText(
-    command.alternativePrettier,
-  );
-  const originalPrettierRepositoryText = getPrettierRepositorySourceText(
-    command.originalPrettier,
-  );
-  if (configuration.isCI) {
-    return `**${alternativePrettierRepositoryText} VS ${originalPrettierRepositoryText}**`;
-  } else {
-    return `${alternativePrettierRepositoryText} VS ${originalPrettierRepositoryText}`;
-  }
+  const text = [command.alternative, command.original]
+    .map((prettierVersion) => getPrettierVersionDescription(prettierVersion))
+    .join(" VS ");
+
+  return configuration.isCI ? `** ${text} **` : text;
 }
 
 const LONG_DIFF_THRESHOLD_IN_LINES = 50;
