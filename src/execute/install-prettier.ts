@@ -1,4 +1,6 @@
 import path from "node:path";
+import fs from "node:fs";
+import assert from "node:assert/strict";
 import { PrettierVersion, PrettierPullRequest, sourceTypes } from "../parse.ts";
 import * as configuration from "../configuration.ts";
 import * as brew from "../tools/brew.ts";
@@ -32,11 +34,14 @@ export async function installPrettier(prettierVersion: PrettierVersion) {
 
   await pullRequestDirectory?.dispatch();
 
+  const prettierBinary = path.join(cwd, "node_modules/prettier/bin/prettier.cjs")
+  assert.equal(fs.existsSync(prettierBinary), true)
+
   return {
     dispatch: () => {
       directory.dispatch();
     },
-    bin: path.join(cwd, "node_modules/prettier/bin/prettier.cjs"),
+    bin: prettierBinary,
   };
 }
 
