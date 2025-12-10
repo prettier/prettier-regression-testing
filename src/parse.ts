@@ -101,7 +101,7 @@ export function parseRepositorySource(token: Token): PrettierVersion {
   if (/^#\d+$/.test(raw)) {
     return {
       type: sourceTypes.pullRequest,
-      number: raw.slice(-1),
+      number: raw.slice(1),
       raw,
     };
   }
