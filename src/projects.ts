@@ -59,8 +59,7 @@ export const getProjectName = (project: Project): string =>
 export const getTargetRepositoryPath = (project: Project) =>
   path.join(configuration.targetRepositoriesPath, getProjectName(project));
 
-export async function cloneProjects(): Promise<void> {
-  await logger.log("Cloning repositories...");
+export async function cloneProjects() {
   const projects = await getProjects();
   await Promise.all(
     projects.map(async (project) => {
@@ -78,4 +77,6 @@ export async function cloneProjects(): Promise<void> {
       }
     }),
   );
+
+  return projects;
 }

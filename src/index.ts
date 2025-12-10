@@ -7,7 +7,6 @@ import { execute } from "./execute/index.ts";
 import { getLogText } from "./log-text.ts";
 import { parse } from "./parse.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
-import { cloneProjects } from "./projects.ts";
 import { uploadToArtifact } from "./artifact.ts";
 import { outdent } from "outdent";
 
@@ -49,7 +48,6 @@ process.on("unhandledRejection", function (reason) {
     if (!commandString) {
       throw new Error("Please enter some commands.");
     }
-    await cloneProjects();
     const command = parse(commandString);
     const result = await execute(command);
     const { title, reports } = getLogText(result, command);

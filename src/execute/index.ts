@@ -5,8 +5,9 @@ import { runPrettier } from "./run-prettier.ts";
 import * as configuration from "../configuration.ts";
 import * as git from "../tools/git.ts";
 import * as logger from "../logger.ts";
-import { getProjects, getTargetRepositoryPath } from "../projects.ts";
+import { getTargetRepositoryPath } from "../projects.ts";
 import { installPrettier } from "./install-prettier.ts";
+import { cloneProjects } from "../projects.ts";
 
 export interface ExecuteResultEntry {
   commitHash: string;
@@ -22,7 +23,9 @@ export async function execute(command: Command): Promise<ExecuteResultEntry[]> {
     ),
   );
 
-  const projects = await getProjects();
+  await logger.log("Cloning repositories...");
+  const projects = await cloneProjects();
+
   const commitHashes = await Promise.all(
     projects.map(async (project) =>
       getPrettyHeadCommitHash(getTargetRepositoryPath(project)),
