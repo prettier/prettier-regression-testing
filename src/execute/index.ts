@@ -6,7 +6,7 @@ import * as configuration from "../configuration.ts";
 import * as git from "../tools/git.ts";
 import * as logger from "../logger.ts";
 import { getProjects, getTargetRepositoryPath } from "../projects.ts";
-import {installPrettier} from './install-prettier.ts'
+import { installPrettier } from "./install-prettier.ts";
 
 export interface ExecuteResultEntry {
   commitHash: string;
@@ -42,7 +42,7 @@ export async function execute({
     }),
   );
 
-  await originalPrettier.dispatch()
+  await originalPrettier.dispatch();
 
   // Setup alternativeVersionPrettier
   await logger.log("Setting up alternativeVersionPrettier...");
@@ -54,7 +54,7 @@ export async function execute({
       await runPrettier(alternativePrettier, project);
     }),
   );
-  await alternativePrettier.dispatch()
+  await alternativePrettier.dispatch();
 
   const diffs = await Promise.all(
     projects.map(getTargetRepositoryPath).map(git.diffRepository),

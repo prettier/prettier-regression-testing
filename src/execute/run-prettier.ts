@@ -2,7 +2,7 @@ import path from "path";
 import spawn from "nano-spawn";
 import { type Project, getTargetRepositoryPath } from "../projects.ts";
 import * as yarn from "../tools/yarn.ts";
-import {type InstalledPrettier} from './install-prettier.ts'
+import { type InstalledPrettier } from "./install-prettier.ts";
 
 export async function runPrettier(
   prettier: InstalledPrettier,
