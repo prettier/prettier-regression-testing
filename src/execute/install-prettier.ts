@@ -57,12 +57,15 @@ async function getPullRequest(
 
   const directory = await createTemporaryDirectory();
 
-  await git.init(directory.path);
-  await gh.prCheckout(pullRequestNumber, directory.path);
-  const { stdout } = await npm.pack({ cwd: directory.path });
+
+  await git.clone('https://github.com/prettier/prettier.git', 'prettier', directory.path);
+  const cwd = path.join(directory.path, 'prettier')
+
+  await gh.prCheckout(pullRequestNumber, cwd);
+  const { stdout } = await npm.pack({ cwd });
 
   return {
     directory,
-    version: `file:${path.join(directory.path, stdout.trim())}`,
+    version: `file:${path.join(cwd, stdout.trim())}`,
   };
 }
