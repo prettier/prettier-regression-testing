@@ -6,13 +6,13 @@ export const sourceTypes = {
 export interface PrettierPackage {
   type: typeof sourceTypes.package;
   version: string,
-  raw?: string;
+  raw: string;
 }
 
 export interface PrettierPullRequest {
   type: typeof sourceTypes.pullRequest;
   number: string,
-  raw?: string;
+  raw: string;
 }
 
 
