@@ -1,36 +1,10 @@
 import * as configuration from "./configuration.ts";
 import { ExecuteResultEntry } from "./execute/index.ts";
-import { Command, PrettierRepositorySource } from "./parse.ts";
+import { Command } from "./parse.ts";
 
-function getPrettierRepositorySourceText(
-  prettierRepositorySource: PrettierRepositorySource,
-) {
-  switch (prettierRepositorySource.type) {
-    case "prNumber": {
-      return configuration.isCI
-        ? `prettier/prettier#${prettierRepositorySource.prNumber}`
-        : `https://github.com/prettier/prettier/pull/${prettierRepositorySource.prNumber}`;
-    }
-    case "repositoryAndRef": {
-      return configuration.isCI
-        ? `${prettierRepositorySource.repositoryName}@${prettierRepositorySource.ref}`
-        : `https://github.com/${prettierRepositorySource.repositoryName}/blob/${prettierRepositorySource.ref}/README.md`;
-    }
-    case "version": {
-      const versionUrl = `https://github.com/prettier/prettier/tree/${prettierRepositorySource.version}`;
-      return configuration.isCI
-        ? `[prettier/prettier@${prettierRepositorySource.version}](${versionUrl})`
-        : versionUrl;
-    }
-  }
-}
 function getLogTitle(command: Command): string {
-  const alternativePrettierRepositoryText = getPrettierRepositorySourceText(
-    command.alternativePrettier,
-  );
-  const originalPrettierRepositoryText = getPrettierRepositorySourceText(
-    command.originalPrettier,
-  );
+  const alternativePrettierRepositoryText = command.alternativePrettier.raw;
+  const originalPrettierRepositoryText = command.originalPrettier.raw;
   if (configuration.isCI) {
     return `**${alternativePrettierRepositoryText} VS ${originalPrettierRepositoryText}**`;
   } else {

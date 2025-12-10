@@ -1,51 +1,44 @@
-import semver from "semver";
-
 export const sourceTypes = {
-  version: "version",
-  repositoryAndRef: "repositoryAndRef",
-  prNumber: "prNumber",
+  pullRequest: 'pull-request',
+  package: 'package',
 } as const;
 
-export interface PrettierRepositorySourceVersion {
-  type: typeof sourceTypes.version;
-  version: string;
-}
-export interface PrettierRepositorySourceRepositoryAndRef {
-  type: typeof sourceTypes.repositoryAndRef;
-  // like "sosukesuzuki/prettier"
-  repositoryName: string;
-  // like "main"
-  ref: string;
-}
-export interface PrettierRepositorySourcePrNumber {
-  type: typeof sourceTypes.prNumber;
-  prNumber: string;
+export interface PrettierPackage {
+  type: typeof sourceTypes.package;
+  version: string,
+  raw?: string;
 }
 
-export type PrettierRepositorySource =
-  | PrettierRepositorySourceVersion
-  | PrettierRepositorySourceRepositoryAndRef
-  | PrettierRepositorySourcePrNumber;
+export interface PrettierPullRequest {
+  type: typeof sourceTypes.pullRequest;
+  number: string,
+  raw?: string;
+}
+
+
+export type PrettierVersion =
+  | PrettierPackage
+  | PrettierPullRequest;
 
 export type Project = {
   repositoryUrl: string;
 };
 
 export interface Command {
-  alternativePrettier: PrettierRepositorySource;
-  originalPrettier: PrettierRepositorySource;
+  alternativePrettier: PrettierVersion;
+  originalPrettier: PrettierVersion;
 }
 
-const defaultPrettierRepositorySource: PrettierRepositorySource = {
-  type: sourceTypes.repositoryAndRef,
-  repositoryName: "prettier/prettier",
-  ref: "main",
+const defaultPrettierRepositorySource: PrettierVersion = {
+  type: sourceTypes.package,
+  version: "prettier/prettier",
+  raw: "prettier/prettier",
 };
 export function parse(source: string): Command {
   const tokens = tokenize(source);
 
-  let alternativePrettier: PrettierRepositorySource | undefined = undefined;
-  let originalPrettier: PrettierRepositorySource =
+  let alternativePrettier: PrettierVersion | undefined = undefined;
+  let originalPrettier: PrettierVersion =
     defaultPrettierRepositorySource;
 
   for (const [index, token] of tokenize(source).entries()) {
@@ -101,47 +94,35 @@ export function parse(source: string): Command {
   return { alternativePrettier, originalPrettier } as Command;
 }
 
-export function parseRepositorySource(token: Token): PrettierRepositorySource {
+export function parseRepositorySource(token: Token): PrettierVersion {
   if (token.kind !== "source") {
     throw new Error(`Unexpected token '${token.kind}', expect 'source'.`);
   }
 
-  const { value } = token;
-
-  // like "2.3.4"
-  if (semver.valid(value)) {
-    return {
-      type: sourceTypes.version,
-      version: value,
-    };
-  }
-
-  // like "sosukesuzuki/prettier#ref"
-  const split1 = value.split("/").filter(Boolean);
-  if (value.split("/").length === 2) {
-    const split2 = split1[1].split(/#|@/).filter(Boolean);
-    if (split2.length === 2) {
-      const remoteName = split1[0];
-      const repositoryName = `${remoteName}/${split2[0]}`;
-      const ref = split2[1];
-      return {
-        type: sourceTypes.repositoryAndRef,
-        repositoryName,
-        ref,
-      };
-    }
-  }
+  const raw = token.value
 
   // like "#3465"
-  const matched = value.match(/\b\d{1,5}\b/g);
-  if (value.startsWith("#") && matched) {
+  if (/^#\d+$/.test(raw)) {
     return {
-      type: sourceTypes.prNumber,
-      prNumber: matched[0],
+      type: sourceTypes.pullRequest,
+      number: raw.slice(-1),
+      raw,
     };
   }
 
-  throw new SyntaxError(`Unexpected source value '${value}'.`);
+  // Any source yarn accepts https://yarnpkg.com/cli/add
+  // `sosukesuzuki/prettier#ref`, `3.0.0`, ... and so on
+  const packagePrefix = 'prettier@'
+  let version = raw
+  if (version.startsWith(packagePrefix)) {
+    version = version.slice(packagePrefix.length)
+  }
+
+  return {
+    type: sourceTypes.package,
+    version,
+    raw,
+  };
 }
 
 type Token =

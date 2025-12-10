@@ -1,33 +1,21 @@
-import { existsSync } from "fs";
 import { Command } from "../parse.ts";
 import { getPrettyHeadCommitHash } from "./get-pretty-head-commit-hash.ts";
 import { preparePrettierIgnoreFile } from "./prepare-prettier-ignore-file.ts";
 import { runPrettier } from "./run-prettier.ts";
-import { setupPrettierRepository } from "./setup-repository.ts";
 import * as configuration from "../configuration.ts";
 import * as git from "../tools/git.ts";
 import * as logger from "../logger.ts";
 import { getProjects, getTargetRepositoryPath } from "../projects.ts";
+import {installPrettier} from './install-prettier.ts'
 
 export interface ExecuteResultEntry {
   commitHash: string;
   diff: string;
 }
 
-async function clonePrettier() {
-  if (!existsSync(configuration.prettierRepositoryPath)) {
-    await logger.log("Cloning Prettier repository...");
-    await git.clone(
-      "https://github.com/prettier/prettier.git",
-      "./prettier",
-      configuration.cwd,
-    );
-  }
-}
-
 export async function execute({
-  alternativePrettier,
-  originalPrettier,
+  originalPrettier: originalPrettierVersion,
+  alternativePrettier: alternativePrettierVersion,
 }: Command): Promise<ExecuteResultEntry[]> {
   const projects = await getProjects();
   const commitHashes = await Promise.all(
@@ -36,18 +24,16 @@ export async function execute({
     ),
   );
 
-  await clonePrettier();
-
   // Setup originalVersionPrettier
   await logger.log("Setting up originalVersionPrettier...");
-  await setupPrettierRepository(originalPrettier);
+  const originalPrettier = await installPrettier(originalPrettierVersion);
   // Run originalVersionPrettier
   await logger.log("Running originalVersionPrettier...");
   await Promise.all(
     projects.map(async (project) => {
       const targetRepositoryPath = getTargetRepositoryPath(project);
       await preparePrettierIgnoreFile(project);
-      await runPrettier(configuration.prettierRepositoryPath, project);
+      await runPrettier(originalPrettier, project);
       await git.add(".", targetRepositoryPath);
       await git.commitAllowEmptyNoVerify(
         "Fixed by originalVersionPrettier",
@@ -56,16 +42,19 @@ export async function execute({
     }),
   );
 
+  await originalPrettier.dispatch()
+
   // Setup alternativeVersionPrettier
   await logger.log("Setting up alternativeVersionPrettier...");
-  await setupPrettierRepository(alternativePrettier);
+  const alternativePrettier = await installPrettier(alternativePrettierVersion);
   // Run alternativeVersionPrettier
   await logger.log("Running alternativeVersionPrettier...");
   await Promise.all(
     projects.map(async (project) => {
-      await runPrettier(configuration.prettierRepositoryPath, project);
+      await runPrettier(alternativePrettier, project);
     }),
   );
+  await alternativePrettier.dispatch()
 
   const diffs = await Promise.all(
     projects.map(getTargetRepositoryPath).map(git.diffRepository),

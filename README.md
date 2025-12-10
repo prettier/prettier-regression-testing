@@ -25,17 +25,16 @@ run alternativeVersionPrettier vs originalVersionPrettier
 
 Required.
 
-There are 3 ways to specify.
+There are 2 ways to specify.
 
-1. Versions (e.g. `2.0.0`, `1.7.1`)
-2. Repository name + ref (e.g. `sosukesuzuki/prettier#2f3fc241f8cb1867a0a3073ceac9d662e4b25fab`).
-3. Pull Request number on [prettier/prettier](https://github.com/prettier/prettier) repository (e.g. `#110168`).
+1. Versions or repository name + ref (e.g. `2.0.0`, `1.7.1`, or `sosukesuzuki/prettier#2f3fc241f8cb1867a0a3073ceac9d662e4b25fab`), it's installed directly with `yarn add`, so anything that [`yarn add`](https://yarnpkg.com/cli/add) allows
+2. Pull Request number on [prettier/prettier](https://github.com/prettier/prettier) repository (e.g. `#110168`).
 
 ### `originalVersionPrettier`
 
 Optional.
 
-In default, use `prettier/prettier#main`.
+In default, use `prettier/prettier`.
 
 Also, you can specify with the logic same as `alternativeVersionPrettier`.
 
@@ -46,11 +45,11 @@ run #110168
 ```
 
 ```
-run #110168 vs sosukesuzuki/prettier#main
+run #110168 vs sosukesuzuki/prettier#fix-foo
 ```
 
 ```
-run sosukesuzuki/prettier#main vs 1.8.1
+run sosukesuzuki/prettier#fix-foo vs 1.8.1
 ```
 
 ## Add new project
