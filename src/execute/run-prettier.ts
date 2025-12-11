@@ -1,4 +1,4 @@
-import spawn from "nano-spawn";
+import spawn, { type SubprocessError } from "nano-spawn";
 import fs from "node:fs/promises";
 import { cloneProject, type Project } from "../projects.ts";
 import { type InstalledPrettier } from "../install-prettier.ts";
@@ -24,13 +24,23 @@ export async function runPrettierWithVersion({
   ) {
     // if another packages is required to run Prettier
     // e.g. excalidraw: https://github.com/excalidraw/excalidraw/blob/a21db08cae608692d9525fff97f109fb24fec20c/package.json#L83
-    if (error.message.includes("Cannot find module")) {
+    if (shouldInstall(error)) {
       await spawn("yarn", ["install"], { cwd });
       await run();
     } else {
       throw error;
     }
   }
+}
+
+function shouldInstall(error: SubprocessError) {
+  const { message, stderr } = error;
+  return [message, stderr].some(
+    (message) =>
+      typeof message === "string" &&
+      (message.includes("Cannot find module") ||
+        message.includes("Cannot find package")),
+  );
 }
 
 const commitChanges = async (directory: string, message: string) => {
