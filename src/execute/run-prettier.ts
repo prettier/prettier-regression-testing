@@ -81,9 +81,15 @@ export async function runPrettier({
     repository,
   });
 
+  const fileLinkPrefix = `https://github.com/${repository.repository}/tree/${repository.commit}/`;
+
   const { stdout } = await spawn(
     "git",
-    ["diff", `--src-prefix=Original/`, `--dst-prefix=Alternative/`],
+    [
+      "diff",
+      `--src-prefix=Original|${fileLinkPrefix}`,
+      `--dst-prefix=Alternative|...`,
+    ],
     { cwd: directory },
   );
 
