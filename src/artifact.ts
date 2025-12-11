@@ -35,8 +35,10 @@ export async function uploadToArtifact(
     repo: github.context.repo.repo,
     run_id: github.context.runId,
   });
+  console.log(artifacts);
 
   const artifactData = artifacts.find((a) => a.name === artifactName);
+  console.log(artifactData);
 
   return artifactData!.archive_download_url;
 }
