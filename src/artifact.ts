@@ -1,4 +1,4 @@
-import * as artifact from "@actions/artifact";
+import { DefaultArtifactClient } from "@actions/artifact";
 import * as github from "@actions/github";
 import * as path from "path";
 import * as fs from "fs";
@@ -11,24 +11,23 @@ export async function uploadToArtifact(
     return undefined;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE!;
 
   const filePaths = texts.map((text) => ({
-    filePath: path.join(GITHUB_WORKSPACE, Date.now().toString() + ".txt"),
+    file: Date.now().toString() + ".txt",
     text,
   }));
 
-  for (const { filePath, text } of filePaths) {
-    fs.writeFileSync(filePath, text, "utf-8");
+  for (const { file, text } of filePaths) {
+    fs.writeFileSync(path.join(GITHUB_WORKSPACE, file), text, "utf-8");
   }
 
-  const artifactClient = new artifact.DefaultArtifactClient();
-  const artifactName = "artifact" + Date.now().toString();
+  const artifactClient = new DefaultArtifactClient();
+  const artifactName = "reports" + Date.now().toString();
 
   await artifactClient.uploadArtifact(
     artifactName,
-    filePaths.map(({ filePath }) => filePath),
+    filePaths.map(({ file }) => file),
     GITHUB_WORKSPACE,
   );
 
