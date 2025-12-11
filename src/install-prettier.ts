@@ -71,9 +71,12 @@ async function installPrettier(
 }
 
 async function isGhLogged() {
-  const { stdout } = await spawn("gh", ["auth", "status"]);
-
-  return !stdout.includes("You are not logged into");
+  try {
+    const { stderr } = await spawn("gh", ["auth", "status"]);
+    return stderr.includes("Logged in to github.com as");
+  } catch {
+    return false;
+  }
 }
 
 async function authGh() {
