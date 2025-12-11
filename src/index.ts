@@ -1,18 +1,17 @@
 import fs from "fs/promises";
 import { inspect } from "node:util";
 import * as core from "@actions/core";
-import * as configuration from "./configuration.ts";
+import { IS_CI } from "./constants.ts";
 import * as logger from "./logger.ts";
 import { execute } from "./execute/index.ts";
-import { getLogText } from "./log-text.ts";
-import { parse } from "./parse.ts";
+import { getReport } from "./report.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
 import { uploadToArtifact } from "./artifact.ts";
 import { outdent } from "outdent";
 
 async function exit(error: Error | string) {
   console.error(error);
-  if (configuration.isCI) {
+  if (IS_CI) {
     core.setFailed(error);
   } else {
     process.exit(1);
@@ -35,89 +34,89 @@ process.on("unhandledRejection", function (reason) {
   });
 });
 
-(async () => {
-  try {
-    let commandString;
-    if (configuration.isCI) {
-      const comment = getIssueComment();
-      commandString = comment.body as string;
-    } else {
-      await fs.writeFile("log.txt", "");
-      commandString = process.argv.splice(2)[0];
-    }
-    if (!commandString) {
-      throw new Error("Please enter some commands.");
-    }
-    const command = parse(commandString);
-    const result = await execute(command);
-    const { title, reports } = getLogText(result, command);
-    const filesToUpload = reports
-      .flatMap((group) => group.results.filter((report) => report.shouldUpload))
-      .map((report) => report.diff);
-    const { isCI } = configuration;
+async function run() {
+  let commandString;
+  if (IS_CI) {
+    const comment = getIssueComment();
+    commandString = comment.body as string;
+  } else {
+    await fs.writeFile("log.txt", "");
+    commandString = process.argv.splice(2)[0];
+  }
 
-    let artifactUrl: string | undefined;
+  if (!commandString) {
+    throw new Error("Please enter some commands.");
+  }
 
-    if (isCI && filesToUpload.length > 0) {
-      try {
-        artifactUrl = await uploadToArtifact(filesToUpload);
-      } catch (error) {
-        console.log(error);
-      }
+  const result = await execute(commandString);
+
+  const { title, reports } = getReport(result);
+
+  const filesToUpload = reports
+    .flatMap((group) => group.results.filter((report) => report.shouldUpload))
+    .map((report) => report.diff);
+
+  let artifactUrl: string | undefined;
+
+  if (IS_CI && filesToUpload.length > 0) {
+    try {
+      artifactUrl = await uploadToArtifact(filesToUpload);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    for (let index = 0; index < reports.length; index++) {
-      const report = reports[index];
-      const shouldSeparate = index > 0;
-      const text = report.results
-        .map((report) => {
-          let body = report.diff;
-          if (isCI && report.shouldUpload) {
-            if (artifactUrl) {
-              body = `**Visit [this link](${artifactUrl}) to download**`;
-            } else {
-              body = "💥💥 The diff is to big, and failed to upload. 💥💥";
-            }
+  for (let index = 0; index < reports.length; index++) {
+    const report = reports[index];
+    const shouldSeparate = index > 0;
+    const text = report.results
+      .map((report) => {
+        let body = report.diff;
+        if (IS_CI && report.shouldUpload) {
+          if (artifactUrl) {
+            body = `**Visit [this link](${artifactUrl}) to download**`;
+          } else {
+            body = "💥💥 The diff is to big, and failed to upload. 💥💥";
           }
+        }
 
-          return outdent`
+        return outdent`
             ${report.head}
 
             ${body}
             `;
-        })
-        .join("\n\n");
+      })
+      .join("\n\n");
 
-      try {
-        await logger.log(
-          outdent`
+    try {
+      await logger.log(
+        outdent`
         #### ${title}
         
         ${text}
         `,
-          shouldSeparate,
+        shouldSeparate,
+      );
+    } catch (error) {
+      const isTextTooLongError =
+        error instanceof Error &&
+        error.message.includes("The text is too long");
+      if (isTextTooLongError) {
+        console.log(
+          `Reports contains ${report.results} repos, lengths: ${JSON.stringify(report.results.map(({ length }) => length))}`,
         );
-      } catch (error) {
-        const isTextTooLongError =
-          error instanceof Error &&
-          error.message.includes("The text is too long");
-        if (isTextTooLongError) {
-          console.log(
-            `Reports contains ${report.results} repos, lengths: ${JSON.stringify(report.results.map(({ length }) => length))}`,
-          );
-        }
       }
     }
-    process.exit(0);
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
-    await logger.error(inspect(error));
-    process.exit(1);
   }
-})().catch((error) => {
-  logger.error(inspect(error)).then(() => {
-    exit(error);
-  });
-});
+  process.exit(0);
+}
+
+try {
+  await run();
+} catch (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any
+) {
+  await logger.error(inspect(error));
+  await exit(error);
+}

@@ -12,5 +12,5 @@
 .pnp.*
 /build
 log.txt
-/repos
-/prettier
+/repositories
+/running

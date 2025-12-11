@@ -1,32 +1,43 @@
-import * as configuration from "./configuration.ts";
-import { ExecuteResultEntry } from "./execute/index.ts";
-import { Command } from "./parse.ts";
-import { sourceTypes, type PrettierVersion } from "./parse.ts";
+import { IS_CI, MAXIMUM_GITHUB_COMMENT_LENGTH } from "./constants.ts";
+import { PRETTIER_PACKAGE_TYPE_PULL_REQUEST } from "./parse-command.ts";
+import { type PrettierVersion } from "./parse-command.ts";
+import { type Project } from "./projects.ts";
 
 function getPrettierVersionDescription(prettier: PrettierVersion) {
-  if (prettier.type === sourceTypes.pullRequest) {
-    return configuration.isCI
+  if (prettier.type === PRETTIER_PACKAGE_TYPE_PULL_REQUEST) {
+    return IS_CI
       ? `prettier/prettier#${prettier.number}`
       : `https://github.com/prettier/prettier/pull/${prettier.number}`;
   }
 
-  return `prettier@${prettier.version} ${prettier.raw}`;
+  return `prettier@${prettier.version} (${prettier.raw})`;
 }
 
-function getLogTitle(command: Command): string {
-  const text = [command.alternative, command.original]
+function getTitle({
+  alternative,
+  original,
+}: {
+  alternative: PrettierVersion;
+  original: PrettierVersion;
+}): string {
+  const text = [alternative, original]
     .map((prettierVersion) => getPrettierVersionDescription(prettierVersion))
     .join(" VS ");
 
-  return configuration.isCI ? `** ${text} **` : text;
+  return IS_CI ? `**${text}**` : text;
 }
 
 const LONG_DIFF_THRESHOLD_IN_LINES = 50;
 
-export function getLogText(
-  result: ExecuteResultEntry[],
-  command: Command,
-): {
+export function getReport({
+  alternative,
+  original,
+  result,
+}: {
+  alternative: PrettierVersion;
+  original: PrettierVersion;
+  result: { project: Project; diff: string }[];
+}): {
   title: string;
   reports: {
     length: number;
@@ -34,31 +45,32 @@ export function getLogText(
       head: string;
       diff: string;
       shouldUpload: boolean;
-      result: ExecuteResultEntry;
       length: number;
     }[];
   }[];
 } {
-  const title = getLogTitle(command);
+  const title = getTitle({
+    alternative,
+    original,
+  });
 
   result = result.toSorted(
     (resultA, resultB) => resultB.diff.length - resultA.diff.length,
   );
 
-  const formattedResults = result.map((report) => {
-    const head = report.commitHash;
-    const diff = formatDiff(report.diff);
+  const formattedResults = result.map(({ project, diff: rawDiff }) => {
+    const head = project.commit;
+    const diff = formatDiff(rawDiff);
     const length =
       title.length +
       head.length +
       diff.length +
       /* Some room for blank lines */ 50;
-    const shouldUpload = length > configuration.MAXIMUM_GITHUB_COMMENT_LENGTH;
+    const shouldUpload = length > MAXIMUM_GITHUB_COMMENT_LENGTH;
     return {
       head,
       diff,
       shouldUpload,
-      result: report,
       length: shouldUpload
         ? // Save some space for uploaded url
           200
@@ -82,7 +94,7 @@ export function getLogText(
       formattedResult.length +
         lastGroup.length +
         /* Some room for blank lines */ 50 >
-      configuration.MAXIMUM_GITHUB_COMMENT_LENGTH
+      MAXIMUM_GITHUB_COMMENT_LENGTH
     ) {
       group.push({
         length: formattedResult.length,

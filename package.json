@@ -14,6 +14,7 @@
     "lint:tsc": "tsc --noEmit",
     "test": "vitest",
     "build": "tsc",
+    "execute": "yarn build && node ./build/index.js",
     "add-project": "node scripts/add-project.mjs",
     "update-projects": "node scripts/update-projects-json.mjs"
   },

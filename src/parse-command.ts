@@ -1,16 +1,14 @@
-export const sourceTypes = {
-  pullRequest: "pull-request",
-  package: "package",
-} as const;
+export const PRETTIER_PACKAGE_TYPE_PULL_REQUEST = "PULL_REQUEST";
+export const PRETTIER_PACKAGE_TYPE_PACKAGE = "PACKAGE";
 
 export interface PrettierPackage {
-  type: typeof sourceTypes.package;
+  type: typeof PRETTIER_PACKAGE_TYPE_PACKAGE;
   version: string;
   raw: string;
 }
 
 export interface PrettierPullRequest {
-  type: typeof sourceTypes.pullRequest;
+  type: typeof PRETTIER_PACKAGE_TYPE_PULL_REQUEST;
   number: string;
   raw: string;
 }
@@ -26,16 +24,17 @@ export interface Command {
   original: PrettierVersion;
 }
 
-const defaultPrettierRepositorySource: PrettierVersion = {
-  type: sourceTypes.package,
+export const defaultOriginalPrettierVersion: PrettierVersion = {
+  type: PRETTIER_PACKAGE_TYPE_PACKAGE,
   version: "prettier/prettier",
   raw: "prettier/prettier",
 };
-export function parse(source: string): Command {
+
+export function parseCommand(source: string) {
   const tokens = tokenize(source);
 
-  let alternative: PrettierVersion | undefined = undefined;
-  let original: PrettierVersion = defaultPrettierRepositorySource;
+  let alternative: PrettierVersion | undefined;
+  let original: PrettierVersion | undefined;
 
   for (const [index, token] of tokenize(source).entries()) {
     const lookahead = (): Token => {
@@ -87,7 +86,13 @@ export function parse(source: string): Command {
     }
   }
 
-  return { alternative, original } as Command;
+  if (!alternative) {
+    throw new Error("Alternative Prettier is required.");
+  }
+
+  original ??= defaultOriginalPrettierVersion;
+
+  return { alternative, original };
 }
 
 export function parseRepositorySource(token: Token): PrettierVersion {
@@ -100,7 +105,7 @@ export function parseRepositorySource(token: Token): PrettierVersion {
   // like "#3465"
   if (/^#\d+$/.test(raw)) {
     return {
-      type: sourceTypes.pullRequest,
+      type: PRETTIER_PACKAGE_TYPE_PULL_REQUEST,
       number: raw.slice(1),
       raw,
     };
@@ -115,7 +120,7 @@ export function parseRepositorySource(token: Token): PrettierVersion {
   }
 
   return {
-    type: sourceTypes.package,
+    type: PRETTIER_PACKAGE_TYPE_PACKAGE,
     version,
     raw,
   };

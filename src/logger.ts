@@ -1,13 +1,13 @@
 import fs from "fs/promises";
 import * as github from "@actions/github";
-import * as configuration from "./configuration.ts";
+import { IS_CI, MAXIMUM_GITHUB_COMMENT_LENGTH } from "./constants.ts";
 import { getOctokit } from "./octokit.ts";
 
 let commentId: number | undefined;
 async function logToIssueComment(logText: string, separateComment = false) {
-  if (logText.length > configuration.MAXIMUM_GITHUB_COMMENT_LENGTH) {
+  if (logText.length > MAXIMUM_GITHUB_COMMENT_LENGTH) {
     throw new Error(
-      `The text is too long (maximum is ${configuration.MAXIMUM_GITHUB_COMMENT_LENGTH} characters, actual ${logText.length} characters)"}`,
+      `The text is too long (maximum is ${MAXIMUM_GITHUB_COMMENT_LENGTH} characters, actual ${logText.length} characters)"}`,
     );
   }
 
@@ -32,7 +32,7 @@ export async function log(
   logText: string,
   separateComment = false,
 ): Promise<void> {
-  if (configuration.isCI) {
+  if (IS_CI) {
     console.log(logText);
     await logToIssueComment(logText, separateComment);
   } else {
@@ -42,7 +42,7 @@ export async function log(
 }
 
 export async function error(logText: string): Promise<void> {
-  if (configuration.isCI) {
+  if (IS_CI) {
     const errorText = "## [Error]\n\n" + "```\n" + logText + "\n```";
     console.log(errorText);
     await logToIssueComment(errorText);

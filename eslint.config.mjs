@@ -9,5 +9,5 @@ export default defineConfig(
   eslint.configs.recommended,
   tseslint.configs.recommended,
   eslintConfigPrettier,
-  { ignores: ["build"] },
+  { ignores: ["build", "running", "repositories"] },
 );

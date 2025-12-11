@@ -1,38 +1,32 @@
-import path from "path";
-import fs from "fs";
-import {
-  getProjectName,
-  type Project,
-  getTargetRepositoryPath,
-} from "../projects.ts";
+import path from "node:path";
+import fs from "node:fs/promises";
+import { type Project } from "../projects.ts";
 
-export async function preparePrettierIgnoreFile(
-  project: Project,
-): Promise<void> {
-  const repositoryName = getProjectName(project);
-  const repositoryPath = getTargetRepositoryPath(project);
-  if (!project) {
-    throw new Error(`Repository name '${repositoryName}' is invalid`);
+function readFile(file: string) {
+  try {
+    return fs.readFile(file, "utf8");
+  } catch {
+    return "";
   }
+}
 
-  const { ignore, ignoreFile } = project;
+const unique = <T>(array: T[]): T[] => [...new Set(array)];
 
-  const prettierIgnoreFile = path.join(repositoryPath, "./.prettierignore");
-  let prettierIgnoreFileContent = fs.existsSync(prettierIgnoreFile)
-    ? await fs.promises.readFile(prettierIgnoreFile, "utf8")
-    : "";
-  if (ignoreFile) {
-    prettierIgnoreFileContent +=
-      "\n" +
-      (await fs.promises.readFile(
-        path.join(repositoryPath, ignoreFile),
-        "utf8",
-      ));
-  }
-  if (ignore) {
-    prettierIgnoreFileContent +=
-      "\n" + (Array.isArray(ignore) ? ignore.join("\n") : ignore);
-  }
+export async function preparePrettierIgnoreFile({
+  directory,
+  project,
+}: {
+  directory: string;
+  project: Project;
+}): Promise<void> {
+  const files = unique([".prettierignore", project.ignoreFile].filter(Boolean));
 
-  await fs.promises.writeFile(prettierIgnoreFile, prettierIgnoreFileContent);
+  const contents = await Promise.all(
+    files.map((file) => readFile(path.join(directory, file!))),
+  );
+
+  const content = [...contents, ...project.ignore].join("\n");
+
+  const prettierIgnoreFile = path.join(directory, "./.prettierignore");
+  await fs.writeFile(prettierIgnoreFile, content);
 }

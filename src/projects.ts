@@ -1,17 +1,29 @@
-import path from "path";
-import { existsSync, promises as fs } from "fs";
+import spawn from "nano-spawn";
+import path from "node:path";
+import assert from "node:assert/strict";
+import fs from "node:fs/promises";
 import Ajv, { DefinedError } from "ajv";
-import * as logger from "./logger.ts";
-import * as configuration from "./configuration.ts";
-import * as git from "./tools/git.ts";
+import { repositoriesDirectory } from "./constants.ts";
+import { clearDirectory } from "./directory.ts";
 
-export interface Project {
+type RawProject = {
   repository: string;
   glob: string | readonly string[];
   ignoreFile?: string;
   ignore?: string | readonly string[];
   commit: string;
-}
+};
+
+export type Project = {
+  name: string;
+  repository: string;
+  glob: readonly string[];
+  ignoreFile: string | undefined;
+  ignore: readonly string[];
+  commit: string;
+  directoryName: string;
+  directory: string;
+};
 
 const projectSchema = {
   type: "object",
@@ -39,44 +51,70 @@ const ajv = new Ajv();
 
 export const validateProjects = ajv.compile(schema);
 
-let data: Project[];
-
 export async function getProjects(): Promise<Project[]> {
-  if (data) {
-    return data;
-  }
   const projectJsonPath = path.join(import.meta.dirname, "../projects.json");
-  data = JSON.parse(await fs.readFile(projectJsonPath, "utf-8"));
+  const data = JSON.parse(await fs.readFile(projectJsonPath, "utf-8"));
   if (validateProjects(data)) {
-    return data as Project[];
+    return (data as RawProject[]).map((rawProject) => {
+      const name = getProjectName(rawProject);
+      const directoryName = name.replaceAll("/", "__");
+
+      return {
+        name,
+        repository: rawProject.repository,
+        glob: Array.isArray(rawProject.glob)
+          ? rawProject.glob
+          : [rawProject.glob ?? "."],
+        ignoreFile: rawProject.ignoreFile,
+        ignore: Array.isArray(rawProject.ignore)
+          ? rawProject.ignore
+          : rawProject.glob
+            ? [rawProject.glob]
+            : [],
+        commit: rawProject.commit,
+        directoryName,
+        directory: path.join(repositoriesDirectory, directoryName),
+      };
+    });
   }
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   throw validateProjects.errors![0] as DefinedError;
 }
 
-export const getProjectName = (project: Project): string =>
+export const getProjectName = (project: RawProject): string =>
   new URL(project.repository).pathname.slice(1).replace(/\.git$/, "");
-export const getTargetRepositoryPath = (project: Project) =>
-  path.join(configuration.targetRepositoriesPath, getProjectName(project));
 
-export async function cloneProjects() {
-  const projects = await getProjects();
-  await Promise.all(
-    projects.map(async (project) => {
-      const directoryName = getProjectName(project);
-      const directory = path.join(
-        configuration.targetRepositoriesPath,
-        directoryName,
-      );
-      const parentDirectory = path.join(directory, "../");
-      if (!existsSync(parentDirectory)) {
-        await fs.mkdir(parentDirectory, { recursive: true });
-      }
-      if (!existsSync(directory)) {
-        await git.shallowClone(project.repository, project.commit, directory);
-      }
-    }),
+async function getCommitHash({ short, cwd }: { short?: boolean; cwd: string }) {
+  try {
+    const { stdout } = await spawn(
+      "git",
+      ["rev-parse", ...(short ? ["--short"] : []), "HEAD"],
+      { cwd },
+    );
+    return stdout.trim();
+  } catch {
+    // No op
+  }
+}
+
+export async function cloneProject(project: Project) {
+  const cwd = project.directory;
+
+  // If it's already on the correct commit
+  if ((await getCommitHash({ cwd })) === project.commit) {
+    return;
+  }
+
+  await clearDirectory(cwd);
+  await spawn("git", ["init"], { cwd });
+  await spawn(
+    "git",
+    ["fetch", "--depth=1", project.repository, project.commit],
+    { cwd },
   );
+  await spawn("git", ["checkout", project.commit], { cwd });
 
-  return projects;
+  assert.equal(await getCommitHash({ cwd }), project.commit);
+
+  return;
 }
