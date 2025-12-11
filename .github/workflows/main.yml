@@ -22,9 +22,9 @@ jobs:
       - run: yarn
       - run: yarn build
       - name: main action
+        uses: ./.github/actions/main
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node build/index.js
       - name: Upload Reports
         uses: actions/upload-artifact@v5
         with:
