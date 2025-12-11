@@ -1,7 +1,7 @@
 import { IS_CI, MAXIMUM_GITHUB_COMMENT_LENGTH } from "./constants.ts";
 import { PRETTIER_PACKAGE_TYPE_PULL_REQUEST } from "./parse-command.ts";
 import { type PrettierVersion } from "./parse-command.ts";
-import { type Project } from "./projects.ts";
+import { type Repository } from "./repositories.ts";
 
 function getPrettierVersionDescription(prettier: PrettierVersion) {
   if (prettier.type === PRETTIER_PACKAGE_TYPE_PULL_REQUEST) {
@@ -36,7 +36,7 @@ export function getReport({
 }: {
   alternative: PrettierVersion;
   original: PrettierVersion;
-  result: { project: Project; diff: string }[];
+  result: { repository: Repository; diff: string }[];
 }): {
   title: string;
   reports: {
@@ -58,8 +58,8 @@ export function getReport({
     (resultA, resultB) => resultB.diff.length - resultA.diff.length,
   );
 
-  const formattedResults = result.map(({ project, diff: rawDiff }) => {
-    const head = project.commit;
+  const formattedResults = result.map(({ repository, diff: rawDiff }) => {
+    const head = repository.commit;
     const diff = formatDiff(rawDiff);
     const length =
       title.length +

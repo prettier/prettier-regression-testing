@@ -55,17 +55,16 @@ RUN sosukesuzuki/prettier#fix-foo VS 1.0.0
 
 Optional.
 
-Run [all repositories](./projects.json) by default.
+Run [all repositories](./repositories.json) by default.
 
-Comma separated repository or name list. (Currently only allow repositories defined in `projects.json`)
+Comma separated repository or name list. (Currently only allow repositories defined in `repositories.json`)
 
 ```
 RUN #110168 ON babel/babel
-RUN #110168 ON https://github.com/babel/babel.git
 RUN #110168 ON babel/babel,prettier/prettier
 RUN #110168 VS 1.0.0 ON babel/babel,prettier/prettier
 ```
 
-## Add new project
+## Add new repository
 
-Add a project info to `projects.json`.
+Run `yarn add-repository`

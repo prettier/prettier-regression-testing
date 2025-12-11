@@ -13,7 +13,7 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: repositories
-          key: ${{ hashFiles('projects.json') }}
+          key: ${{ hashFiles('repositories.json') }}
       - uses: actions/setup-node@v6
       - name: configure git
         run: |

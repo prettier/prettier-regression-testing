@@ -1,4 +1,4 @@
-import { getProjects, type Project } from "./projects.ts";
+import { getRepositories, type Repository } from "./repositories.ts";
 
 export const PRETTIER_PACKAGE_TYPE_PULL_REQUEST = "PULL_REQUEST";
 export const PRETTIER_PACKAGE_TYPE_PACKAGE = "PACKAGE";
@@ -48,7 +48,7 @@ export function parseCommand(source: string) {
 }
 
 function parseRepositories(repositories: string | undefined) {
-  const allRepositories = getProjects();
+  const allRepositories = getRepositories();
   if (typeof repositories !== "string") {
     return allRepositories;
   }
@@ -62,11 +62,10 @@ function parseRepositories(repositories: string | undefined) {
     throw new Error(`'repositories' required after 'ON' directive.`);
   }
 
-  const result: Project[] = [];
+  const result: Repository[] = [];
   for (const repository of shouldRun) {
     const matched = allRepositories.find(
-      (searching) =>
-        searching.repository === repository || searching.name === repository,
+      (searching) => searching.repository === repository,
     );
 
     if (!matched) {

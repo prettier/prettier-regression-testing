@@ -16,14 +16,13 @@
     "test": "vitest",
     "build": "tsc",
     "execute": "yarn build && node ./build/index.js",
-    "add-project": "node scripts/add-project.mjs",
-    "update-projects": "node scripts/update-projects-json.mjs"
+    "add-repository": "node scripts/add-repository.mjs",
+    "update-repositories": "node scripts/update-repositories.mjs"
   },
   "dependencies": {
     "@actions/artifact": "4.0.0",
     "@actions/core": "1.11.1",
     "@actions/github": "4.0.0",
-    "ajv": "8.17.1",
     "nano-spawn": "2.0.0"
   },
   "devDependencies": {

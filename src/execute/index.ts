@@ -20,25 +20,25 @@ export async function execute(commandString: string) {
 
   const result = [];
 
-  for (const [index, project] of repositories.entries()) {
+  for (const [index, repository] of repositories.entries()) {
     await logger.log(
-      `[${index + 1}/${repositories.length}] Running Prettier on '${project.name}' ...`,
+      `[${index + 1}/${repositories.length}] Running Prettier on '${repository.repository}' ...`,
     );
 
     const diff = await runPrettier({
-      directory: path.join(directory, `tests/${project.directoryName}`),
+      directory: path.join(directory, `tests/${repository.directoryName}`),
       alternative: alternativePrettier,
       original: originalPrettier,
-      project,
+      repository,
     });
 
     await writeFile(
-      path.join(directory, `reports/${project.directoryName}.diff`),
+      path.join(directory, `reports/${repository.directoryName}.diff`),
       diff,
     );
 
     result.push({
-      project,
+      repository,
       diff,
     });
   }

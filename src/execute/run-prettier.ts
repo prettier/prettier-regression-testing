@@ -1,19 +1,19 @@
 import spawn, { type SubprocessError } from "nano-spawn";
 import fs from "node:fs/promises";
-import { cloneProject, type Project } from "../projects.ts";
+import { cloneRepository, type Repository } from "../repositories.ts";
 import { type InstalledPrettier } from "../install-prettier.ts";
 import { preparePrettierIgnoreFile } from "./prepare-prettier-ignore-file.ts";
 
 export async function runPrettierWithVersion({
   directory: cwd,
   prettier,
-  project,
+  repository,
 }: {
   directory: string;
   prettier: InstalledPrettier;
-  project: Project;
+  repository: Repository;
 }): Promise<void> {
-  const args = [prettier.bin, "--write", "--no-color", ...project.glob];
+  const args = [prettier.bin, "--write", "--no-color", ...repository.glob];
   const run = () => spawn(process.execPath, args, { cwd });
 
   try {
@@ -59,23 +59,27 @@ export async function runPrettier({
   directory,
   alternative,
   original,
-  project,
+  repository,
 }: {
   directory: string;
   alternative: InstalledPrettier;
   original: InstalledPrettier;
-  project: Project;
+  repository: Repository;
 }) {
-  await cloneProject(project);
-  await fs.cp(project.directory, directory, { recursive: true });
+  await cloneRepository(repository);
+  await fs.cp(repository.directory, directory, { recursive: true });
 
-  await preparePrettierIgnoreFile({ directory, project });
+  await preparePrettierIgnoreFile({ directory, repository });
   await commitChanges(directory, "Prepare");
 
-  await runPrettierWithVersion({ directory, prettier: original, project });
+  await runPrettierWithVersion({ directory, prettier: original, repository });
   await commitChanges(directory, "Original");
 
-  await runPrettierWithVersion({ directory, prettier: alternative, project });
+  await runPrettierWithVersion({
+    directory,
+    prettier: alternative,
+    repository,
+  });
 
   const { stdout } = await spawn(
     "git",

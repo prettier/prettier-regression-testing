@@ -1,4 +1,4 @@
-name: "Update projects.json"
+name: "Update repositories.json"
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     - cron: "00 01 1 * *"
 
 jobs:
-  update-project-json:
+  update-repositories:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,12 +18,12 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
-      - name: Run update-projects-json.mjs
-        run: node ./scripts/update-projects-json.mjs
+      - name: Run update-repositories.mjs
+        run: node ./scripts/update-repositories.mjs
 
       - uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "Update projects.json"
-          branch: automated-update-projects
+          commit-message: "Update repositories.json"
+          branch: automated-update-repositories
           branch-suffix: timestamp
-          title: "Update projects.json"
+          title: "Update repositories.json"

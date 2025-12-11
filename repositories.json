@@ -1,27 +1,27 @@
 [
   {
-    "repository": "https://github.com/babel/babel.git",
+    "repository": "babel/babel",
     "commit": "7958603449cf9b17296f6bce58801a832bc55b09"
   },
   {
-    "repository": "https://github.com/vuejs/eslint-plugin-vue.git",
+    "repository": "vuejs/eslint-plugin-vue",
     "commit": "701bb0931778a63b1b0a85f0d68d4390a222f359"
   },
   {
-    "repository": "https://github.com/excalidraw/excalidraw.git",
+    "repository": "excalidraw/excalidraw",
     "commit": "210dc85c8cd43da0f78b84b59b650de7db1a00a8",
     "ignoreFile": ".eslintignore"
   },
   {
-    "repository": "https://github.com/mdn/content.git",
+    "repository": "mdn/content",
     "commit": "ca26363fcc6fc861103d40ac0205e5c5b79eb2fa"
   },
   {
-    "repository": "https://github.com/prettier/prettier.git",
+    "repository": "prettier/prettier",
     "commit": "363a20e1c182784de7664d8c782137daf5548312"
   },
   {
-    "repository": "https://github.com/marmelab/react-admin.git",
+    "repository": "marmelab/react-admin",
     "commit": "905f248948e443a75c91da82bf28efe446117b79",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
@@ -30,20 +30,20 @@
     ]
   },
   {
-    "repository": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "repository": "typescript-eslint/typescript-eslint",
     "commit": "906cc3c892cbd7cc929a797557a234f64e8bf539",
     "ignore": ["**/fixtures/**/*"]
   },
   {
-    "repository": "https://github.com/vega/vega-lite.git",
+    "repository": "vega/vega-lite",
     "commit": "e7f55118e7c149c42436c800d053423cdd10bb1a"
   },
   {
-    "repository": "https://github.com/vuejs/core.git",
+    "repository": "vuejs/core",
     "commit": "25ebe3a42cd80ac0256355c2740a0258cdd7419d"
   },
   {
-    "repository": "https://github.com/microsoft/vscode.git",
+    "repository": "microsoft/vscode",
     "commit": "9bd6a8310aea6ada3e02a307c31ed05e5e4dabec",
     "ignore": [
       "**/build/*/**/*.js",
@@ -93,7 +93,7 @@
     ]
   },
   {
-    "repository": "https://github.com/vitejs/vite.git",
+    "repository": "vitejs/vite",
     "commit": "df5a30d2690a2ebc4824a79becdcef30538dc602"
   }
 ]
