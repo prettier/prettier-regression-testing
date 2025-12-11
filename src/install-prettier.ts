@@ -71,14 +71,11 @@ async function installPrettier(
 }
 
 async function isGhLogged() {
-  try {
-    const subprocess = await spawn("gh", ["auth", "status"]);
-    console.log(subprocess);
-    return !subprocess.stderr.includes("You are not logged into");
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
+  const { stdout, stderr } = await spawn("gh", ["auth", "status"]);
+  return (
+    stdout.includes("Logged in to github.com") ||
+    stderr.includes("Logged in to github.com")
+  );
 }
 
 async function authGh() {
@@ -88,8 +85,12 @@ async function authGh() {
     await spawn("brew", ["install", "gh"]);
   }
 
-  if (await isGhLogged()) {
-    return;
+  try {
+    if (await isGhLogged()) {
+      return;
+    }
+  } catch {
+    // Noop
   }
 
   const { NODE_AUTH_TOKEN } = process.env;
