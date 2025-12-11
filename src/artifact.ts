@@ -30,7 +30,7 @@ export async function uploadToArtifact(
   const octokit = getOctokit();
   const {
     data: { artifacts },
-  } = await octokit.actions.listWorkflowRunArtifacts({
+  } = await octokit.rest.actions.listWorkflowRunArtifacts({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     run_id: github.context.runId,

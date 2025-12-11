@@ -13,14 +13,14 @@ async function logToIssueComment(logText: string, separateComment = false) {
 
   const octokit = getOctokit();
   if (commentId === undefined || separateComment) {
-    const comment = await octokit.issues.createComment({
+    const comment = await octokit.rest.issues.createComment({
       ...github.context.repo,
       issue_number: github.context.issue.number,
       body: logText,
     });
     commentId = comment.data.id;
   } else {
-    await octokit.issues.updateComment({
+    await octokit.rest.issues.updateComment({
       ...github.context.repo,
       comment_id: commentId,
       body: logText,
