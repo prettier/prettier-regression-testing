@@ -34,8 +34,11 @@ export async function installPrettier(prettierVersion: PrettierVersion) {
 
   await pullRequestDirectory?.dispatch();
 
-  const prettierBinary = path.join(cwd, "node_modules/prettier/bin/prettier.cjs")
-  assert.equal(fs.existsSync(prettierBinary), true)
+  const prettierBinary = path.join(
+    cwd,
+    "node_modules/prettier/bin/prettier.cjs",
+  );
+  assert.equal(fs.existsSync(prettierBinary), true);
 
   return {
     dispatch: () => {
@@ -62,12 +65,12 @@ async function getPullRequest(
 
   const directory = await createTemporaryDirectory();
 
-  await git.clone(
-    "https://github.com/prettier/prettier.git",
-    "prettier",
-    directory.path,
+  const cwd = directory.path;
+  await git.init(cwd);
+  await git.runGit(
+    ["remote", "add", "origin", "https://github.com/prettier/prettier.git"],
+    { cwd },
   );
-  const cwd = path.join(directory.path, "prettier");
 
   await gh.prCheckout(pullRequestNumber, cwd);
   const { stdout } = await npm.pack({ cwd });

@@ -1,4 +1,4 @@
-import spawn from "nano-spawn";
+import spawn, { type Options } from "nano-spawn";
 import path from "path";
 import fs from "fs/promises";
 
@@ -99,4 +99,8 @@ export async function shallowClone(
   await remoteAdd("origin", url, cwd);
   await fetchDepth1("origin", commit, cwd);
   await checkout("FETCH_HEAD", cwd);
+}
+
+export async function runGit(argv: string[], options: Options) {
+  return spawn("git", argv, options);
 }
