@@ -90,7 +90,9 @@ export async function runPrettier({
       `--src-prefix=Original|${fileLinkPrefix}`,
       `--dst-prefix=Alternative|...`,
     ],
-    { cwd: directory },
+    {
+      cwd: directory,
+    },
   );
 
   return stdout;

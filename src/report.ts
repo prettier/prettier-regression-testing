@@ -58,26 +58,28 @@ export function getReport({
     (resultA, resultB) => resultB.diff.length - resultA.diff.length,
   );
 
-  const formattedResults = result.map(({ repository, diff: rawDiff }) => {
-    const shortHash = repository.commit.slice(0, 7);
-    const head = `[${repository.repository}@${shortHash}](https://github.com/${repository.repository}/tree/${repository.commit})`;
-    const diff = formatDiff(rawDiff);
-    const length =
-      title.length +
-      head.length +
-      diff.length +
-      /* Some room for blank lines */ 50;
-    const shouldUpload = length > MAXIMUM_GITHUB_COMMENT_LENGTH;
-    return {
-      head,
-      diff,
-      shouldUpload,
-      length: shouldUpload
-        ? // Save some space for uploaded url
-          200
-        : length,
-    };
-  });
+  const formattedResults = result.map(
+    ({ repository, diff: rawDiff }, index) => {
+      const shortHash = repository.commit.slice(0, 7);
+      const head = `[${index + 1}/${result.length}] [${repository.repository}@${shortHash}](https://github.com/${repository.repository}/tree/${repository.commit})`;
+      const diff = formatDiff(rawDiff);
+      const length =
+        title.length +
+        head.length +
+        diff.length +
+        /* Some room for blank lines */ 50;
+      const shouldUpload = length > MAXIMUM_GITHUB_COMMENT_LENGTH;
+      return {
+        head,
+        diff,
+        shouldUpload,
+        length: shouldUpload
+          ? // Save some space for uploaded url
+            200
+          : length,
+      };
+    },
+  );
 
   const group: { length: number; results: typeof formattedResults }[] = [];
   for (const formattedResult of formattedResults) {
