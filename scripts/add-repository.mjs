@@ -23,7 +23,7 @@ async function addProject() {
     }
   }
 
-  if (!/^[\w]+\/[\w]+$/.test(repository)) {
+  if (!/^[\w-]+\/[\w-]+$/.test(repository)) {
     throw new Error(`Unsupported repository '${input}'.`);
   }
 

@@ -36,7 +36,10 @@ export function getRepositories(): Repository[] {
     const rawRepository = _rawRepository as RawRepository;
 
     assert.equal(typeof rawRepository.repository, "string");
-    assert.ok(/^\w+\/\w+$/.test(rawRepository.repository));
+    assert.ok(
+      /^[\w-]+\/[\w-]+$/.test(rawRepository.repository),
+      `Invalid repository '${rawRepository.repository}'`,
+    );
     assert.equal(typeof rawRepository.commit, "string");
 
     const glob = Array.isArray(rawRepository.glob)
