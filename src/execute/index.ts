@@ -32,7 +32,10 @@ export async function execute(commandString: string) {
       project,
     });
 
-    await writeFile(path.join(`reports/${project.directoryName}.diff`), diff);
+    await writeFile(
+      path.join(directory, `reports/${project.directoryName}.diff`),
+      diff,
+    );
 
     result.push({
       project,
