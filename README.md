@@ -46,12 +46,10 @@ Optional.
 
 Uses `prettier/prettier` by default, same syntax as `original_version`
 
-
 ```
 RUN #110168 VS sosukesuzuki/prettier#fix-foo
 RUN sosukesuzuki/prettier#fix-foo VS 1.0.0
 ```
-
 
 ### `repositories`
 
@@ -66,7 +64,6 @@ RUN #110168 ON https://github.com/babel/babel.git
 RUN #110168 ON https://github.com/babel/babel.git,https://github.com/prettier/prettier.git
 RUN #110168 VS 1.0.0 ON https://github.com/babel/babel.git,https://github.com/prettier/prettier.git
 ```
-
 
 ## Add new project
 
