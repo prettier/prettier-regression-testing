@@ -87,5 +87,32 @@ describe("parse", () => {
         ],
       }
     `);
+    {
+      const { alternative, original, repositories } = parseCommand(
+        "run 1.0.0 vs 2.0.0 on babel/babel,prettier/prettier",
+      );
+      expect({
+        alternative,
+        original,
+        repositories: repositories.map(({ name }) => name),
+      }).toMatchInlineSnapshot(`
+        {
+          "alternative": {
+            "raw": "1.0.0",
+            "type": "PACKAGE",
+            "version": "1.0.0",
+          },
+          "original": {
+            "raw": "2.0.0",
+            "type": "PACKAGE",
+            "version": "2.0.0",
+          },
+          "repositories": [
+            "babel/babel",
+            "prettier/prettier",
+          ],
+        }
+      `);
+    }
   });
 });

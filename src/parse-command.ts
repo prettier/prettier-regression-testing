@@ -65,7 +65,8 @@ function parseRepositories(repositories: string | undefined) {
   const result: Project[] = [];
   for (const repository of shouldRun) {
     const matched = allRepositories.find(
-      (searching) => searching.repository === repository,
+      (searching) =>
+        searching.repository === repository || searching.name === repository,
     );
 
     if (!matched) {

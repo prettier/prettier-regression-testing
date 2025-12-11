@@ -57,12 +57,13 @@ Optional.
 
 Run [all repositories](./projects.json) by default.
 
-Comma separated repository list. (Currently only allow repositories defined in `projects.json`)
+Comma separated repository or name list. (Currently only allow repositories defined in `projects.json`)
 
 ```
+RUN #110168 ON babel/babel
 RUN #110168 ON https://github.com/babel/babel.git
-RUN #110168 ON https://github.com/babel/babel.git,https://github.com/prettier/prettier.git
-RUN #110168 VS 1.0.0 ON https://github.com/babel/babel.git,https://github.com/prettier/prettier.git
+RUN #110168 ON babel/babel,prettier/prettier
+RUN #110168 VS 1.0.0 ON babel/babel,prettier/prettier
 ```
 
 ## Add new project
