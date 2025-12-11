@@ -18,10 +18,15 @@ This is a lot of work, so we use GitHub Actions to automate it.
 Create an issue comment like the one below:
 
 ```
-run alternativeVersionPrettier vs originalVersionPrettier
+RUN alternative_version
+RUN alternative_version VS original_version
+RUN alternative_version ON repositories
+RUN alternative_version VS original_version ON repositories
 ```
 
-### `alternativeVersionPrettier`
+`RUN`, `VS`, `ON` directives are case-insensitive.
+
+### `alternative_version`
 
 Required.
 
@@ -30,27 +35,38 @@ There are 2 ways to specify.
 1. Versions or repository name + ref (e.g. `2.0.0`, `1.7.1`, or `sosukesuzuki/prettier#2f3fc241f8cb1867a0a3073ceac9d662e4b25fab`), it's installed directly with `yarn add`, so anything that [`yarn add`](https://yarnpkg.com/cli/add) allows
 2. Pull Request number on [prettier/prettier](https://github.com/prettier/prettier) repository (e.g. `#110168`).
 
-### `originalVersionPrettier`
+```
+RUN #110168
+RUN sosukesuzuki/prettier#fix-foo
+```
+
+### `original_version`
 
 Optional.
 
-In default, use `prettier/prettier`.
+Uses `prettier/prettier` by default, same syntax as `original_version`
 
-Also, you can specify with the logic same as `alternativeVersionPrettier`.
-
-## Examples
 
 ```
-run #110168
+RUN #110168 VS sosukesuzuki/prettier#fix-foo
+RUN sosukesuzuki/prettier#fix-foo VS 1.0.0
 ```
 
-```
-run #110168 vs sosukesuzuki/prettier#fix-foo
-```
+
+### `repositories`
+
+Optional.
+
+Run [all repositories](./projects.json) by default.
+
+Comma separated repository list. (Currently only allow repositories defined in `projects.json`)
 
 ```
-run sosukesuzuki/prettier#fix-foo vs 1.8.1
+RUN #110168 ON https://github.com/babel/babel.git
+RUN #110168 ON https://github.com/babel/babel.git,https://github.com/prettier/prettier.git
+RUN #110168 VS 1.0.0 ON https://github.com/babel/babel.git,https://github.com/prettier/prettier.git
 ```
+
 
 ## Add new project
 

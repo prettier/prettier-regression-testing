@@ -1,10 +1,10 @@
 import spawn from "nano-spawn";
 import path from "node:path";
 import assert from "node:assert/strict";
-import fs from "node:fs/promises";
 import Ajv, { DefinedError } from "ajv";
 import { repositoriesDirectory } from "./constants.ts";
 import { clearDirectory } from "./directory.ts";
+import rawProjects from "../projects.json" with { type: "json" };
 
 type RawProject = {
   repository: string;
@@ -51,34 +51,39 @@ const ajv = new Ajv();
 
 export const validateProjects = ajv.compile(schema);
 
-export async function getProjects(): Promise<Project[]> {
-  const projectJsonPath = path.join(import.meta.dirname, "../projects.json");
-  const data = JSON.parse(await fs.readFile(projectJsonPath, "utf-8"));
-  if (validateProjects(data)) {
-    return (data as RawProject[]).map((rawProject) => {
-      const name = getProjectName(rawProject);
-      const directoryName = name.replaceAll("/", "__");
-
-      return {
-        name,
-        repository: rawProject.repository,
-        glob: Array.isArray(rawProject.glob)
-          ? rawProject.glob
-          : [rawProject.glob ?? "."],
-        ignoreFile: rawProject.ignoreFile,
-        ignore: Array.isArray(rawProject.ignore)
-          ? rawProject.ignore
-          : rawProject.glob
-            ? [rawProject.glob]
-            : [],
-        commit: rawProject.commit,
-        directoryName,
-        directory: path.join(repositoriesDirectory, directoryName),
-      };
-    });
+let projects: Project[];
+export function getProjects(): Project[] {
+  if (projects) {
+    return projects;
   }
 
-  throw validateProjects.errors![0] as DefinedError;
+  if (!validateProjects(rawProjects)) {
+    throw validateProjects.errors![0] as DefinedError;
+  }
+
+  projects = (rawProjects as RawProject[]).map((rawProject) => {
+    const name = getProjectName(rawProject);
+    const directoryName = name.replaceAll("/", "__");
+
+    return {
+      name,
+      repository: rawProject.repository,
+      glob: Array.isArray(rawProject.glob)
+        ? rawProject.glob
+        : [rawProject.glob ?? "."],
+      ignoreFile: rawProject.ignoreFile,
+      ignore: Array.isArray(rawProject.ignore)
+        ? rawProject.ignore
+        : rawProject.glob
+          ? [rawProject.glob]
+          : [],
+      commit: rawProject.commit,
+      directoryName,
+      directory: path.join(repositoriesDirectory, directoryName),
+    };
+  });
+
+  return projects;
 }
 
 export const getProjectName = (project: RawProject): string =>

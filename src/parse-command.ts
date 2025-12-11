@@ -1,3 +1,5 @@
+import { getProjects, type Project } from "./projects.ts";
+
 export const PRETTIER_PACKAGE_TYPE_PULL_REQUEST = "PULL_REQUEST";
 export const PRETTIER_PACKAGE_TYPE_PACKAGE = "PACKAGE";
 
@@ -15,10 +17,6 @@ export interface PrettierPullRequest {
 
 export type PrettierVersion = PrettierPackage | PrettierPullRequest;
 
-export type Project = {
-  repositoryUrl: string;
-};
-
 export interface Command {
   alternative: PrettierVersion;
   original: PrettierVersion;
@@ -31,77 +29,60 @@ export const defaultOriginalPrettierVersion: PrettierVersion = {
 };
 
 export function parseCommand(source: string) {
-  const tokens = tokenize(source);
-
-  let alternative: PrettierVersion | undefined;
-  let original: PrettierVersion | undefined;
-
-  for (const [index, token] of tokenize(source).entries()) {
-    const lookahead = (): Token => {
-      return tokens[index + 1];
-    };
-    const lookbehind = (): Token => {
-      return tokens[index - 1];
-    };
-    const match = (kind: Token["kind"]) => {
-      return token.kind === kind;
-    };
-
-    if (index === 0 && token.kind !== "run") {
-      throw new SyntaxError("A command must start with 'run'.");
-    }
-
-    if (match("run")) {
-      if (lookahead().kind !== "source") {
-        throw new SyntaxError(
-          "A prettier repository source must be specified for 'run'.",
-        );
-      }
-      continue;
-    }
-
-    if (match("vs")) {
-      if (lookahead().kind !== "source") {
-        throw new SyntaxError(
-          "A prettier repository source must be specified for 'vs'.",
-        );
-      }
-      continue;
-    }
-
-    if (match("on")) {
-      throw new SyntaxError("We haven't supported 'on' yet.");
-    }
-
-    if (match("source")) {
-      if (lookbehind().kind === "run") {
-        alternative = parseRepositorySource(token);
-      } else if (lookbehind().kind === "vs") {
-        original = parseRepositorySource(token);
-      } else {
-        throw new SyntaxError(
-          `Unexpected token '${token.kind}', expect 'run' or 'vs'.`,
-        );
-      }
-    }
+  const regexp =
+    /^RUN\s+(?<alternative>[^\s]+)(?:\s+VS\s+(?<original>[^\s]+))?(?:\s+ON\s+(?<repositories>[^\s]+))?$/i;
+  const groups = source.trim().match(regexp)?.groups;
+  if (!groups) {
+    throw new Error(`Malformed command '${source}'`);
   }
 
-  if (!alternative) {
-    throw new Error("Alternative Prettier is required.");
-  }
+  const alternative = parsePrettierVersion(groups.alternative);
 
-  original ??= defaultOriginalPrettierVersion;
+  const original = groups.original
+    ? parsePrettierVersion(groups.original)
+    : defaultOriginalPrettierVersion;
 
-  return { alternative, original };
+  const repositories = parseRepositories(groups.repositories);
+
+  return { alternative, original, repositories };
 }
 
-export function parseRepositorySource(token: Token): PrettierVersion {
-  if (token.kind !== "source") {
-    throw new Error(`Unexpected token '${token.kind}', expect 'source'.`);
+function parseRepositories(repositories: string | undefined) {
+  const allRepositories = getProjects();
+  if (typeof repositories !== "string") {
+    return allRepositories;
   }
 
-  const raw = token.value;
+  const shouldRun = repositories
+    .split(",")
+    .map((repository) => repository.trim())
+    .filter(Boolean);
 
+  if (shouldRun.length === 0) {
+    throw new Error(`'repositories' required after 'ON' directive.`);
+  }
+
+  const result: Project[] = [];
+  for (const repository of shouldRun) {
+    const matched = allRepositories.find(
+      (searching) => searching.repository === repository,
+    );
+
+    if (!matched) {
+      throw new Error(`Unknown repository '${repository}'.`);
+    }
+
+    if (result.includes(matched)) {
+      throw new Error(`Duplicated repository '${repository}'.`);
+    }
+
+    result.push(matched);
+  }
+
+  return result;
+}
+
+function parsePrettierVersion(raw: string): PrettierVersion {
   // like "#3465"
   if (/^#\d+$/.test(raw)) {
     return {
@@ -124,38 +105,4 @@ export function parseRepositorySource(token: Token): PrettierVersion {
     version,
     raw,
   };
-}
-
-type Token =
-  | {
-      kind: "run";
-    }
-  | {
-      kind: "vs";
-    }
-  | {
-      kind: "on";
-    }
-  | {
-      kind: "source";
-      value: string;
-    };
-export function tokenize(source: string): Token[] {
-  const tokens: Token[] = [];
-  for (const word of source.trim().split(" ").filter(Boolean)) {
-    switch (word.toLowerCase()) {
-      case "run":
-        tokens.push({ kind: "run" });
-        break;
-      case "vs":
-        tokens.push({ kind: "vs" });
-        break;
-      case "on":
-        tokens.push({ kind: "on" });
-        break;
-      default:
-        tokens.push({ kind: "source", value: word });
-    }
-  }
-  return tokens;
 }
