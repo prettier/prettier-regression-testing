@@ -21,8 +21,11 @@ export async function execute(commandString: string) {
 
   const result = [];
 
-  for (const project of await getProjects()) {
-    await logger.log(`Running Prettier on ${project.repository} ...`);
+  const projects = await getProjects();
+  for (const [index, project] of projects.entries()) {
+    await logger.log(
+      `[${index + 1} / ${projects.length}] Running Prettier on ${project.repository} ...`,
+    );
 
     const diff = await runPrettier({
       directory: path.join(directory, `tests/${project.directoryName}`),
