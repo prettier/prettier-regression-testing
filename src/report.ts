@@ -59,7 +59,8 @@ export function getReport({
   );
 
   const formattedResults = result.map(({ repository, diff: rawDiff }) => {
-    const head = `[${repository.repository}@${repository.commit}](https://github.com/${repository.repository}/tree/{repository.commit})`;
+    const shortHash = repository.commit.slice(0, 7);
+    const head = `[${repository.repository}@${shortHash}](https://github.com/${repository.repository}/tree/${shortHash})`;
     const diff = formatDiff(rawDiff);
     const length =
       title.length +

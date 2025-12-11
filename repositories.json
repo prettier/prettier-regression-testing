@@ -1,28 +1,28 @@
 [
   {
     "repository": "babel/babel",
-    "commit": "7958603449cf9b17296f6bce58801a832bc55b09"
+    "commit": "b4c84b23917fe5acd74221c6bc622a3ccc842ff2"
   },
   {
     "repository": "vuejs/eslint-plugin-vue",
-    "commit": "701bb0931778a63b1b0a85f0d68d4390a222f359"
+    "commit": "5023e75dd7aa4b059b72e84b47a1e195ec6ac94a"
   },
   {
     "repository": "excalidraw/excalidraw",
-    "commit": "210dc85c8cd43da0f78b84b59b650de7db1a00a8",
+    "commit": "bf4c65f4835f5ce13d0c807797b849ad5d6b0121",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "mdn/content",
-    "commit": "ca26363fcc6fc861103d40ac0205e5c5b79eb2fa"
+    "commit": "d21d8f39b72a01d929f690b8517032c9248aa1a9"
   },
   {
     "repository": "prettier/prettier",
-    "commit": "363a20e1c182784de7664d8c782137daf5548312"
+    "commit": "c2ab62e8d2bcd2197435ee3b224420e883537a50"
   },
   {
     "repository": "marmelab/react-admin",
-    "commit": "905f248948e443a75c91da82bf28efe446117b79",
+    "commit": "63640767df781441964f435348a5389afb2ee198",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -31,20 +31,20 @@
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "906cc3c892cbd7cc929a797557a234f64e8bf539",
+    "commit": "dd969477e8cb10a4402eccc051a1d1206853e3b0",
     "ignore": ["**/fixtures/**/*"]
   },
   {
     "repository": "vega/vega-lite",
-    "commit": "e7f55118e7c149c42436c800d053423cdd10bb1a"
+    "commit": "bf84e14e3b029562aa86d961751d30fb69da5afa"
   },
   {
     "repository": "vuejs/core",
-    "commit": "25ebe3a42cd80ac0256355c2740a0258cdd7419d"
+    "commit": "f51d3e2789bb2f1700ec28d44a4953de1bdf7d71"
   },
   {
     "repository": "microsoft/vscode",
-    "commit": "9bd6a8310aea6ada3e02a307c31ed05e5e4dabec",
+    "commit": "2630664bd2739889e84d7f8c26ba80389fe04fab",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -94,6 +94,6 @@
   },
   {
     "repository": "vitejs/vite",
-    "commit": "df5a30d2690a2ebc4824a79becdcef30538dc602"
+    "commit": "2f9428d1ffd988e30cb253d5bb84844fb1654e86"
   }
 ]

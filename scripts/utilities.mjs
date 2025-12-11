@@ -15,12 +15,13 @@ export async function getRepositoryCommitHash(repository) {
     `https://github.com/${repository}`,
     "HEAD",
   ]);
+
   const [commit] = stdout.trim().split(/\s/);
   return commit;
 }
 
 export async function updatedRepositories(processFunction) {
-  const updated = processFunction(repositories);
+  const updated = await processFunction(repositories);
 
   await fs.writeFile(
     REPOSITORIES_JSON_FILE,

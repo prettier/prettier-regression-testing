@@ -50,7 +50,8 @@ export function getRepositories(): Repository[] {
     const directoryName = rawRepository.repository.replaceAll("/", "__");
 
     result.push({
-      ...rawRepository,
+      repository: rawRepository.repository,
+      commit: rawRepository.commit,
       glob,
       ignore,
       directoryName,
