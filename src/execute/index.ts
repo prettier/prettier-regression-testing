@@ -2,9 +2,8 @@ import { runPrettier } from "./run-prettier.ts";
 import * as logger from "../logger.ts";
 import { installPrettiers } from "../install-prettier.ts";
 import { parseCommand } from "../parse-command.ts";
-import { createTemporaryDirectory } from "../directory.ts";
+import { createTemporaryDirectory, writeFile } from "../utilities.ts";
 import path from "node:path";
-import fs from "node:fs/promises";
 
 export async function execute(commandString: string) {
   const { alternative, original, repositories } = parseCommand(commandString);
@@ -33,10 +32,7 @@ export async function execute(commandString: string) {
       project,
     });
 
-    await fs.writeFile(
-      path.join(`reports/${project.directoryName}.diff`),
-      diff,
-    );
+    await writeFile(path.join(`reports/${project.directoryName}.diff`), diff);
 
     result.push({
       project,

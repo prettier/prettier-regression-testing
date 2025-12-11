@@ -1,16 +1,6 @@
 import path from "node:path";
-import fs from "node:fs/promises";
 import { type Project } from "../projects.ts";
-
-async function readFile(file: string) {
-  try {
-    return await fs.readFile(file, "utf8");
-  } catch {
-    return "";
-  }
-}
-
-const unique = <T>(array: T[]): T[] => [...new Set(array)];
+import { writeFile, readFile, unique } from "../utilities.ts";
 
 export async function preparePrettierIgnoreFile({
   directory,
@@ -28,5 +18,5 @@ export async function preparePrettierIgnoreFile({
   const content = [...contents, ...project.ignore].join("\n");
 
   const prettierIgnoreFile = path.join(directory, ".prettierignore");
-  await fs.writeFile(prettierIgnoreFile, content);
+  await writeFile(prettierIgnoreFile, content);
 }

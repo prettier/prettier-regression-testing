@@ -7,6 +7,7 @@ import {
   PrettierPullRequest,
   PRETTIER_PACKAGE_TYPE_PULL_REQUEST,
 } from "./parse-command.ts";
+import { writeFile } from "./utilities.ts";
 
 export type InstalledPrettier = Awaited<ReturnType<typeof installPrettier>>;
 
@@ -55,7 +56,7 @@ async function installPrettier(
   }
 
   await spawn("yarn", ["init", "-y"], { cwd });
-  await fs.writeFile(path.join(cwd, "yarn.lock"), "");
+  await writeFile(path.join(cwd, "yarn.lock"), "");
   await spawn("yarn", ["add", `prettier@${version}`], { cwd });
 
   const prettierBinary = path.join(

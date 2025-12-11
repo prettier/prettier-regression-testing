@@ -3,7 +3,7 @@ import path from "node:path";
 import assert from "node:assert/strict";
 import Ajv, { DefinedError } from "ajv";
 import { repositoriesDirectory } from "./constants.ts";
-import { clearDirectory } from "./directory.ts";
+import { clearDirectory } from "./utilities.ts";
 import rawProjects from "../projects.json" with { type: "json" };
 
 type RawProject = {

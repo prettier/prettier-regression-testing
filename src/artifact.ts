@@ -1,8 +1,8 @@
 import { DefaultArtifactClient } from "@actions/artifact";
 import * as github from "@actions/github";
 import * as path from "path";
-import * as fs from "fs";
 import { getOctokit } from "./octokit.ts";
+import { writeFile } from "./utilities.ts";
 
 export async function uploadToArtifact(
   texts: string[],
@@ -18,9 +18,11 @@ export async function uploadToArtifact(
     text,
   }));
 
-  for (const { file, text } of filePaths) {
-    fs.writeFileSync(path.join(GITHUB_WORKSPACE, file), text, "utf-8");
-  }
+  await Promise.all(
+    filePaths.map(({ file, text }) =>
+      writeFile(path.join(GITHUB_WORKSPACE, file), text),
+    ),
+  );
 
   const artifactClient = new DefaultArtifactClient();
   const artifactName = "reports" + Date.now().toString();

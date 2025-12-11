@@ -23,3 +23,19 @@ export async function clearDirectory(directory: string) {
   await fs.mkdir(directory, { recursive: true });
   return directory;
 }
+
+export async function writeFile(file: string, content: string) {
+  const directory = path.dirname(file);
+  await fs.mkdir(directory, { recursive: true });
+  await fs.writeFile(file, content);
+}
+
+export async function readFile(file: string) {
+  try {
+    return await fs.readFile(file, "utf8");
+  } catch {
+    return "";
+  }
+}
+
+export const unique = <T>(array: T[]): T[] => [...new Set(array)];
