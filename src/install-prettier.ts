@@ -72,9 +72,11 @@ async function installPrettier(
 
 async function isGhLogged() {
   try {
-    const { stderr } = await spawn("gh", ["auth", "status"]);
-    return !stderr.includes("You are not logged into");
-  } catch {
+    const subprocess = await spawn("gh", ["auth", "status"]);
+    console.log(subprocess);
+    return !subprocess.stderr.includes("You are not logged into");
+  } catch (error) {
+    console.log(error);
     return false;
   }
 }
