@@ -24,8 +24,11 @@ export async function runPrettierWithVersion({
   ) {
     // if another packages is required to run Prettier
     // e.g. excalidraw: https://github.com/excalidraw/excalidraw/blob/a21db08cae608692d9525fff97f109fb24fec20c/package.json#L83
-    if (shouldInstall(error)) {
-      await spawn("yarn", ["install", "--refresh-lockfile"], { cwd });
+    if (shouldInstallDependencies(error)) {
+      await spawn("yarn", ["install"], {
+        cwd,
+        env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },
+      });
       await run();
     } else {
       throw error;
@@ -33,7 +36,7 @@ export async function runPrettierWithVersion({
   }
 }
 
-function shouldInstall(error: SubprocessError) {
+function shouldInstallDependencies(error: SubprocessError) {
   const { message, stderr } = error;
   return [message, stderr].some(
     (message) =>
