@@ -24,7 +24,7 @@ export async function execute(commandString: string) {
   const projects = await getProjects();
   for (const [index, project] of projects.entries()) {
     await logger.log(
-      `[${index + 1} / ${projects.length}] Running Prettier on ${project.repository} ...`,
+      `[${index + 1}/${projects.length}] Running Prettier on ${project.repository} ...`,
     );
 
     const diff = await runPrettier({
