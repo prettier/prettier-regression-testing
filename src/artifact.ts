@@ -13,25 +13,19 @@ export async function uploadToArtifact(
 
   const GITHUB_WORKSPACE = process.env.GITHUB_WORKSPACE!;
 
-  const filePaths = texts.map((text) => ({
-    file: Date.now().toString() + ".txt",
-    text,
-  }));
+  const files = await Promise.all(
+    texts.map(async (text) => {
+      const file = Date.now().toString() + ".diff";
 
-  await Promise.all(
-    filePaths.map(({ file, text }) =>
-      writeFile(path.join(GITHUB_WORKSPACE, file), text),
-    ),
+      await writeFile(path.join(GITHUB_WORKSPACE, file), text);
+
+      return file;
+    }),
   );
 
   const artifactClient = new DefaultArtifactClient();
-  const artifactName = "reports" + Date.now().toString();
-
-  await artifactClient.uploadArtifact(
-    artifactName,
-    filePaths.map(({ file }) => file),
-    GITHUB_WORKSPACE,
-  );
+  const artifactName = "reports-" + Date.now().toString();
+  await artifactClient.uploadArtifact(artifactName, files, GITHUB_WORKSPACE);
 
   const octokit = getOctokit();
   const {
@@ -44,5 +38,5 @@ export async function uploadToArtifact(
 
   const artifactData = artifacts.find((a) => a.name === artifactName);
 
-  return artifactData?.url;
+  return artifactData!.archive_download_url;
 }
