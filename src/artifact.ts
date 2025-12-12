@@ -11,7 +11,7 @@ export async function uploadToArtifact(
 
   const files = await Promise.all(
     reports.map(async ({ repository, diff }) => {
-      const file = `${repository.directoryName}.path`;
+      const file = `${repository.directoryName}.diff`;
       await writeFile(path.join(GITHUB_WORKSPACE, file), diff);
       return file;
     }),
