@@ -42,6 +42,7 @@ export function getReport({
   reports: {
     length: number;
     results: {
+      repository: Repository;
       head: string;
       diff: string;
       shouldUpload: boolean;
@@ -70,6 +71,7 @@ export function getReport({
         /* Some room for blank lines */ 50;
       const shouldUpload = length > MAXIMUM_GITHUB_COMMENT_LENGTH;
       return {
+        repository,
         head,
         diff,
         shouldUpload,

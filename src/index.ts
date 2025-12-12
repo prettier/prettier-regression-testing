@@ -52,9 +52,9 @@ async function run() {
 
   const { title, reports } = getReport(result);
 
-  const filesToUpload = reports
-    .flatMap((group) => group.results.filter((report) => report.shouldUpload))
-    .map((report) => report.diff);
+  const filesToUpload = reports.flatMap((group) =>
+    group.results.filter((report) => report.shouldUpload),
+  );
 
   let artifactUrl: string | undefined;
 

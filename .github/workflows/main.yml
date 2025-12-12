@@ -28,5 +28,5 @@ jobs:
       - name: Upload Reports
         uses: actions/upload-artifact@v5
         with:
-          name: reports
+          name: Full reports
           path: running/reports
