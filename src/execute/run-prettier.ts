@@ -47,7 +47,7 @@ function shouldInstallDependencies(error: SubprocessError) {
 }
 
 const commitChanges = async (directory: string, message: string) => {
-  await spawn("git", ["add", "."]);
+  await spawn("git", ["add", "."], { cwd: directory });
   await spawn(
     "git",
     ["commit", "--allow-empty", "--no-verify", "-m", message],
