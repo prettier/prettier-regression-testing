@@ -32,7 +32,7 @@ jobs:
       - name: Run tests
         run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest"
 
-      - uses: peter-evans/create-pull-request@v7
+      - uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "Update repositories.json"
           branch: automated-update-repositories
