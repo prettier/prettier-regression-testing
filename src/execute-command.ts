@@ -72,11 +72,11 @@ export async function executeCommand(commandString: string) {
           };
         }
 
+        const diff = result.value;
         const file = path.join(
           reportsDirectory,
-          `${repository.directoryName}-success.diff`,
+          `${diff ? "diff" : "empty"}-${repository.directoryName}-success.diff`,
         );
-        const diff = result.value;
         await writeFile(file, diff);
         return {
           repository,
