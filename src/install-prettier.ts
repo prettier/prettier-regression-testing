@@ -72,17 +72,17 @@ async function authGh() {
     // Noop
   }
 
-  const { NODE_AUTH_TOKEN } = process.env;
+  const { GITHUB_TOKEN } = process.env;
 
-  if (!NODE_AUTH_TOKEN) {
+  if (!GITHUB_TOKEN) {
     throw new Error(
-      "Please run `gh auth login` to login or set `NODE_AUTH_TOKEN`.",
+      "Please run `gh auth login` to login or set `GITHUB_TOKEN`.",
     );
   }
 
   await spawn("gh", ["auth", "login", "--with-token"], {
     stdin: {
-      string: NODE_AUTH_TOKEN,
+      string: GITHUB_TOKEN,
     },
   });
 

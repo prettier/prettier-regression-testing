@@ -4,13 +4,13 @@ type Octokit = ReturnType<typeof githubGetOctokit>;
 let octokit: Octokit | undefined;
 export function getOctokit() {
   if (octokit === undefined) {
-    const { NODE_AUTH_TOKEN } = process.env;
+    const { GITHUB_TOKEN } = process.env;
 
-    if (!NODE_AUTH_TOKEN) {
-      throw new Error("`NODE_AUTH_TOKEN` is required.");
+    if (!GITHUB_TOKEN) {
+      throw new Error("`GITHUB_TOKEN` is required.");
     }
 
-    octokit = githubGetOctokit(NODE_AUTH_TOKEN);
+    octokit = githubGetOctokit(GITHUB_TOKEN);
   }
   return octokit;
 }
