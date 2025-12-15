@@ -50,7 +50,7 @@ export const commitChanges = async (directory: string, message: string) => {
     { cwd: directory },
   );
 
-  const match = stdout.match(/^\[(?<commitHash>[a-f0-9]{40}) [a-f0-9]{8}] /);
+  const match = stdout.match(/^\[(?<commitHash>[a-f0-9]{40}) [a-f0-9]{7,8}] /);
   if (!match?.groups!.commitHash) {
     throw new Error(`Unexpected commit hash '${stdout}'`);
   }
