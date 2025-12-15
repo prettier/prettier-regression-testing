@@ -5,6 +5,7 @@ import {
   unique,
   commitChanges,
   resetToCommitHash,
+  removeFilesCannotAdd,
 } from "./utilities.ts";
 import fs from "node:fs/promises";
 import { cloneRepository, type Repository } from "./repositories.ts";
@@ -42,7 +43,15 @@ export async function prepareRepository(
   await preparePrettierIgnoreFile(directory, repository);
   await spawn("git", ["init"], { cwd: directory });
 
-  const commitHash = await commitChanges(directory, "Initialize", true);
+  // There are junk files in `microsoft/vscode` can't commit
+  const files = await removeFilesCannotAdd(directory);
+  await Promise.all(
+    files.map((file) =>
+      fs.rm(path.join(repository.directory, file), { recursive: true }),
+    ),
+  );
+
+  const commitHash = await commitChanges(directory, "Initialize");
 
   return {
     async reset() {

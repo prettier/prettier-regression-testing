@@ -42,10 +42,9 @@ export async function readFile(file: string) {
 
 export const unique = <T>(array: T[]): T[] => [...new Set(array)];
 
-async function gitAddFiles(cwd: string) {
+export async function removeFilesCannotAdd(cwd: string, files: string[] = []) {
   try {
     await spawn("git", ["add", "."], { cwd });
-    return;
   } catch (error) {
     if (error instanceof SubprocessError) {
       const { stderr } = error;
@@ -55,30 +54,25 @@ async function gitAddFiles(cwd: string) {
       const filename = match?.groups?.filename;
       if (filename) {
         console.log(`File '${filename}' can't be added, ignored.`);
+        files.push(filename);
         await fs.rm(path.join(cwd, filename), { force: true });
-        return gitAddFiles(cwd);
+        return removeFilesCannotAdd(cwd, files);
       }
     }
 
     throw error;
   }
+
+  return files;
 }
 
-export const commitChanges = async (
-  directory: string,
-  message: string,
-  ignoreFilesCannotAdded?: boolean,
-) => {
+export const commitChanges = async (directory: string, message: string) => {
   await fs.rm(path.join(directory, ".gitattributes"), { force: true });
   await spawn("git", ["config", "set", "core.autocrlf", "false"], {
     cwd: directory,
   });
 
-  if (ignoreFilesCannotAdded) {
-    await gitAddFiles(directory);
-  } else {
-    await spawn("git", ["add", "."], { cwd: directory });
-  }
+  await spawn("git", ["add", "."], { cwd: directory });
 
   await spawn(
     "git",
