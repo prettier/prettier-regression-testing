@@ -1,10 +1,10 @@
-import prettyMilliseconds from "pretty-ms";
 import path from "node:path";
 import spawn, { type SubprocessError } from "nano-spawn";
 import { type Repository } from "./repositories.ts";
 import { type InstalledPrettier } from "./install-prettier.ts";
 import { prepareRepository } from "./prepare-repository.ts";
 import { commitChanges } from "./utilities.ts";
+import { Timing } from "./timing.ts";
 
 async function runPrettierWithVersion({
   cwd,
@@ -17,11 +17,9 @@ async function runPrettierWithVersion({
   repository: Repository;
   reset: () => Promise<void>;
 }) {
-  const startTime = process.hrtime.bigint();
-  console.log(
-    `Running Prettier(${prettier.version.kind}) on repository '${repository.repository}' ...`,
+  const timing = new Timing(
+    `Run Prettier(${prettier.version.kind}) on repository '${repository.repository}'`,
   );
-
   await reset();
 
   const args = [prettier.bin, "--write", "--no-color", ...repository.glob];
@@ -50,9 +48,7 @@ async function runPrettierWithVersion({
 
   await spawn("git", ["branch", prettier.version.kind], { cwd });
 
-  console.log(
-    `Running Prettier(${prettier.version.kind}) on repository '${repository.repository}' finished in ${prettyMilliseconds((process.hrtime.bigint() - startTime) / 1_000_000n)}.`,
-  );
+  timing.end();
   return commitHash;
 }
 
@@ -78,8 +74,9 @@ export async function runPrettier(
     original: InstalledPrettier;
   },
 ) {
-  const startTime = process.hrtime.bigint();
-  console.log(`Runing Prettier on repository '${repository.repository}' ...`);
+  const timing = new Timing(
+    `Run Prettier on repository '${repository.repository}'`,
+  );
   const directory = path.join(cwd, `repositories/${repository.directoryName}`);
 
   const { reset } = await prepareRepository(directory, repository);
@@ -112,8 +109,6 @@ export async function runPrettier(
     { cwd: directory },
   );
 
-  console.log(
-    `Run Prettier on repository '${repository.repository}' finished in ${prettyMilliseconds((process.hrtime.bigint() - startTime) / 1_000_000n)}.`,
-  );
+  timing.end();
   return stdout;
 }

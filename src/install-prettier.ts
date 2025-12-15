@@ -2,12 +2,12 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import assert from "node:assert/strict";
 import spawn from "nano-spawn";
-import prettyMilliseconds from "pretty-ms";
 import {
   type PrettierVersion,
   PRETTIER_PACKAGE_TYPE_PULL_REQUEST,
 } from "./parse-command.ts";
 import { writeFile, clearDirectory } from "./utilities.ts";
+import { Timing } from "./timing.ts";
 
 export type InstalledPrettier = Awaited<ReturnType<typeof installPrettier>>;
 
@@ -15,8 +15,9 @@ export async function installPrettier(
   version: PrettierVersion,
   { cwd }: { cwd: string },
 ) {
-  const startTime = process.hrtime.bigint();
-  console.log(`Installing Prettier(${version.kind}) '${version.raw}' ...`);
+  const timing = new Timing(
+    `Install Prettier[${version.kind}] '${version.raw}'`,
+  );
   const directory = await clearDirectory(
     path.join(cwd, `${version.kind}-prettier`),
   );
@@ -40,9 +41,8 @@ export async function installPrettier(
   ]);
   assert.ok(typeof installedVersion === "string");
 
-  console.log(
-    `Prettier(${version.kind}) '${version.raw}' installed in ${prettyMilliseconds((process.hrtime.bigint() - startTime) / 1_000_000n)}.`,
-  );
+  timing.end();
+
   return {
     bin: prettierBinary,
     version: version,

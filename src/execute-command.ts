@@ -1,4 +1,3 @@
-import prettyMilliseconds from "pretty-ms";
 import { runPrettier } from "./run-prettier.ts";
 import * as logger from "./logger.ts";
 import { installPrettier } from "./install-prettier.ts";

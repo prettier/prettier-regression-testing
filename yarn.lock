@@ -3208,6 +3208,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-style-text@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "node-style-text@npm:2.1.2"
+  checksum: 10c0/25eed9636e9d9df05901a85fb2a82fda6a42a897f167762539de68c476924340e908b1dfeec7c30f01741a0820c5d568c6da6ef1a82e0b00411f27b936798dad
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^8.0.0":
   version: 8.1.0
   resolution: "nopt@npm:8.1.0"
@@ -3497,6 +3504,7 @@ __metadata:
     eslint-config-prettier: "npm:10.1.8"
     globals: "npm:16.5.0"
     nano-spawn: "npm:2.0.0"
+    node-style-text: "npm:^2.1.2"
     npm-run-all: "npm:4.1.5"
     outdent: "npm:0.8.0"
     prettier: "npm:3.7.4"
