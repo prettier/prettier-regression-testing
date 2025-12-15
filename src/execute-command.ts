@@ -60,7 +60,7 @@ export async function executeCommand(commandString: string) {
           const error = result.reason;
           const file = path.join(
             reportsDirectory,
-            `${repository.repository}-error.txt`,
+            `error-${repository.directoryName}.txt`,
           );
           const stringifiedError = inspect(error);
           await writeFile(file, stringifiedError);
@@ -74,7 +74,7 @@ export async function executeCommand(commandString: string) {
 
         const file = path.join(
           reportsDirectory,
-          `${repository.repository}-success.diff`,
+          `${repository.directoryName}-success.diff`,
         );
         const diff = result.value;
         await writeFile(file, diff);
