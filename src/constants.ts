@@ -14,5 +14,5 @@ export const GITHUB_ACTION_RUN_URL = IS_GITHUB_ACTION
   ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
   : undefined;
 export const GITHUB_ACTION_JOB_URL = IS_GITHUB_ACTION
-  ? `${GITHUB_ACTION_RUN_URL}/job/${context.runNumber}`
+  ? GITHUB_ACTION_RUN_URL
   : undefined;
