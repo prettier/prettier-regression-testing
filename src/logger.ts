@@ -1,5 +1,5 @@
 import * as github from "@actions/github";
-import { IS_GITHUB_ACTION, GITHUB_ACTION_JOB_URL } from "./constants.ts";
+import { IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT, GITHUB_ACTION_JOB_URL } from "./constants.ts";
 import { getOctokit } from "./octokit.ts";
 import { codeBlock } from "./utilities.ts";
 import { inspect } from "node:util";
@@ -32,7 +32,7 @@ const messages: { time: Date; message: string }[] = [];
 export async function brief(message: string) {
   console.log(message);
 
-  if (!IS_GITHUB_ACTION) {
+  if (!IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT) {
     return;
   }
 
@@ -58,7 +58,7 @@ export async function brief(message: string) {
 
 export async function error(error: Error) {
   console.error(error);
-  if (!IS_GITHUB_ACTION) {
+  if (!IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT) {
     return;
   }
 

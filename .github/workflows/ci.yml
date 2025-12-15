@@ -11,8 +11,8 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
       - run: yarn
       - run: yarn lint
 
@@ -20,7 +20,22 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
       - run: yarn
       - run: yarn test
+
+  test-run:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/cache@v4
+        with:
+          path: repositories
+          key: v2-${{ hashFiles('repositories.json') }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - run: yarn
+      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest on prettier/prettier"

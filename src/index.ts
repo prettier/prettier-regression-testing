@@ -1,4 +1,4 @@
-import { IS_GITHUB_ACTION } from "./constants.ts";
+import { IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT } from "./constants.ts";
 import * as logger from "./logger.ts";
 import { executeCommand } from "./execute-command.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
@@ -10,7 +10,7 @@ import { stringifyReport, getReport } from "./report.ts";
 
 async function run() {
   let commandString;
-  if (IS_GITHUB_ACTION) {
+  if (IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT) {
     const comment = getIssueComment();
     commandString = comment.body as string;
   } else {

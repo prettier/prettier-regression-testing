@@ -12,14 +12,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: repositories
+          key: v2-${{ hashFiles('repositories.json') }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
+        with:
+          node-version: "24"
 
       - name: Install Dependencies
         run: yarn
 
       - name: Run update-repositories.mjs
         run: node ./scripts/update-repositories.mjs
+
+      - name: Run tests
+        run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest"
 
       - uses: peter-evans/create-pull-request@v7
         with:

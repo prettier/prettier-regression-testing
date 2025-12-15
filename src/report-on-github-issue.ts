@@ -1,5 +1,5 @@
 import {
-  IS_GITHUB_ACTION,
+  IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT,
   MAXIMUM_GITHUB_COMMENT_LENGTH,
   GITHUB_ACTION_RUN_URL,
 } from "./constants.ts";
@@ -11,7 +11,7 @@ export async function reportOnGithubIssue(report: {
   title: string;
   reports: Report[];
 }) {
-  if (!IS_GITHUB_ACTION) {
+  if (!IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT) {
     return;
   }
 
