@@ -110,8 +110,8 @@ export async function runPrettier(
       "diff",
       alternative.version.kind,
       original.version.kind,
-      `--src-prefix=Original|${fileLinkPrefix}`,
-      `--dst-prefix=Alternative|`,
+      `--src-prefix=${original.version.kind}|${fileLinkPrefix}`,
+      `--dst-prefix=${alternative.version.kind}|`,
     ],
     { cwd: directory },
   );
@@ -119,10 +119,12 @@ export async function runPrettier(
   const lines = diff.split("\n");
   for (let lineIndex = lines.length - 1; lineIndex >= 0; lineIndex--) {
     if (
-      lines[lineIndex].startsWith("diff --git Original|") &&
+      lines[lineIndex].startsWith(`diff --git ${original.version.kind}|`) &&
       lines[lineIndex + 1].startsWith("index ") &&
-      lines[lineIndex + 2].startsWith("--- Original|http://github.com/") &&
-      lines[lineIndex + 3].startsWith("+++ Alternative|")
+      lines[lineIndex + 2].startsWith(
+        `--- ${original.version.kind}|http://github.com/`,
+      ) &&
+      lines[lineIndex + 3].startsWith(`+++ ${alternative.version.kind}|`)
     ) {
       // Remove the useless head
       lines.splice(lineIndex, 2);
