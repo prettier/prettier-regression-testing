@@ -4,12 +4,9 @@ import { getOctokit } from "./octokit.ts";
 import { codeBlock } from "./utilities.ts";
 import { inspect } from "node:util";
 
-type Comment = Exclude<Awaited<ReturnType<typeof createComment>>, undefined>;
+type Comment = Awaited<ReturnType<typeof createComment>>;
 
 async function createComment(body: string) {
-  if (!IS_GITHUB_ACTION) {
-    return;
-  }
   const octokit = getOctokit();
 
   return await octokit.rest.issues.createComment({
@@ -20,9 +17,6 @@ async function createComment(body: string) {
 }
 
 async function updateComment(body: string, comment: Comment) {
-  if (!IS_GITHUB_ACTION) {
-    return;
-  }
   const octokit = getOctokit();
 
   return await octokit.rest.issues.updateComment({
@@ -34,39 +28,55 @@ async function updateComment(body: string, comment: Comment) {
 
 let briefCommentRequest: ReturnType<typeof createComment> | undefined;
 export async function brief(body: string) {
-  body += `\n__[details](${GITHUB_ACTION_JOB_URL})__`;
+  console.log(body);
 
-  if (!briefCommentRequest) {
-    briefCommentRequest = createComment(body);
-    await briefCommentRequest;
+  if (!IS_GITHUB_ACTION) {
     return;
   }
 
-  const comment = await briefCommentRequest;
+  body += `\n__[details](${GITHUB_ACTION_JOB_URL})__`;
 
-  await updateComment(body, comment!);
+  if (briefCommentRequest) {
+    const comment = await briefCommentRequest;
+    try {
+      return await updateComment(body, comment);
+    } catch {
+      // No op
+    }
+  }
+
+  briefCommentRequest = createComment(body);
+  return await briefCommentRequest;
 }
 
-export async function error(error: Error): Promise<void> {
+export async function error(error: Error) {
+  console.error(error);
+  if (!IS_GITHUB_ACTION) {
+    return;
+  }
+
   const text = `
   ### [${error.name}]
 
   ${codeBlock(inspect(error))}
   `;
-  console.error(error);
-  await brief(text);
+  return await brief(text);
 }
 
 export async function report(body: string) {
   console.log(body);
 
   if (briefCommentRequest) {
+    const request = briefCommentRequest;
     briefCommentRequest = undefined;
 
-    const comment = await briefCommentRequest;
-    await updateComment(body, comment!);
-    return;
+    try {
+      const comment = await request;
+      return await updateComment(body, comment);
+    } catch {
+      // No op
+    }
   }
 
-  await createComment(body);
+  return await createComment(body);
 }

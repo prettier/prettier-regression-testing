@@ -38,7 +38,8 @@ export const stringifyReport = ({
 }: {
   title: string;
   reports: Report[];
-}) => [title, ...reports.map(({ head, body }) => [head, body])].join("\n\n");
+}) =>
+  [title, ...reports.flatMap(({ head, body }) => [head, body])].join("\n\n");
 
 export function getReport({
   alternative,
