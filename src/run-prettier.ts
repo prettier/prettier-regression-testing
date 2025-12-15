@@ -50,7 +50,7 @@ async function runPrettierWithVersion({
   return commitHash;
 }
 
-async function installDependencies(cwd) {
+async function installDependencies(cwd: string) {
   await spawn("yarn", ["install"], {
     cwd,
     env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },

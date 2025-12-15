@@ -29,6 +29,7 @@ async function preparePrettierIgnoreFile(
 
   const prettierIgnoreFile = path.join(directory, ".prettierignore");
   await writeFile(prettierIgnoreFile, content);
+  await spawn("git", ["add", "."], { cwd: directory });
 }
 
 export async function prepareRepository(

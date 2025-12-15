@@ -16,7 +16,7 @@ jobs:
           key: v2-${{ hashFiles('repositories.json') }}
       - uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: "24"
       - name: configure git
         run: |
           git config --global user.email "actions@github.com"
