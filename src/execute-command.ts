@@ -25,14 +25,22 @@ export async function executeCommand(commandString: string) {
     `Running Prettier on ${repositories.length} repositories ...`,
   );
 
+  let finished = 0;
   const results = await Promise.allSettled(
-    repositories.map((repository) =>
-      runPrettier(repository, {
-        cwd: directory,
-        alternative: alternativePrettier,
-        original: originalPrettier,
-      }),
-    ),
+    repositories.map(async (repository) => {
+      try {
+        return runPrettier(repository, {
+          cwd: directory,
+          alternative: alternativePrettier,
+          original: originalPrettier,
+        });
+      } finally {
+        finished++;
+        logger.brief(
+          `Running Prettier on ${finished}/${repositories.length} repositories ...`,
+        );
+      }
+    }),
   );
 
   const failedJobsCount = results.filter(
