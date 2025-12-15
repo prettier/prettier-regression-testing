@@ -47,7 +47,7 @@ async function run() {
     throw new Error("Please enter some commands.");
   }
 
-  await logger.log(`Received with command '${commandString}'.`)
+  await logger.log(`Received with command '${commandString}'.`);
 
   const result = await executeCommand(commandString);
 
