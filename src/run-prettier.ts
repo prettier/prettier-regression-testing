@@ -39,13 +39,13 @@ async function runPrettierWithVersion({
         cwd,
         env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },
       });
+      await fs.rm(path.join(cwd, "yarn.lock"), { force: true });
+      await spawn("git", ["reset", "--hard"], { cwd });
       await run();
     } else {
       throw error;
     }
   }
-
-  await fs.rm(path.join(cwd, "yarn.lock"), { force: true });
 
   const commitHash = await commitChanges(cwd, prettier.version.kind);
 
