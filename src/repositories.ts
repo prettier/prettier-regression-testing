@@ -2,7 +2,7 @@ import spawn from "nano-spawn";
 import path from "node:path";
 import assert from "node:assert/strict";
 import { repositoriesDirectory } from "./constants.ts";
-import { clearDirectory } from "./utilities.ts";
+import { clearDirectory, getCommitHash } from "./utilities.ts";
 import rawRepositories from "../repositories.json" with { type: "json" };
 
 type RawRepository = {
@@ -67,42 +67,33 @@ export function getRepositories(): Repository[] {
   return result;
 }
 
-async function getCommitHash({ short, cwd }: { short?: boolean; cwd: string }) {
+export async function cloneRepository(repository: Repository) {
+  const { directory, commit: commitHash } = repository;
+
+  // If it's already on the correct commit
   try {
-    const { stdout } = await spawn(
-      "git",
-      ["rev-parse", ...(short ? ["--short"] : []), "HEAD"],
-      { cwd },
-    );
-    return stdout.trim();
+    if ((await getCommitHash(directory)) === commitHash) {
+      return;
+    }
   } catch {
     // No op
   }
-}
 
-export async function cloneRepository(repository: Repository) {
-  const cwd = repository.directory;
-
-  // If it's already on the correct commit
-  if ((await getCommitHash({ cwd })) === repository.commit) {
-    return;
-  }
-
-  await clearDirectory(cwd);
-  await spawn("git", ["init"], { cwd });
+  await clearDirectory(directory);
+  await spawn("git", ["init"], { cwd: directory });
   await spawn(
     "git",
     [
       "fetch",
       "--depth=1",
       `https://github.com/${repository.repository}`,
-      repository.commit,
+      commitHash,
     ],
-    { cwd },
+    { cwd: directory },
   );
-  await spawn("git", ["checkout", repository.commit], { cwd });
+  await spawn("git", ["switch", "-c", commitHash, commitHash], {
+    cwd: directory,
+  });
 
-  assert.equal(await getCommitHash({ cwd }), repository.commit);
-
-  return;
+  assert.equal(await getCommitHash(directory), commitHash);
 }

@@ -3,7 +3,7 @@ import { inspect } from "node:util";
 import * as core from "@actions/core";
 import { IS_CI } from "./constants.ts";
 import * as logger from "./logger.ts";
-import { execute } from "./execute/index.ts";
+import { executeCommand } from "./excute-command.ts";
 import { getReport } from "./report.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
 import { uploadToArtifact } from "./artifact.ts";
@@ -40,7 +40,6 @@ async function run() {
     const comment = getIssueComment();
     commandString = comment.body as string;
   } else {
-    await fs.writeFile("log.txt", "");
     commandString = process.argv.splice(2)[0];
   }
 
@@ -48,7 +47,9 @@ async function run() {
     throw new Error("Please enter some commands.");
   }
 
-  const result = await execute(commandString);
+  await logger.log(`Received with command '${commandString}'.`)
+
+  const result = await executeCommand(commandString);
 
   const { title, reports } = getReport(result);
 

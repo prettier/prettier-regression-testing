@@ -20,13 +20,11 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
       - run: yarn
-      - run: yarn build
-      - name: main action
-        uses: ./.github/actions/main
+      - uses: ./.github/actions/main
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Reports
         uses: actions/upload-artifact@v5
         with:
           name: Full reports
-          path: running/reports
+          path: reports

@@ -1,18 +1,23 @@
+import path from "node:path";
 import spawn, { type SubprocessError } from "nano-spawn";
-import fs from "node:fs/promises";
-import { cloneRepository, type Repository } from "../repositories.ts";
-import { type InstalledPrettier } from "../install-prettier.ts";
-import { preparePrettierIgnoreFile } from "./prepare-prettier-ignore-file.ts";
+import { type Repository } from "./repositories.ts";
+import { type InstalledPrettier } from "./install-prettier.ts";
+import { prepareRepository } from "./prepare-repository.ts";
+import { commitChanges } from "./utilities.ts";
 
-export async function runPrettierWithVersion({
-  directory: cwd,
+async function runPrettierWithVersion({
+  cwd,
   prettier,
   repository,
+  reset,
 }: {
-  directory: string;
+  cwd: string;
   prettier: InstalledPrettier;
   repository: Repository;
-}): Promise<void> {
+  reset: () => Promise<void>;
+}) {
+  await reset();
+
   const args = [prettier.bin, "--write", "--no-color", ...repository.glob];
   const run = () => spawn(process.execPath, args, { cwd });
 
@@ -34,6 +39,12 @@ export async function runPrettierWithVersion({
       throw error;
     }
   }
+
+  const commitHash = await commitChanges(cwd, prettier.version.kind);
+
+  await spawn("git", ["branch", prettier.version.kind], { cwd });
+
+  return commitHash;
 }
 
 function shouldInstallDependencies(error: SubprocessError) {
@@ -46,39 +57,34 @@ function shouldInstallDependencies(error: SubprocessError) {
   );
 }
 
-const commitChanges = async (directory: string, message: string) => {
-  await spawn("git", ["add", "."], { cwd: directory });
-  await spawn(
-    "git",
-    ["commit", "--allow-empty", "--no-verify", "-m", message],
-    { cwd: directory },
-  );
-};
+export async function runPrettier(
+  repository: Repository,
+  {
+    cwd,
+    alternative,
+    original,
+  }: {
+    cwd: string;
+    alternative: InstalledPrettier;
+    original: InstalledPrettier;
+  },
+) {
+  const directory = path.join(cwd, `repositories/${repository.directoryName}`);
 
-export async function runPrettier({
-  directory,
-  alternative,
-  original,
-  repository,
-}: {
-  directory: string;
-  alternative: InstalledPrettier;
-  original: InstalledPrettier;
-  repository: Repository;
-}) {
-  await cloneRepository(repository);
-  await fs.cp(repository.directory, directory, { recursive: true });
-
-  await preparePrettierIgnoreFile({ directory, repository });
-  await commitChanges(directory, "Prepare");
-
-  await runPrettierWithVersion({ directory, prettier: original, repository });
-  await commitChanges(directory, "Original");
+  const { reset } = await prepareRepository(directory, repository);
 
   await runPrettierWithVersion({
-    directory,
+    cwd: directory,
+    prettier: original,
+    repository,
+    reset,
+  });
+
+  await runPrettierWithVersion({
+    cwd: directory,
     prettier: alternative,
     repository,
+    reset,
   });
 
   const fileLinkPrefix = `https://github.com/${repository.repository}/tree/${repository.commit}/`;
@@ -87,12 +93,12 @@ export async function runPrettier({
     "git",
     [
       "diff",
+      alternative.version.kind,
+      original.version.kind,
       `--src-prefix=Original|${fileLinkPrefix}`,
-      `--dst-prefix=Alternative|...`,
+      `--dst-prefix=Alternative|`,
     ],
-    {
-      cwd: directory,
-    },
+    { cwd: directory },
   );
 
   return stdout;

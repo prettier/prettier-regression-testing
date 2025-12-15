@@ -14,8 +14,7 @@
     "lint:prettier": "prettier . --check",
     "lint:tsc": "tsc --noEmit",
     "test": "vitest",
-    "build": "tsc",
-    "execute": "yarn build && node ./build/index.js",
+    "execute": "node ./src/index.ts",
     "add-repository": "node scripts/add-repository.mjs",
     "update-repositories": "node scripts/update-repositories.mjs"
   },

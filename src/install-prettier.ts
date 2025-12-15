@@ -3,71 +3,38 @@ import fs from "node:fs/promises";
 import assert from "node:assert/strict";
 import spawn from "nano-spawn";
 import {
-  PrettierVersion,
-  PrettierPullRequest,
+  type PrettierVersion,
   PRETTIER_PACKAGE_TYPE_PULL_REQUEST,
 } from "./parse-command.ts";
-import { writeFile } from "./utilities.ts";
+import { writeFile, clearDirectory } from "./utilities.ts";
 
 export type InstalledPrettier = Awaited<ReturnType<typeof installPrettier>>;
 
-export async function installPrettiers({
-  directory,
-  alternative,
-  original,
-}: {
-  directory: string;
-  alternative: PrettierVersion;
-  original: PrettierVersion;
-}) {
-  return {
-    alternative: await installPrettier(
-      path.join(directory, "alternative-prettier"),
-      alternative,
-    ),
-    original: await installPrettier(
-      path.join(directory, "original-prettier"),
-      original,
-    ),
-  };
-}
-
-async function installPrettier(
-  directory: string,
-  prettierVersion: PrettierVersion,
+export async function installPrettier(
+  version: PrettierVersion,
+  { cwd }: { cwd: string },
 ) {
-  const cwd = path.join(directory, "prettier");
-  await fs.mkdir(cwd, { recursive: true });
+  const directory = await clearDirectory(
+    path.join(cwd, `${version.kind}-prettier`),
+  );
 
-  let version: string;
-  if (prettierVersion.type === PRETTIER_PACKAGE_TYPE_PULL_REQUEST) {
-    const pullRequestDirectory = path.join(directory, "pull-request");
-    const filename = await checkoutPullRequest(
-      pullRequestDirectory,
-      prettierVersion.number,
-    );
-    await fs.rename(
-      path.join(pullRequestDirectory, filename),
-      path.join(cwd, filename),
-    );
-    version = `file:./${filename}`;
-  } else {
-    ({ version } = prettierVersion);
-  }
+  const packageToInstall = await getPrettierPackageName(version, {
+    cwd: directory,
+  });
 
-  await spawn("yarn", ["init", "-y"], { cwd });
-  await writeFile(path.join(cwd, "yarn.lock"), "");
-  await spawn("yarn", ["add", `prettier@${version}`], { cwd });
+  await spawn("yarn", ["init", "-y"], { cwd: directory });
+  await writeFile(path.join(directory, "yarn.lock"), "");
+  await spawn("yarn", ["add", packageToInstall], { cwd: directory });
 
   const prettierBinary = path.join(
-    cwd,
+    directory,
     "node_modules/prettier/bin/prettier.cjs",
   );
   await spawn(process.execPath, [prettierBinary, "--version"]);
 
   return {
     bin: prettierBinary,
-    version: prettierVersion,
+    version: version,
   };
 }
 
@@ -112,12 +79,11 @@ async function authGh() {
 }
 
 async function checkoutPullRequest(
-  directory: string,
-  pullRequestNumber: PrettierPullRequest["number"],
+  pullRequestNumber: string,
+  { cwd }: { cwd: string },
 ) {
   await authGh();
 
-  const cwd = directory;
   await fs.mkdir(cwd, { recursive: true });
 
   await spawn("git", ["init"], { cwd });
@@ -132,4 +98,26 @@ async function checkoutPullRequest(
   const filename = stdout.trim();
 
   return filename;
+}
+
+async function getPrettierPackageName(
+  version: PrettierVersion,
+  { cwd }: { cwd: string },
+) {
+  if (version.type !== PRETTIER_PACKAGE_TYPE_PULL_REQUEST) {
+    return `prettier@${version.version}`;
+  }
+
+  const directory = await clearDirectory(
+    path.join(cwd, `pull-request-${version.number}`),
+  );
+  const filename = await checkoutPullRequest(version.number, {
+    cwd: directory,
+  });
+  await fs.rename(
+    path.join(directory, filename),
+    path.join(directory, filename),
+  );
+
+  return `prettier@file:./${filename}`;
 }

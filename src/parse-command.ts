@@ -3,26 +3,30 @@ import { getRepositories, type Repository } from "./repositories.ts";
 export const PRETTIER_PACKAGE_TYPE_PULL_REQUEST = "PULL_REQUEST";
 export const PRETTIER_PACKAGE_TYPE_PACKAGE = "PACKAGE";
 
-export interface PrettierPackage {
+type PrettierPackage = {
   type: typeof PRETTIER_PACKAGE_TYPE_PACKAGE;
   version: string;
   raw: string;
-}
+};
 
-export interface PrettierPullRequest {
+type PrettierPullRequest = {
   type: typeof PRETTIER_PACKAGE_TYPE_PULL_REQUEST;
   number: string;
   raw: string;
-}
+};
 
-export type PrettierVersion = PrettierPackage | PrettierPullRequest;
+type PrettierVersionWithoutKind = PrettierPackage | PrettierPullRequest;
 
-export interface Command {
-  alternative: PrettierVersion;
-  original: PrettierVersion;
-}
+type AlternativePrettierKind = { kind: "alternative" };
+type OriginalPrettierKind = { kind: "original" };
 
-export const defaultOriginalPrettierVersion: PrettierVersion = {
+type AlternativePrettier = PrettierVersionWithoutKind & AlternativePrettierKind;
+type OriginalPrettier = PrettierVersionWithoutKind & OriginalPrettierKind;
+
+export type PrettierVersion = AlternativePrettier | OriginalPrettier;
+
+export const defaultOriginalPrettierVersion: OriginalPrettier = {
+  kind: "original",
   type: PRETTIER_PACKAGE_TYPE_PACKAGE,
   version: "prettier/prettier",
   raw: "prettier/prettier",
@@ -36,10 +40,13 @@ export function parseCommand(source: string) {
     throw new Error(`Malformed command '${source}'`);
   }
 
-  const alternative = parsePrettierVersion(groups.alternative);
+  const alternative: AlternativePrettier = parsePrettierVersion(
+    groups.alternative,
+    "alternative",
+  );
 
-  const original = groups.original
-    ? parsePrettierVersion(groups.original)
+  const original: OriginalPrettier = groups.original
+    ? parsePrettierVersion(groups.original, "original")
     : defaultOriginalPrettierVersion;
 
   const repositories = parseRepositories(groups.repositories);
@@ -82,10 +89,14 @@ function parseRepositories(repositories: string | undefined) {
   return result;
 }
 
-function parsePrettierVersion(raw: string): PrettierVersion {
+function parsePrettierVersion<Kind extends PrettierVersion["kind"]>(
+  raw: string,
+  kind: Kind,
+): PrettierVersionWithoutKind & { kind: Kind } {
   // like "#3465"
   if (/^#\d+$/.test(raw)) {
     return {
+      kind,
       type: PRETTIER_PACKAGE_TYPE_PULL_REQUEST,
       number: raw.slice(1),
       raw,
@@ -101,6 +112,7 @@ function parsePrettierVersion(raw: string): PrettierVersion {
   }
 
   return {
+    kind,
     type: PRETTIER_PACKAGE_TYPE_PACKAGE,
     version,
     raw,

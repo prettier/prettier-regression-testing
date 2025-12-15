@@ -3,6 +3,8 @@ import os from "node:os";
 import path from "node:path";
 import crypto from "node:crypto";
 import { temporaryDirectory } from "./constants.ts";
+import spawn from "nano-spawn";
+import assert from "node:assert/strict";
 
 export async function createTemporaryDirectory() {
   const directory =
@@ -39,3 +41,32 @@ export async function readFile(file: string) {
 }
 
 export const unique = <T>(array: T[]): T[] => [...new Set(array)];
+
+export const commitChanges = async (directory: string, message: string) => {
+  await spawn("git", ["add", "."], { cwd: directory });
+  const { stdout } = await spawn(
+    "git",
+    ["commit", "--allow-empty", "--no-verify", "-m", message],
+    { cwd: directory },
+  );
+
+  const match = stdout.match(/^\[(?<commitHash>[a-f0-9]{40}) [a-f0-9]{7}]/);
+  if (!match?.groups!.commitHash) {
+    throw new Error("Unexpected error");
+  }
+
+  const commitHash = match.groups.commitHash;
+  return commitHash;
+};
+
+export async function getCommitHash(directory: string) {
+  const { stdout } = await spawn("git", ["rev-parse", "HEAD"], {
+    cwd: directory,
+  });
+  return stdout.trim();
+}
+
+export async function resetToCommitHash(directory: string, commitHash: string) {
+  await spawn("git", ["reset", commitHash, "--hard"], { cwd: directory });
+  assert.equal(await getCommitHash(directory), commitHash);
+}
