@@ -35,6 +35,13 @@ export async function executeCommand(commandString: string) {
     ),
   );
 
+  const failedJobsCount = results.filter(
+    (result) => result.status === "rejected",
+  ).length;
+  await logger.brief(
+    `Job finished, succeed on ${results.length - failedJobsCount} repositories, fail on ${failedJobsCount} repositories.\n\nPreparing reports ...`,
+  );
+
   return {
     alternative,
     original,
