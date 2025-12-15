@@ -40,7 +40,7 @@ export async function executeCommand(commandString: string) {
       } finally {
         finished++;
         logger.brief(
-          `${finished}/${repositories.length} repositories finished ...`,
+          `${finished}/${repositories.length} test on '${repository.repository}' completed.`,
         );
       }
     }),

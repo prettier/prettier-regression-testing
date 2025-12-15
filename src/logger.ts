@@ -1,5 +1,8 @@
 import * as github from "@actions/github";
-import { IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT, GITHUB_ACTION_JOB_URL } from "./constants.ts";
+import {
+  IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT,
+  GITHUB_ACTION_JOB_URL,
+} from "./constants.ts";
 import { getOctokit } from "./octokit.ts";
 import { codeBlock } from "./utilities.ts";
 import { inspect } from "node:util";
