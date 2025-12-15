@@ -34,6 +34,9 @@ export async function executeCommand(commandString: string) {
           alternative: alternativePrettier,
           original: originalPrettier,
         });
+      } catch (error) {
+        console.error(error);
+        throw error;
       } finally {
         finished++;
         logger.brief(

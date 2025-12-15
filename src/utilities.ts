@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import crypto from "node:crypto";
 import { temporaryDirectory } from "./constants.ts";
-import spawn from "nano-spawn";
+import spawn, { SubprocessError } from "nano-spawn";
 import assert from "node:assert/strict";
 
 export async function createTemporaryDirectory() {
@@ -42,21 +42,51 @@ export async function readFile(file: string) {
 
 export const unique = <T>(array: T[]): T[] => [...new Set(array)];
 
-export const commitChanges = async (directory: string, message: string) => {
-  await spawn("git", ["add", "."], { cwd: directory });
-  const { stdout } = await spawn(
+async function gitAddFiles(cwd: string) {
+  try {
+    await spawn("git", ["add", "."], { cwd });
+    return;
+  } catch (error) {
+    if (error instanceof SubprocessError) {
+      const { stderr } = error;
+      const match = stderr.match(
+        /error: open\("(?<filename>.*)"\): Filename too long/,
+      );
+      const filename = match?.groups?.filename;
+      if (filename) {
+        console.log(`File '${filename}' can't be added, ignored.`);
+        await fs.rm(path.join(cwd, filename), { force: true });
+        return gitAddFiles(cwd);
+      }
+    }
+
+    throw error;
+  }
+}
+
+export const commitChanges = async (
+  directory: string,
+  message: string,
+  ignoreFilesCannotAdded?: boolean,
+) => {
+  await fs.rm(path.join(directory, ".gitattributes"), { force: true });
+  await spawn("git", ["config", "set", "core.autocrlf", "false"], {
+    cwd: directory,
+  });
+
+  if (ignoreFilesCannotAdded) {
+    await gitAddFiles(directory);
+  } else {
+    await spawn("git", ["add", "."], { cwd: directory });
+  }
+
+  await spawn(
     "git",
     ["commit", "--allow-empty", "--no-verify", "-m", message],
     { cwd: directory },
   );
 
-  const match = stdout.match(/^\[(?<commitHash>[a-f0-9]{40}) [a-f0-9]{7,8}] /);
-  if (!match?.groups!.commitHash) {
-    throw new Error(`Unexpected commit hash '${stdout}'`);
-  }
-
-  const commitHash = match.groups.commitHash;
-  return commitHash;
+  return getCommitHash(directory);
 };
 
 export async function getCommitHash(directory: string) {

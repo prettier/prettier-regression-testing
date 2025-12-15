@@ -30,7 +30,6 @@ async function preparePrettierIgnoreFile(
 
   const prettierIgnoreFile = path.join(directory, ".prettierignore");
   await writeFile(prettierIgnoreFile, content);
-  await spawn("git", ["add", "."], { cwd: directory });
 }
 
 export async function prepareRepository(
@@ -39,9 +38,11 @@ export async function prepareRepository(
 ) {
   await cloneRepository(repository);
   await fs.cp(repository.directory, directory, { recursive: true });
+  await fs.rm(path.join(directory, ".git"), { recursive: true, force: true });
   await preparePrettierIgnoreFile(directory, repository);
+  await spawn("git", ["init"], { cwd: directory });
 
-  const commitHash = await commitChanges(directory, "Prepare");
+  const commitHash = await commitChanges(directory, "Initialize", true);
 
   return {
     async reset() {
