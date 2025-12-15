@@ -3,7 +3,7 @@ import { runPrettier } from "./run-prettier.ts";
 import * as logger from "./logger.ts";
 import { installPrettier } from "./install-prettier.ts";
 import { parseCommand } from "./parse-command.ts";
-import { createTemporaryDirectory } from "./utilities.ts";
+import { clearDirectory, createTemporaryDirectory } from "./utilities.ts";
 import { writeFile } from "./utilities.ts";
 import { reportsDirectory, THROW_EXECUTE_ERROR } from "./constants.ts";
 import path from "node:path";
@@ -55,6 +55,8 @@ export async function executeCommand(commandString: string) {
   await logger.brief(
     `Job finished, succeed on ${results.length - failedJobsCount} repositories, fail on ${failedJobsCount} repositories.\n\nPreparing reports ...`,
   );
+
+  await clearDirectory(reportsDirectory);
 
   return {
     alternative,
