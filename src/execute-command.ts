@@ -5,7 +5,7 @@ import { installPrettier } from "./install-prettier.ts";
 import { parseCommand } from "./parse-command.ts";
 import { createTemporaryDirectory } from "./utilities.ts";
 import { writeFile } from "./utilities.ts";
-import { reportsDirectory } from "./constants.ts";
+import { reportsDirectory, THROW_EXECUTE_ERROR } from "./constants.ts";
 import path from "node:path";
 
 export type ExecuteCommandResult = Awaited<ReturnType<typeof executeCommand>>;
@@ -43,9 +43,15 @@ export async function executeCommand(commandString: string) {
     }),
   );
 
-  const failedJobsCount = results.filter(
-    (result) => result.status === "rejected",
-  ).length;
+  const errors = results.filter((result) => result.status === "rejected");
+  if (THROW_EXECUTE_ERROR) {
+    throw new AggregateError(
+      errors.map(({ reason }) => reason),
+      "Command exclude failure.",
+    );
+  }
+
+  const failedJobsCount = errors.length;
   await logger.brief(
     `Job finished, succeed on ${results.length - failedJobsCount} repositories, fail on ${failedJobsCount} repositories.\n\nPreparing reports ...`,
   );

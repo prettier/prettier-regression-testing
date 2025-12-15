@@ -3,7 +3,7 @@ import * as logger from "./logger.ts";
 import { executeCommand } from "./execute-command.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
 import { writeFile } from "./utilities.ts";
-import { reportsDirectory } from "./constants.ts";
+import { reportsDirectory, THROW_EXECUTE_ERROR } from "./constants.ts";
 import path from "node:path";
 import { reportOnGithubIssue } from "./report-on-github-issue.ts";
 import { stringifyReport, getReport } from "./report.ts";
@@ -43,5 +43,9 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any
 ) {
+  if (THROW_EXECUTE_ERROR) {
+    throw error;
+  }
+
   await logger.error(error);
 }
