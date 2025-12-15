@@ -1,28 +1,28 @@
 [
   {
     "repository": "babel/babel",
-    "commit": "b4c84b23917fe5acd74221c6bc622a3ccc842ff2"
+    "commit": "84d21e4e129468b62ca5e05f8029c18d785f3345"
   },
   {
     "repository": "vuejs/eslint-plugin-vue",
-    "commit": "5023e75dd7aa4b059b72e84b47a1e195ec6ac94a"
+    "commit": "684a3d2ebf9b09b4893c8ed839d3c60c05635e30"
   },
   {
     "repository": "excalidraw/excalidraw",
-    "commit": "bf4c65f4835f5ce13d0c807797b849ad5d6b0121",
+    "commit": "f06484c6ab72ce7c399f0cf73cda46b3fc7b82ab",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "mdn/content",
-    "commit": "d21d8f39b72a01d929f690b8517032c9248aa1a9"
+    "commit": "923adb616baa87402ca965ebd18a73380cc84d27"
   },
   {
     "repository": "prettier/prettier",
-    "commit": "c2ab62e8d2bcd2197435ee3b224420e883537a50"
+    "commit": "ac6875153cca72c75b5ac0e7e442be4e015f13fa"
   },
   {
     "repository": "marmelab/react-admin",
-    "commit": "63640767df781441964f435348a5389afb2ee198",
+    "commit": "34dbb1a04ff6f0922edac83b1a3583fd2e9358be",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -31,7 +31,7 @@
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "dd969477e8cb10a4402eccc051a1d1206853e3b0",
+    "commit": "c62e85874f0e482156a54b6744fe90a6f270012a",
     "ignore": ["**/fixtures/**/*"]
   },
   {
@@ -40,11 +40,11 @@
   },
   {
     "repository": "vuejs/core",
-    "commit": "f51d3e2789bb2f1700ec28d44a4953de1bdf7d71"
+    "commit": "d8a2de44859bdea7fad6a939ae3dbb651527045f"
   },
   {
     "repository": "microsoft/vscode",
-    "commit": "2630664bd2739889e84d7f8c26ba80389fe04fab",
+    "commit": "566bacb5b01bbe765383be196dca013b05d40101",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -94,6 +94,6 @@
   },
   {
     "repository": "vitejs/vite",
-    "commit": "2f9428d1ffd988e30cb253d5bb84844fb1654e86"
+    "commit": "98d9a33274d9ac90780786afa612d916feddf2e3"
   }
 ]
