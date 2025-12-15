@@ -56,7 +56,7 @@ export async function error(error: Error) {
   }
 
   const text = `
-  ### [${error.name}]
+  ## [${error.name}]
 
   ${codeBlock(inspect(error))}
   `;
