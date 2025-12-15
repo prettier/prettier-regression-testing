@@ -35,12 +35,7 @@ async function runPrettierWithVersion({
     // if another packages is required to run Prettier
     // e.g. excalidraw: https://github.com/excalidraw/excalidraw/blob/a21db08cae608692d9525fff97f109fb24fec20c/package.json#L83
     if (shouldInstallDependencies(error)) {
-      await spawn("yarn", ["install"], {
-        cwd,
-        env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },
-      });
-      await fs.rm(path.join(cwd, "yarn.lock"), { force: true });
-      await spawn("git", ["reset", "--hard"], { cwd });
+      await installDependencies(cwd);
       await run();
     } else {
       throw error;
@@ -53,6 +48,15 @@ async function runPrettierWithVersion({
 
   timing.end();
   return commitHash;
+}
+
+async function installDependencies(cwd) {
+  await spawn("yarn", ["install"], {
+    cwd,
+    env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },
+  });
+  await fs.rm(path.join(cwd, "yarn.lock"), { force: true });
+  await spawn("git", ["reset", "--hard"], { cwd });
 }
 
 function shouldInstallDependencies(error: SubprocessError) {
