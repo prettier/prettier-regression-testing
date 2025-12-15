@@ -22,7 +22,8 @@
     "@actions/artifact": "4.0.0",
     "@actions/core": "2.0.1",
     "@actions/github": "6.0.1",
-    "nano-spawn": "2.0.0"
+    "nano-spawn": "2.0.0",
+    "pretty-ms": "9.3.0"
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",

@@ -1,3 +1,4 @@
+import prettyMilliseconds from "pretty-ms";
 import spawn from "nano-spawn";
 import path from "node:path";
 import assert from "node:assert/strict";
@@ -79,6 +80,9 @@ export async function cloneRepository(repository: Repository) {
     // No op
   }
 
+  const startTime = process.hrtime.bigint();
+  console.log(`Cloning repository '${repository.repository}' ...`);
+
   await clearDirectory(directory);
   await spawn("git", ["init"], { cwd: directory });
   await spawn(
@@ -96,4 +100,8 @@ export async function cloneRepository(repository: Repository) {
   });
 
   assert.equal(await getCommitHash(directory), commitHash);
+
+  console.log(
+    `Repository '${repository.repository}' cloned in ${prettyMilliseconds((process.hrtime.bigint() - startTime) / 1_000_000n)}.`,
+  );
 }

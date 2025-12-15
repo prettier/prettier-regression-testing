@@ -1,9 +1,8 @@
-import fs from "fs/promises";
 import { inspect } from "node:util";
 import * as core from "@actions/core";
 import { IS_CI } from "./constants.ts";
 import * as logger from "./logger.ts";
-import { executeCommand } from "./excute-command.ts";
+import { executeCommand } from "./execute-command.ts";
 import { getReport } from "./report.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
 import { uploadToArtifact } from "./artifact.ts";
@@ -47,7 +46,9 @@ async function run() {
     throw new Error("Please enter some commands.");
   }
 
-  await logger.log(`Received with command '${commandString}'.`)
+  await logger.log(
+    `Received with command '${commandString}', start execute...`,
+  );
 
   const result = await executeCommand(commandString);
 

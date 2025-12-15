@@ -2,6 +2,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import assert from "node:assert/strict";
 import spawn from "nano-spawn";
+import prettyMilliseconds from "pretty-ms";
 import {
   type PrettierVersion,
   PRETTIER_PACKAGE_TYPE_PULL_REQUEST,
@@ -14,6 +15,8 @@ export async function installPrettier(
   version: PrettierVersion,
   { cwd }: { cwd: string },
 ) {
+  const startTime = process.hrtime.bigint();
+  console.log(`Installing Prettier(${version.kind}) '${version.raw}' ...`);
   const directory = await clearDirectory(
     path.join(cwd, `${version.kind}-prettier`),
   );
@@ -30,8 +33,16 @@ export async function installPrettier(
     directory,
     "node_modules/prettier/bin/prettier.cjs",
   );
-  await spawn(process.execPath, [prettierBinary, "--version"]);
 
+  const { stdout: installedVersion } = await spawn(process.execPath, [
+    prettierBinary,
+    "--version",
+  ]);
+  assert.ok(typeof installedVersion === "string");
+
+  console.log(
+    `Prettier(${version.kind}) '${version.raw}' installed in ${prettyMilliseconds((process.hrtime.bigint() - startTime) / 1_000_000n)}.`,
+  );
   return {
     bin: prettierBinary,
     version: version,
@@ -114,10 +125,7 @@ async function getPrettierPackageName(
   const filename = await checkoutPullRequest(version.number, {
     cwd: directory,
   });
-  await fs.rename(
-    path.join(directory, filename),
-    path.join(directory, filename),
-  );
+  await fs.rename(path.join(directory, filename), path.join(cwd, filename));
 
   return `prettier@file:./${filename}`;
 }

@@ -1,3 +1,4 @@
+import prettyMilliseconds from "pretty-ms";
 import { runPrettier } from "./run-prettier.ts";
 import * as logger from "./logger.ts";
 import { installPrettier } from "./install-prettier.ts";
@@ -11,7 +12,6 @@ export async function executeCommand(commandString: string) {
   const directory = await createTemporaryDirectory();
 
   // Install Prettier
-  await logger.log("Installing Prettier...");
   const [alternativePrettier, originalPrettier] = await Promise.all(
     [original, alternative].map((version) =>
       installPrettier(version, { cwd: directory }),
