@@ -19,7 +19,7 @@ async function runPrettierWithVersion({
   reset: () => Promise<void>;
 }) {
   const timing = new Timing(
-    `Run Prettier(${prettier.version.kind}) on repository '${repository.repository}'`,
+    `Run Prettier[${prettier.version.kind}] on repository '${repository.repository}'`,
   );
   await reset();
 
