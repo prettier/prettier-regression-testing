@@ -8,6 +8,7 @@ import {
 } from "./utilities.ts";
 import fs from "node:fs/promises";
 import { cloneRepository, type Repository } from "./repositories.ts";
+import spawn from "nano-spawn";
 
 async function preparePrettierIgnoreFile(
   directory: string,
