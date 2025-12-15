@@ -5,6 +5,7 @@ import { type InstalledPrettier } from "./install-prettier.ts";
 import { prepareRepository } from "./prepare-repository.ts";
 import { commitChanges } from "./utilities.ts";
 import { Timing } from "./timing.ts";
+import fs from "node:fs/promises";
 
 async function runPrettierWithVersion({
   cwd,
@@ -43,6 +44,8 @@ async function runPrettierWithVersion({
       throw error;
     }
   }
+
+  await fs.rm(path.join(cwd, "yarn.lock"), { force: true });
 
   const commitHash = await commitChanges(cwd, prettier.version.kind);
 
