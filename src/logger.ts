@@ -3,6 +3,7 @@ import { IS_GITHUB_ACTION, GITHUB_ACTION_JOB_URL } from "./constants.ts";
 import { getOctokit } from "./octokit.ts";
 import { codeBlock } from "./utilities.ts";
 import { inspect } from "node:util";
+import { outdent } from "outdent";
 
 type Comment = Awaited<ReturnType<typeof createComment>>;
 
@@ -27,14 +28,20 @@ async function updateComment(body: string, comment: Comment) {
 }
 
 let briefCommentRequest: ReturnType<typeof createComment> | undefined;
-export async function brief(body: string) {
-  console.log(body);
+const messages: { time: Date; message: string }[] = [];
+export async function brief(message: string) {
+  console.log(message);
 
   if (!IS_GITHUB_ACTION) {
     return;
   }
 
-  body += `\n__[details](${GITHUB_ACTION_JOB_URL})__`;
+  messages.push({ time: new Date(), message });
+
+  const body = outdent`
+  ${messages.map(({ time, message }) => `[${time}}]: ${message}]`).join("\n\n")}
+  __[details](${GITHUB_ACTION_JOB_URL})__
+  `;
 
   if (briefCommentRequest) {
     const comment = await briefCommentRequest;
@@ -55,10 +62,11 @@ export async function error(error: Error) {
     return;
   }
 
-  const text = `
-  ## [${error.name}]
+  const text = outdent`
+  <details><summary>[${error.name}](${error.message})</summary>
 
   ${codeBlock(inspect(error))}
+  </details>
   `;
   return await brief(text);
 }

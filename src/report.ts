@@ -2,6 +2,7 @@ import { PRETTIER_PACKAGE_TYPE_PULL_REQUEST } from "./parse-command.ts";
 import { type PrettierVersion } from "./parse-command.ts";
 import { type ExecuteCommandResult } from "./execute-command.ts";
 import { codeBlock } from "./utilities.ts";
+import { outdent } from "outdent";
 
 function getPrettierVersionDescription(prettier: PrettierVersion) {
   if (prettier.type === PRETTIER_PACKAGE_TYPE_PULL_REQUEST) {
@@ -77,6 +78,13 @@ function formatDiff(diff: string) {
   const linesCount = diff.split("\n").length;
   const code = codeBlock(diff, "diff");
   return linesCount > LONG_DIFF_THRESHOLD_IN_LINES
-    ? `<details><summary>Diff (${linesCount} lines)</summary>\n\n${code}\n\n</details>`
+    ? outdent`
+        <details>
+          <summary>Diff (${linesCount} lines)</summary>
+
+          ${code}
+
+        </details>
+      `
     : code;
 }

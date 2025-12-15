@@ -29,7 +29,7 @@ export async function executeCommand(commandString: string) {
   const results = await Promise.allSettled(
     repositories.map(async (repository) => {
       try {
-        return runPrettier(repository, {
+        return await runPrettier(repository, {
           cwd: directory,
           alternative: alternativePrettier,
           original: originalPrettier,
