@@ -116,15 +116,15 @@ export async function runPrettier(
     { cwd: directory },
   );
 
-  // Remove the useless head
   const lines = diff.split("\n");
-  for (let lineIndex = lines.length - 1; lineIndex > 0; lineIndex--) {
+  for (let lineIndex = lines.length - 1; lineIndex >= 0; lineIndex--) {
     if (
       lines[lineIndex].startsWith("diff --git Original|") &&
       lines[lineIndex + 1].startsWith("index ") &&
       lines[lineIndex + 2].startsWith("--- Original|http://github.com/") &&
       lines[lineIndex + 3].startsWith("+++ Alternative|")
     ) {
+      // Remove the useless head
       lines.splice(lineIndex, 2);
     }
   }
