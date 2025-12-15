@@ -52,7 +52,7 @@ export const commitChanges = async (directory: string, message: string) => {
 
   const match = stdout.match(/^\[(?<commitHash>[a-f0-9]{40}) [a-f0-9]{7}]/);
   if (!match?.groups!.commitHash) {
-    throw new Error("Unexpected error");
+    throw new Error(`Unexpected commit hash '${stdout}'`);
   }
 
   const commitHash = match.groups.commitHash;
