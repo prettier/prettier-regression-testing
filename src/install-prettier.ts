@@ -28,6 +28,9 @@ export async function installPrettier(
 
   await spawn("yarn", ["init", "-y"], { cwd: directory });
   await writeFile(path.join(directory, "yarn.lock"), "");
+  await spawn("yarn", ["config", "set", "nodeLinker", "node-modules"], {
+    cwd: directory,
+  });
   await spawn("yarn", ["add", packageToInstall], { cwd: directory });
 
   const prettierBinary = path.join(
