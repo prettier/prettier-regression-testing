@@ -1,41 +1,16 @@
-import { inspect } from "node:util";
-import * as core from "@actions/core";
-import { IS_CI } from "./constants.ts";
+import { IS_GITHUB_ACTION } from "./constants.ts";
 import * as logger from "./logger.ts";
 import { executeCommand } from "./execute-command.ts";
-import { getReport } from "./report.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
-import { uploadToArtifact } from "./artifact.ts";
-import { outdent } from "outdent";
-
-async function exit(error: Error | string) {
-  console.error(error);
-  if (IS_CI) {
-    core.setFailed(error);
-  } else {
-    process.exit(1);
-  }
-}
-
-process.on("unhandledRejection", function (reason) {
-  let errorText: string;
-  // Handle an error thrown by spawn
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  if ((reason as any).stderr) {
-    errorText =
-      "command: " + (reason as any).command + "\n" + (reason as any).stderr;
-    /* eslint-enable  @typescript-eslint/no-explicit-any */
-  } else {
-    errorText = JSON.stringify(reason);
-  }
-  logger.error(errorText + "\n").then(() => {
-    exit(errorText);
-  });
-});
+import { writeFile } from "./utilities.ts";
+import { reportsDirectory } from "./constants.ts";
+import path from "node:path";
+import { reportOnGithubIssue } from "./report-on-github-issue.ts";
+import { stringifyReport, getReport } from "./report.ts";
 
 async function run() {
   let commandString;
-  if (IS_CI) {
+  if (IS_GITHUB_ACTION) {
     const comment = getIssueComment();
     commandString = comment.body as string;
   } else {
@@ -46,71 +21,20 @@ async function run() {
     throw new Error("Please enter some commands.");
   }
 
-  await logger.log(
-    `Received with command '${commandString}', start execute...`,
+  await logger.brief(
+    `Received with command '${commandString}', start execute ...`,
   );
 
-  const result = await executeCommand(commandString);
+  const commandExecuteResult = await executeCommand(commandString);
 
-  const { title, reports } = getReport(result);
+  const report = getReport(commandExecuteResult);
 
-  const filesToUpload = reports.flatMap((group) =>
-    group.results.filter((report) => report.shouldUpload),
+  await writeFile(
+    path.join(reportsDirectory, "report.md"),
+    stringifyReport(report),
   );
 
-  let artifactUrl: string | undefined;
-
-  if (IS_CI && filesToUpload.length > 0) {
-    try {
-      artifactUrl = await uploadToArtifact(filesToUpload);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  for (let index = 0; index < reports.length; index++) {
-    const report = reports[index];
-    const shouldSeparate = index > 0;
-    const text = report.results
-      .map((report) => {
-        let body = report.diff;
-        if (IS_CI && report.shouldUpload) {
-          if (artifactUrl) {
-            body = `**Visit [this link](${artifactUrl}) to download**`;
-          } else {
-            body = "💥💥 The diff is to big, and failed to upload. 💥💥";
-          }
-        }
-
-        return outdent`
-            ${report.head}
-
-            ${body}
-            `;
-      })
-      .join("\n\n");
-
-    try {
-      await logger.log(
-        outdent`
-        #### ${title}
-        
-        ${text}
-        `,
-        shouldSeparate,
-      );
-    } catch (error) {
-      const isTextTooLongError =
-        error instanceof Error &&
-        error.message.includes("The text is too long");
-      if (isTextTooLongError) {
-        console.log(
-          `Reports contains ${report.results} repos, lengths: ${JSON.stringify(report.results.map(({ length }) => length))}`,
-        );
-      }
-    }
-  }
-  process.exit(0);
+  await reportOnGithubIssue(report);
 }
 
 try {
@@ -119,6 +43,5 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any
 ) {
-  await logger.error(inspect(error));
-  await exit(error);
+  await logger.error(error);
 }

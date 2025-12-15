@@ -70,3 +70,13 @@ export async function resetToCommitHash(directory: string, commitHash: string) {
   await spawn("git", ["reset", commitHash, "--hard"], { cwd: directory });
   assert.equal(await getCommitHash(directory), commitHash);
 }
+
+export function codeBlock(content: string, syntax?: string) {
+  const backtickSequences = content.match(/`+/g) || [];
+  const longestBacktickSequenceLength = Math.max(
+    ...backtickSequences.map(({ length }) => length),
+  );
+  const fenceLength = Math.max(3, longestBacktickSequenceLength + 1);
+  const fence = "`".repeat(fenceLength);
+  return [fence + (syntax || ""), content, fence].join("\n");
+}

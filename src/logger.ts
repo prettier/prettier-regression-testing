@@ -1,52 +1,72 @@
-import fs from "fs/promises";
 import * as github from "@actions/github";
-import { IS_CI, MAXIMUM_GITHUB_COMMENT_LENGTH } from "./constants.ts";
+import { IS_GITHUB_ACTION, GITHUB_ACTION_RUN_URL } from "./constants.ts";
 import { getOctokit } from "./octokit.ts";
+import { codeBlock } from "./utilities.ts";
+import { inspect } from "node:util";
 
-let commentId: number | undefined;
-async function logToIssueComment(logText: string, separateComment = false) {
-  if (logText.length > MAXIMUM_GITHUB_COMMENT_LENGTH) {
-    throw new Error(
-      `The text is too long (maximum is ${MAXIMUM_GITHUB_COMMENT_LENGTH} characters, actual ${logText.length} characters)"}`,
-    );
+type Comment = Exclude<Awaited<ReturnType<typeof createComment>>, undefined>;
+
+async function createComment(body: string) {
+  if (!IS_GITHUB_ACTION) {
+    return;
   }
-
   const octokit = getOctokit();
-  if (commentId === undefined || separateComment) {
-    const comment = await octokit.rest.issues.createComment({
-      ...github.context.repo,
-      issue_number: github.context.issue.number,
-      body: logText,
-    });
-    commentId = comment.data.id;
-  } else {
-    await octokit.rest.issues.updateComment({
-      ...github.context.repo,
-      comment_id: commentId,
-      body: logText,
-    });
-  }
+
+  return await octokit.rest.issues.createComment({
+    ...github.context.repo,
+    issue_number: github.context.issue.number,
+    body,
+  });
 }
 
-export async function log(
-  logText: string,
-  separateComment = false,
-): Promise<void> {
-  if (IS_CI) {
-    console.log(logText);
-    await logToIssueComment(logText, separateComment);
-  } else {
-    const fileData = await fs.readFile("log.txt", "utf-8");
-    await fs.writeFile("log.txt", fileData + logText + "\n");
+async function updateComment(body: string, comment: Comment) {
+  if (!IS_GITHUB_ACTION) {
+    return;
   }
+  const octokit = getOctokit();
+
+  return await octokit.rest.issues.updateComment({
+    ...github.context.repo,
+    comment_id: comment.data.id,
+    body: body,
+  });
 }
 
-export async function error(logText: string): Promise<void> {
-  if (IS_CI) {
-    const errorText = "## [Error]\n\n" + "```\n" + logText + "\n```";
-    console.log(errorText);
-    await logToIssueComment(errorText);
-  } else {
-    await fs.writeFile("log.txt", "[Error]\n\n" + logText);
+let briefCommentRequest: ReturnType<typeof createComment> | undefined;
+export async function brief(body: string) {
+  body += `\n > [Progress](${GITHUB_ACTION_RUN_URL})`;
+
+  if (!briefCommentRequest) {
+    briefCommentRequest = createComment(body);
+    await briefCommentRequest;
+    return;
   }
+
+  const comment = await briefCommentRequest;
+
+  await updateComment(body, comment!);
+}
+
+export async function error(error: Error): Promise<void> {
+  const text = `
+  ### [${error.name}]
+
+  ${codeBlock(inspect(error))}
+  `;
+  console.error(error);
+  await brief(text);
+}
+
+export async function report(body: string) {
+  console.log(body);
+
+  if (briefCommentRequest) {
+    briefCommentRequest = undefined;
+
+    const comment = await briefCommentRequest;
+    await updateComment(body, comment!);
+    return;
+  }
+
+  await createComment(body);
 }
