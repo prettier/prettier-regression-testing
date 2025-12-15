@@ -37,7 +37,7 @@ export async function executeCommand(commandString: string) {
       } finally {
         finished++;
         logger.brief(
-          `Running Prettier on ${finished}/${repositories.length} repositories ...`,
+          `${finished}/${repositories.length} repositories finished ...`,
         );
       }
     }),
