@@ -121,9 +121,7 @@ export async function runPrettier(
     if (
       lines[lineIndex].startsWith(`diff --git ${original.version.kind}|`) &&
       lines[lineIndex + 1].startsWith("index ") &&
-      lines[lineIndex + 2].startsWith(
-        `--- ${original.version.kind}|http://github.com/`,
-      ) &&
+      lines[lineIndex + 2].startsWith(`--- ${original.version.kind}|`) &&
       lines[lineIndex + 3].startsWith(`+++ ${alternative.version.kind}|`)
     ) {
       // Remove the useless head
