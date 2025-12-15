@@ -39,7 +39,7 @@ export async function brief(message: string) {
   messages.push({ time: new Date(), message });
 
   const body = outdent`
-  ${messages.map(({ time, message }) => `[${time.toISOString()}}]: ${message}`).join("\n")}
+  ${messages.map(({ time, message }) => `[${time.toISOString()}]: ${message}`).join("\n")}
   __[details](${GITHUB_ACTION_JOB_URL})__
   `;
 
