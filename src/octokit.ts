@@ -9,6 +9,7 @@ export function getOctokit() {
     if (!NODE_AUTH_TOKEN) {
       throw new Error("`NODE_AUTH_TOKEN` is required.");
     }
+
     octokit = githubGetOctokit(NODE_AUTH_TOKEN);
   }
   return octokit;

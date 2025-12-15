@@ -15,16 +15,16 @@ jobs:
           path: repositories
           key: v2-${{ hashFiles('repositories.json') }}
       - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
       - name: configure git
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
       - run: yarn
-      - uses: ./.github/actions/main
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn execute
       - name: Upload Reports
         uses: actions/upload-artifact@v5
         with:
-          name: Full reports
+          name: Reports
           path: reports

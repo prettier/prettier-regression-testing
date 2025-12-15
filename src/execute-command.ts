@@ -21,7 +21,7 @@ export async function executeCommand(commandString: string) {
     ),
   );
 
-  await logger.log(
+  await logger.brief(
     `Running Prettier on ${repositories.length} repositories ...`,
   );
 

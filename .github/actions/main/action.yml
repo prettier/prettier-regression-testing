@@ -1,6 +1,0 @@
-# https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax
-name: "Prettier regression test"
-description: "Prettier regression test"
-runs:
-  using: "node24"
-  main: "../../../src/index.ts"

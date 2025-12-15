@@ -1,5 +1,5 @@
 import * as github from "@actions/github";
-import { IS_GITHUB_ACTION, GITHUB_ACTION_RUN_URL } from "./constants.ts";
+import { IS_GITHUB_ACTION, GITHUB_ACTION_JOB_URL } from "./constants.ts";
 import { getOctokit } from "./octokit.ts";
 import { codeBlock } from "./utilities.ts";
 import { inspect } from "node:util";
@@ -34,7 +34,7 @@ async function updateComment(body: string, comment: Comment) {
 
 let briefCommentRequest: ReturnType<typeof createComment> | undefined;
 export async function brief(body: string) {
-  body += `\n > [Progress](${GITHUB_ACTION_RUN_URL})`;
+  body += `\n__[details](${GITHUB_ACTION_JOB_URL})__`;
 
   if (!briefCommentRequest) {
     briefCommentRequest = createComment(body);
