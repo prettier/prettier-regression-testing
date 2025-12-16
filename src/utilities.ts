@@ -81,6 +81,16 @@ export const commitChanges = async (directory: string, message: string) => {
 
   await spawn(
     "git",
+    ["config", "set", "user.email", "prettier-regression-testing@prettier.io"],
+    { cwd: directory },
+  );
+  await spawn(
+    "git",
+    ["config", "set", "user.name", "prettier-regression-testing"],
+    { cwd: directory },
+  );
+  await spawn(
+    "git",
     ["commit", "--allow-empty", "--no-verify", "-m", message],
     { cwd: directory },
   );
