@@ -19,6 +19,9 @@ export default defineConfig(
   eslintConfigPrettier,
   {
     rules: {
+      curly: "error",
+
+      /* eslint-plugin-unicorn */
       "unicorn/template-indent": "error",
 
       /* eslint-plugin-simple-import-sort */
