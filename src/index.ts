@@ -25,7 +25,7 @@ async function run() {
   }
 
   await logger.brief(
-    `Received with command \`${commandString}\`, start execute ...`,
+    `Received command \`${commandString}\`, start execute ...`,
   );
 
   const commandExecuteResult = await executeCommand(commandString);
