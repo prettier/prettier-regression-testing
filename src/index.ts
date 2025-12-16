@@ -26,6 +26,9 @@ async function run() {
   );
 
   const commandExecuteResult = await executeCommand(commandString);
+  const errors = commandExecuteResult.results
+    .filter((result) => result.fail)
+    .map(({ error }) => error);
 
   const report = getReport(commandExecuteResult);
 
@@ -35,6 +38,10 @@ async function run() {
   );
 
   await reportOnGithubIssue(report);
+
+  if (THROW_EXECUTE_ERROR && errors.length) {
+    throw new AggregateError(errors, "Command exclude failure.");
+  }
 }
 
 try {

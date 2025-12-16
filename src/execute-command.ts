@@ -5,7 +5,7 @@ import { installPrettier } from "./install-prettier.ts";
 import { parseCommand } from "./parse-command.ts";
 import { clearDirectory, createTemporaryDirectory } from "./utilities.ts";
 import { writeFile } from "./utilities.ts";
-import { reportsDirectory, THROW_EXECUTE_ERROR } from "./constants.ts";
+import { reportsDirectory } from "./constants.ts";
 import path from "node:path";
 
 export type ExecuteCommandResult = Awaited<ReturnType<typeof executeCommand>>;
@@ -26,7 +26,7 @@ export async function executeCommand(commandString: string) {
   );
 
   let finished = 0;
-  const results = await Promise.allSettled(
+  const rawResults = await Promise.allSettled(
     repositories.map(async (repository) => {
       try {
         return await runPrettier(repository, {
@@ -46,55 +46,49 @@ export async function executeCommand(commandString: string) {
     }),
   );
 
-  const errors = results.filter((result) => result.status === "rejected");
-  if (THROW_EXECUTE_ERROR) {
-    throw new AggregateError(
-      errors.map(({ reason }) => reason),
-      "Command exclude failure.",
-    );
-  }
+  await clearDirectory(reportsDirectory);
+  const results = await Promise.all(
+    rawResults.map(async (result, index) => {
+      const repository = repositories[index];
+      if (result.status === "rejected") {
+        const error = result.reason as Error;
+        const file = path.join(
+          reportsDirectory,
+          `error-${repository.directoryName}.txt`,
+        );
+        const stringifiedError = inspect(error);
+        await writeFile(file, stringifiedError);
+        return {
+          repository,
+          fail: true as const,
+          error,
+          stringifiedError: stringifiedError,
+        };
+      }
 
-  const failedJobsCount = errors.length;
+      const diff = result.value;
+      const file = path.join(
+        reportsDirectory,
+        `${diff ? "diff" : "empty"}-${repository.directoryName}-success.diff`,
+      );
+      await writeFile(file, diff);
+      return {
+        repository,
+        fail: false as const,
+        diff,
+      };
+    }),
+  );
+
+  const failedJobs = results.filter((result) => result.fail);
+  const failedJobsCount = failedJobs.length;
   await logger.brief(
     `Job finished, succeed on ${results.length - failedJobsCount} repositories, fail on ${failedJobsCount} repositories.\n\nPreparing reports ...`,
   );
 
-  await clearDirectory(reportsDirectory);
-
   return {
     alternative,
     original,
-    results: await Promise.all(
-      results.map(async (result, index) => {
-        const repository = repositories[index];
-        if (result.status === "rejected") {
-          const error = result.reason;
-          const file = path.join(
-            reportsDirectory,
-            `error-${repository.directoryName}.txt`,
-          );
-          const stringifiedError = inspect(error);
-          await writeFile(file, stringifiedError);
-          return {
-            repository,
-            fail: true as const,
-            error,
-            stringifiedError: stringifiedError,
-          };
-        }
-
-        const diff = result.value;
-        const file = path.join(
-          reportsDirectory,
-          `${diff ? "diff" : "empty"}-${repository.directoryName}-success.diff`,
-        );
-        await writeFile(file, diff);
-        return {
-          repository,
-          fail: false as const,
-          diff,
-        };
-      }),
-    ),
+    results,
   };
 }
