@@ -1,10 +1,11 @@
+import assert from "node:assert/strict";
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import crypto from "node:crypto";
-import { temporaryDirectory } from "./constants.ts";
 import spawn, { SubprocessError } from "nano-spawn";
-import assert from "node:assert/strict";
+import { outdent } from "outdent";
+import { temporaryDirectory } from "./constants.ts";
 
 export async function createTemporaryDirectory() {
   const directory =
@@ -95,7 +96,7 @@ export async function resetToCommitHash(directory: string, commitHash: string) {
   assert.equal(await getCommitHash(directory), commitHash);
 }
 
-export function codeBlock(content: string, syntax?: string) {
+export function printMarkdownCodeBlock(content: string, syntax?: string) {
   const backtickSequences = content.match(/`+/g) || [];
   const longestBacktickSequenceLength = Math.max(
     ...backtickSequences.map(({ length }) => length),
@@ -103,4 +104,33 @@ export function codeBlock(content: string, syntax?: string) {
   const fenceLength = Math.max(3, longestBacktickSequenceLength + 1);
   const fence = "`".repeat(fenceLength);
   return [fence + (syntax || ""), content, fence].join("\n");
+}
+
+export function printMarkdownDetails(summary: string, body: string) {
+  /*
+  Note: do not indent the code block, otherwise the diff render incorrectly in comments.
+  ``````md
+  ```diff
+    - this is not removal
+  - this is removal
+  ```
+
+  and
+
+    ```diff
+    - this is not removal
+  - this is removal
+  ```
+
+  are different
+  ``````
+  */
+  return outdent`
+    <details>
+      <summary>${summary}</summary>
+
+    ${body}
+
+    </details>
+  `;
 }

@@ -1,12 +1,13 @@
+import path from "node:path";
 import { inspect } from "node:util";
-import { runPrettier } from "./run-prettier.ts";
-import * as logger from "./logger.ts";
+import { outdent } from "outdent";
+import { reportsDirectory } from "./constants.ts";
 import { installPrettier } from "./install-prettier.ts";
+import * as logger from "./logger.ts";
 import { parseCommand } from "./parse-command.ts";
+import { runPrettier } from "./run-prettier.ts";
 import { clearDirectory, createTemporaryDirectory } from "./utilities.ts";
 import { writeFile } from "./utilities.ts";
-import { reportsDirectory } from "./constants.ts";
-import path from "node:path";
 
 export type ExecuteCommandResult = Awaited<ReturnType<typeof executeCommand>>;
 
@@ -83,7 +84,13 @@ export async function executeCommand(commandString: string) {
   const failedJobs = results.filter((result) => result.fail);
   const failedJobsCount = failedJobs.length;
   await logger.brief(
-    `Job finished, succeed on ${results.length - failedJobsCount} repositories, fail on ${failedJobsCount} repositories.\n\nPreparing reports ...`,
+    outdent`
+      Job finished,
+      succeed on ${results.length - failedJobsCount} repositories,
+      fail on ${failedJobsCount} repositories.
+
+      Preparing reports ...
+    `,
   );
 
   return {

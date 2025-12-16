@@ -1,12 +1,12 @@
+import { inspect } from "node:util";
 import * as github from "@actions/github";
+import { outdent } from "outdent";
 import {
-  IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT,
   GITHUB_ACTION_JOB_URL,
+  IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT,
 } from "./constants.ts";
 import { getOctokit } from "./octokit.ts";
-import { codeBlock } from "./utilities.ts";
-import { inspect } from "node:util";
-import { outdent } from "outdent";
+import { printMarkdownCodeBlock, printMarkdownDetails } from "./utilities.ts";
 
 type Comment = Awaited<ReturnType<typeof createComment>>;
 
@@ -42,8 +42,9 @@ export async function brief(message: string) {
   messages.push({ time: new Date(), message });
 
   const body = outdent`
-  ${messages.map(({ time, message }) => `[${time.toISOString()}]: ${message}`).join("\n")}
-  __[details](${GITHUB_ACTION_JOB_URL})__
+    ${messages.map(({ time, message }) => `[${time.toISOString()}]: ${message}`).join("\n")}
+
+    _[details](${GITHUB_ACTION_JOB_URL})_
   `;
 
   if (briefCommentRequest) {
@@ -65,12 +66,11 @@ export async function error(error: Error) {
     return;
   }
 
-  const text = outdent`
-  <details><summary>[${error.name}](${error.message})</summary>
+  const text = printMarkdownDetails(
+    `[${error.name}](${error.message})`,
+    printMarkdownCodeBlock(inspect(error)),
+  );
 
-  ${codeBlock(inspect(error))}
-  </details>
-  `;
   return await brief(text);
 }
 

@@ -1,8 +1,7 @@
+import { type ExecuteCommandResult } from "./execute-command.ts";
 import { PRETTIER_PACKAGE_TYPE_PULL_REQUEST } from "./parse-command.ts";
 import { type PrettierVersion } from "./parse-command.ts";
-import { type ExecuteCommandResult } from "./execute-command.ts";
-import { codeBlock } from "./utilities.ts";
-import { outdent } from "outdent";
+import { printMarkdownCodeBlock, printMarkdownDetails } from "./utilities.ts";
 
 function getPrettierVersionDescription(prettier: PrettierVersion) {
   if (prettier.type === PRETTIER_PACKAGE_TYPE_PULL_REQUEST) {
@@ -52,7 +51,7 @@ export function getReport({
   const results = rawResults.map((rawResult) => ({
     ...rawResult,
     text: rawResult.fail
-      ? codeBlock(rawResult.stringifiedError)
+      ? printMarkdownCodeBlock(rawResult.stringifiedError)
       : formatDiff(rawResult.diff),
   }));
 
@@ -76,36 +75,8 @@ function formatDiff(diff: string) {
     return "**The diff is empty.**";
   }
   const linesCount = diff.split("\n").length;
-  const code = codeBlock(diff, "diff");
+  const code = printMarkdownCodeBlock(diff, "diff");
   return linesCount > LONG_DIFF_THRESHOLD_IN_LINES
-    // Note: do not indent the code block, otherwise the diff render incorrectly in comments.
-    /*
-    ``````md
-    ```diff
-     - this is not remove
-    ```
-    ``````
-
-    and
-
-    
-    ``````md
-      ```diff
-     - this is not remove
-    ```
-    ``````
-
-    are different
-    */
-     
-    ? outdent`
-        <details>
-          <summary>Diff (${linesCount} lines)</summary>
-
-        
-        ${code}
-
-        </details>
-      `
+    ? printMarkdownDetails(`Diff (${linesCount} lines)`, code)
     : code;
 }
