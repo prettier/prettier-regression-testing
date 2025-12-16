@@ -3,4 +3,10 @@
   dependencyDashboardApproval: true,
   baseBranchPatterns: ["main"],
   postUpdateOptions: ["yarnDedupeHighest"],
+  packageRules: [
+    {
+      groupName: "GitHub Actions",
+      matchManagers: ["github-actions"],
+    },
+  ],
 }
