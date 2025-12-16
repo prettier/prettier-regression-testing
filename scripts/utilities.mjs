@@ -1,6 +1,6 @@
-import * as prettier from "prettier";
 import fs from "fs/promises";
 import spawn from "nano-spawn";
+import * as prettier from "prettier";
 import repositories from "../repositories.json" with { type: "json" };
 
 export const REPOSITORIES_JSON_FILE = new URL(

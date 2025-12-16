@@ -1,10 +1,10 @@
-import spawn from "nano-spawn";
-import path from "node:path";
 import assert from "node:assert/strict";
-import { repositoriesDirectory } from "./constants.ts";
-import { clearDirectory, getCommitHash } from "./utilities.ts";
+import path from "node:path";
+import spawn from "nano-spawn";
 import rawRepositories from "../repositories.json" with { type: "json" };
+import { repositoriesDirectory } from "./constants.ts";
 import { Timing } from "./timing.ts";
+import { clearDirectory, getCommitHash } from "./utilities.ts";
 
 type RawRepository = {
   repository: string;

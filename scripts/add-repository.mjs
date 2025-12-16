@@ -1,5 +1,5 @@
-import * as readline from "node:readline/promises";
 import process from "node:process";
+import * as readline from "node:readline/promises";
 import { getRepositoryCommitHash, updatedRepositories } from "./utilities.mjs";
 
 const GITHUB_DOMAIN = "https://github.com/";

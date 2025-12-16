@@ -1,15 +1,15 @@
-import path from "node:path";
-import {
-  writeFile,
-  readFile,
-  unique,
-  commitChanges,
-  resetToCommitHash,
-  removeFilesCannotAdd,
-} from "./utilities.ts";
 import fs from "node:fs/promises";
-import { cloneRepository, type Repository } from "./repositories.ts";
+import path from "node:path";
 import spawn from "nano-spawn";
+import { cloneRepository, type Repository } from "./repositories.ts";
+import {
+  commitChanges,
+  readFile,
+  removeFilesCannotAdd,
+  resetToCommitHash,
+  unique,
+  writeFile,
+} from "./utilities.ts";
 
 async function preparePrettierIgnoreFile(
   directory: string,

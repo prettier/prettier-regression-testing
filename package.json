@@ -8,7 +8,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "fix": "prettier . --write && eslint --fix",
+    "fix": "prettier . --write && eslint . --fix",
     "lint": "run-p \"lint:*\"",
     "lint:eslint": "eslint",
     "lint:prettier": "prettier . --check",

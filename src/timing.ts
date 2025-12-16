@@ -1,5 +1,5 @@
-import prettyMilliseconds from "pretty-ms";
 import styleText from "node-style-text";
+import prettyMilliseconds from "pretty-ms";
 
 const START_PREFIX = styleText.bgGray("[START]");
 const END_PREFIX = styleText.bgGreen("[ END ]");

@@ -1,5 +1,5 @@
+import { describe, expect, it } from "vitest";
 import { parseCommand } from "../src/parse-command.ts";
-import { describe, it, expect } from "vitest";
 
 describe("parse", () => {
   it("returns command obj represents prNumber vs repositoryAndRef", () => {

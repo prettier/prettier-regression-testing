@@ -1,11 +1,11 @@
+import fs from "node:fs/promises";
 import path from "node:path";
 import spawn, { type SubprocessError } from "nano-spawn";
-import { type Repository } from "./repositories.ts";
 import { type InstalledPrettier } from "./install-prettier.ts";
 import { prepareRepository } from "./prepare-repository.ts";
-import { commitChanges } from "./utilities.ts";
+import { type Repository } from "./repositories.ts";
 import { Timing } from "./timing.ts";
-import fs from "node:fs/promises";
+import { commitChanges } from "./utilities.ts";
 
 async function runPrettierWithVersion({
   cwd,

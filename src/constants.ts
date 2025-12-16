@@ -1,5 +1,5 @@
-import path from "path";
 import { context } from "@actions/github";
+import path from "path";
 import packageJson from "../package.json" with { type: "json" };
 
 const PROJECT_ROOT = path.join(import.meta.dirname, "../");

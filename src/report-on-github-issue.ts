@@ -1,11 +1,11 @@
+import assert from "node:assert";
 import {
+  GITHUB_ACTION_RUN_URL,
   IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT,
   MAXIMUM_GITHUB_COMMENT_LENGTH,
-  GITHUB_ACTION_RUN_URL,
 } from "./constants.ts";
-import { stringifyReport, type Report } from "./report.ts";
 import * as logger from "./logger.ts";
-import assert from "node:assert";
+import { type Report, stringifyReport } from "./report.ts";
 
 export async function reportOnGithubIssue(report: {
   title: string;

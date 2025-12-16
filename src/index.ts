@@ -1,12 +1,12 @@
+import path from "node:path";
 import { IS_TRIGGERED_BY_GITHUB_ISSUE_COMMENT } from "./constants.ts";
-import * as logger from "./logger.ts";
+import { reportsDirectory, THROW_EXECUTE_ERROR } from "./constants.ts";
 import { executeCommand } from "./execute-command.ts";
 import { getIssueComment } from "./get-issue-comment.ts";
-import { writeFile } from "./utilities.ts";
-import { reportsDirectory, THROW_EXECUTE_ERROR } from "./constants.ts";
-import path from "node:path";
+import * as logger from "./logger.ts";
+import { getReport, stringifyReport } from "./report.ts";
 import { reportOnGithubIssue } from "./report-on-github-issue.ts";
-import { stringifyReport, getReport } from "./report.ts";
+import { writeFile } from "./utilities.ts";
 
 async function run() {
   let commandString;

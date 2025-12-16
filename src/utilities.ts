@@ -23,6 +23,10 @@ export async function createTemporaryDirectory() {
 
 export async function clearDirectory(directory: string) {
   await fs.rm(directory, { recursive: true, force: true });
+  return createDirectory(directory);
+}
+
+export async function createDirectory(directory: string) {
   await fs.mkdir(directory, { recursive: true });
   return directory;
 }

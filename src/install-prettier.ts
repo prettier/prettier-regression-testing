@@ -1,13 +1,13 @@
-import path from "node:path";
-import fs from "node:fs/promises";
 import assert from "node:assert/strict";
+import fs from "node:fs/promises";
+import path from "node:path";
 import spawn from "nano-spawn";
 import {
-  type PrettierVersion,
   PRETTIER_PACKAGE_TYPE_PULL_REQUEST,
+  type PrettierVersion,
 } from "./parse-command.ts";
-import { writeFile, clearDirectory } from "./utilities.ts";
 import { Timing } from "./timing.ts";
+import { createDirectory, writeFile } from "./utilities.ts";
 
 export type InstalledPrettier = Awaited<ReturnType<typeof installPrettier>>;
 
@@ -18,7 +18,7 @@ export async function installPrettier(
   const timing = new Timing(
     `Install Prettier[${version.kind}] '${version.raw}'`,
   );
-  const directory = await clearDirectory(
+  const directory = await createDirectory(
     path.join(cwd, `${version.kind}-prettier`),
   );
 
@@ -122,7 +122,7 @@ async function getPrettierPackageName(
     return `prettier@${version.version}`;
   }
 
-  const directory = await clearDirectory(
+  const directory = await createDirectory(
     path.join(cwd, `pull-request-${version.number}`),
   );
   const filename = await checkoutPullRequest(version.number, {
