@@ -78,11 +78,32 @@ function formatDiff(diff: string) {
   const linesCount = diff.split("\n").length;
   const code = codeBlock(diff, "diff");
   return linesCount > LONG_DIFF_THRESHOLD_IN_LINES
+    // Note: do not indent the code block, otherwise the diff render incorrectly in comments.
+    /*
+    ``````md
+    ```diff
+     - this is not remove
+    ```
+    ``````
+
+    and
+
+    
+    ``````md
+      ```diff
+     - this is not remove
+    ```
+    ``````
+
+    are different
+    */
+     
     ? outdent`
         <details>
           <summary>Diff (${linesCount} lines)</summary>
 
-          ${code}
+        
+        ${code}
 
         </details>
       `
