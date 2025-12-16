@@ -1,5 +1,6 @@
 import process from "node:process";
 import * as readline from "node:readline/promises";
+import { outdent } from "outdent";
 import { getRepositoryCommitHash, updatedRepositories } from "./utilities.mjs";
 
 const GITHUB_DOMAIN = "https://github.com/";
@@ -10,7 +11,12 @@ async function addProject() {
     output: process.stdout,
   });
   let input = await rl.question(
-    "Which repository are you going to add? Example: prettier/prettier\n",
+    outdent`
+      Which repository are you going to add?
+      Example:
+      - prettier/prettier
+      - https://github.com/prettier/prettier\n
+    `,
   );
 
   let repository = input.trim();
@@ -34,7 +40,7 @@ async function addProject() {
 
     const commit = await getRepositoryCommitHash(repository);
     return [
-      repositories,
+      ...repositories,
       {
         repository,
         commit,

@@ -95,5 +95,10 @@
   {
     "repository": "vitejs/vite",
     "commit": "98d9a33274d9ac90780786afa612d916feddf2e3"
+  },
+  {
+    "repository": "formio/angular",
+    "commit": "865f42d7229d19a86cc7151cf2cb3c66880dedb5",
+    "glob": "."
   }
 ]
