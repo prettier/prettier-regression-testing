@@ -108,8 +108,8 @@ export async function runPrettier(
     "git",
     [
       "diff",
-      alternative.version.kind,
       original.version.kind,
+      alternative.version.kind,
       `--src-prefix=${original.version.kind}|${fileLinkPrefix}`,
       `--dst-prefix=${alternative.version.kind}|`,
     ],
