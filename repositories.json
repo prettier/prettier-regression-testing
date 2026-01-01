@@ -1,28 +1,28 @@
 [
   {
     "repository": "babel/babel",
-    "commit": "84d21e4e129468b62ca5e05f8029c18d785f3345"
+    "commit": "761c25097f9a339a4c8aa995906899f20a02f07b"
   },
   {
     "repository": "vuejs/eslint-plugin-vue",
-    "commit": "684a3d2ebf9b09b4893c8ed839d3c60c05635e30"
+    "commit": "97ff02476e242f0bd362c0b3451d7c1471558828"
   },
   {
     "repository": "excalidraw/excalidraw",
-    "commit": "f06484c6ab72ce7c399f0cf73cda46b3fc7b82ab",
+    "commit": "e95222ed323d45adf2183bae835c9fb6708e7029",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "mdn/content",
-    "commit": "923adb616baa87402ca965ebd18a73380cc84d27"
+    "commit": "e593d32ad2a2fde33cfd4d4d71b152efdc371f8e"
   },
   {
     "repository": "prettier/prettier",
-    "commit": "ac6875153cca72c75b5ac0e7e442be4e015f13fa"
+    "commit": "c54b26cdd691bf32b2eaba213f673c90a4d2b195"
   },
   {
     "repository": "marmelab/react-admin",
-    "commit": "34dbb1a04ff6f0922edac83b1a3583fd2e9358be",
+    "commit": "ad00f2177f3d63a5f948d1b6935a84e9a928b010",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -31,20 +31,20 @@
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "c62e85874f0e482156a54b6744fe90a6f270012a",
+    "commit": "46fc7fe4089d9f7f864bea8b397b8a0e1c7a4bc6",
     "ignore": ["**/fixtures/**/*"]
   },
   {
     "repository": "vega/vega-lite",
-    "commit": "bf84e14e3b029562aa86d961751d30fb69da5afa"
+    "commit": "ab0d89b795ab386f9240d18d3fcfa428fb2129cc"
   },
   {
     "repository": "vuejs/core",
-    "commit": "d8a2de44859bdea7fad6a939ae3dbb651527045f"
+    "commit": "aac7e1898907445c8f89b22047a9bfcf0a6e91b8"
   },
   {
     "repository": "microsoft/vscode",
-    "commit": "566bacb5b01bbe765383be196dca013b05d40101",
+    "commit": "fd54d38e23306a4aee007acbd4bae33a69ec29bf",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -94,7 +94,7 @@
   },
   {
     "repository": "vitejs/vite",
-    "commit": "98d9a33274d9ac90780786afa612d916feddf2e3"
+    "commit": "8618ab5581c38d304e0afc46297ab7d7c328f97c"
   },
   {
     "repository": "formio/angular",
