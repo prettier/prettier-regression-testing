@@ -723,12 +723,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:25.0.2":
-  version: 25.0.2
-  resolution: "@types/node@npm:25.0.2"
+"@types/node@npm:25.0.6":
+  version: 25.0.6
+  resolution: "@types/node@npm:25.0.6"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10c0/12c4044bf2e46ba3d313ddf6256ee3c88e336a62d129fe788eeab8ff2631b3df51eb31ade4cdc04552fbe51e285f0663c49b60c78acd31da2b9f2c86a84347e3
+  checksum: 10c0/4ee3b6b606bc28f6840c04d58769e1e75dd8085149908956c874c85f8f8c890990701bcbe783fc2d14017817861dc07fcf23de6fc2805fe491f84eae717b5705
   languageName: node
   linkType: hard
 
@@ -2861,7 +2861,7 @@ __metadata:
   dependencies:
     "@actions/github": "npm:6.0.1"
     "@eslint/js": "npm:9.39.2"
-    "@types/node": "npm:25.0.2"
+    "@types/node": "npm:25.0.6"
     "@typescript-eslint/eslint-plugin": "npm:8.50.0"
     "@typescript-eslint/parser": "npm:8.50.0"
     eslint: "npm:9.39.2"
