@@ -31,7 +31,8 @@
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "46fc7fe4089d9f7f864bea8b397b8a0e1c7a4bc6"
+    "commit": "46fc7fe4089d9f7f864bea8b397b8a0e1c7a4bc6",
+    "ignore" : ["packages/website/src/vendor/sandbox.d.ts"]
   },
   {
     "repository": "vega/vega-lite",
