@@ -38,4 +38,4 @@ jobs:
         with:
           node-version: "24"
       - run: yarn
-      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest on prettier/prettier"
+      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest on typescript-eslint/typescript-eslint"
