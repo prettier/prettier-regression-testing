@@ -94,7 +94,8 @@
   },
   {
     "repository": "vitejs/vite",
-    "commit": "8618ab5581c38d304e0afc46297ab7d7c328f97c"
+    "commit": "8618ab5581c38d304e0afc46297ab7d7c328f97c",
+    "ignore": ["playground/import-assertion/import-assertion-dep/index.js"]
   },
   {
     "repository": "formio/angular",
