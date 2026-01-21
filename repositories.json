@@ -103,6 +103,13 @@
   },
   {
     "repository": "angular/angular",
-    "commit": "b275206a4944729a7bdec5132fb73d2ce8251cb9"
+    "commit": "b275206a4944729a7bdec5132fb73d2ce8251cb9",
+    "ignore": [
+      "adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json",
+      "modules/benchmarks/src/styling/ng2/index.html",
+      "modules/playground/src/jsonp/people.json",
+      "modules/playground/src/todo/index.html",
+      "packages/compiler-cli/test/compliance/test_cases/r3_view_compiler_i18n/line_ending_normalization/template.html"
+    ]
   }
 ]
