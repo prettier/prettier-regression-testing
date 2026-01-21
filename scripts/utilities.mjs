@@ -9,12 +9,14 @@ export const REPOSITORIES_JSON_FILE = new URL(
 );
 
 export async function getRepositoryCommitHash(repository) {
-  const { stdout } = await spawn("git", [
-    "ls-remote",
-    "--exit-code",
-    `https://github.com/${repository}`,
-    "HEAD",
-  ]);
+  const { stdout } = await Promise.any(
+    [
+      `git@github.com:${repository}.git`,
+      `https://github.com/${repository}`,
+    ].map((repository) =>
+      spawn("git", ["ls-remote", "--exit-code", repository, "HEAD"]),
+    ),
+  );
 
   const [commit] = stdout.trim().split(/\s/);
   return commit;

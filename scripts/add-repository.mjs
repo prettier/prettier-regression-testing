@@ -14,8 +14,8 @@ async function addProject() {
     outdent`
       Which repository are you going to add?
       Example:
-      - prettier/prettier
-      - https://github.com/prettier/prettier\n
+        - prettier/prettier
+        - https://github.com/prettier/prettier\n
     `,
   );
 
@@ -39,14 +39,7 @@ async function addProject() {
     }
 
     const commit = await getRepositoryCommitHash(repository);
-    return [
-      ...repositories,
-      {
-        repository,
-        commit,
-        glob: ".",
-      },
-    ];
+    return [...repositories, { repository, commit }];
   });
 }
 

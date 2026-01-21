@@ -99,7 +99,10 @@
   },
   {
     "repository": "formio/angular",
-    "commit": "865f42d7229d19a86cc7151cf2cb3c66880dedb5",
-    "glob": "."
+    "commit": "865f42d7229d19a86cc7151cf2cb3c66880dedb5"
+  },
+  {
+    "repository": "angular/angular",
+    "commit": "b275206a4944729a7bdec5132fb73d2ce8251cb9"
   }
 ]
