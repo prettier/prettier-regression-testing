@@ -22,7 +22,7 @@ function getTitle({
     .map((prettierVersion) => getPrettierVersionDescription(prettierVersion))
     .join(" VS ");
 
-  return `# **${text}**`;
+  return `#### **${text}**`;
 }
 
 const LONG_DIFF_THRESHOLD_IN_LINES = 50;
@@ -61,7 +61,7 @@ export function getReport({
     title,
     reports: results.map(({ repository, text }, index) => {
       const shortHash = repository.commit.slice(0, 7);
-      const head = `## [${index + 1}/${results.length}] [${repository.repository}@${shortHash}](https://github.com/${repository.repository}/tree/${repository.commit})`;
+      const head = `[${index + 1}/${results.length}] [${repository.repository}@${shortHash}](https://github.com/${repository.repository}/tree/${repository.commit})`;
       return {
         head,
         body: text,
