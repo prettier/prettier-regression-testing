@@ -114,6 +114,7 @@
   },
   {
     "repository": "facebook/react",
-    "commit": "64b4605cb82367fa78a08b99bbee1c800e6af21a"
+    "commit": "64b4605cb82367fa78a08b99bbee1c800e6af21a",
+    "glob": ["**/*.{js,jsx,ts,tsx}"]
   }
 ]
