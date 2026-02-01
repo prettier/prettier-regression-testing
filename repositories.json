@@ -1,7 +1,7 @@
 [
   {
     "repository": "babel/babel",
-    "commit": "9c7f6df5b781cab4c47b1dd6d794d652d9af2858"
+    "commit": "0be7c1285cbcbd56cf145feb424ee4f8deb2eba1"
   },
   {
     "repository": "vuejs/eslint-plugin-vue",
@@ -9,20 +9,20 @@
   },
   {
     "repository": "excalidraw/excalidraw",
-    "commit": "60759d314d3d4545b22d8c6f35f5afa24efa14e4",
+    "commit": "f12ae80ba1e1364952c6c6c440ac4212acd06eab",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "mdn/content",
-    "commit": "b868534a020a9efb06cba1846cf139f1c8b79aba"
+    "commit": "768c7e0a460dcde7cf8d06f9df0d2772ef03a125"
   },
   {
     "repository": "prettier/prettier",
-    "commit": "68d6990fce855f8212f9d98cf911386542e6ec90"
+    "commit": "88ee8a5b3e5db04f012c18be28aec11ed23ba849"
   },
   {
     "repository": "marmelab/react-admin",
-    "commit": "e89d57c6086527cff298bc588b20b4571ec3253f",
+    "commit": "823caa0b6489fc8133685525e22d30ddf57643fa",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -31,7 +31,7 @@
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "836ff3d47e9744cd0b69d194a8bddea759b9a1b9",
+    "commit": "8a8c2445c62f31fcded8a899475a11ba44318ffb",
     "ignore": ["packages/website/src/vendor/sandbox.d.ts"]
   },
   {
@@ -40,11 +40,11 @@
   },
   {
     "repository": "vuejs/core",
-    "commit": "e1ccd9fde8f57fe7bd40fdf1345692ab3e6a1fa0"
+    "commit": "0b30b7d3be5185041b790286da8402dd10503dbb"
   },
   {
     "repository": "microsoft/vscode",
-    "commit": "d858022d05123d427711705852aec1e7e4e22873",
+    "commit": "e6f0ffde9cd540816b4a1b22e7520424cfa58fdd",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -94,16 +94,16 @@
   },
   {
     "repository": "vitejs/vite",
-    "commit": "ca96cbc8eff23091c288f9eaf1944af2de3c564f",
+    "commit": "c47015eba4f0de255218c35769628d87152216ca",
     "ignore": ["playground/import-assertion/import-assertion-dep/index.js"]
   },
   {
     "repository": "formio/angular",
-    "commit": "ce6c6bc004c3a442d0c4063ae7e38240ee8d108d"
+    "commit": "81a35d5160c4c16cd4d3d10b44e40c32c0399f14"
   },
   {
     "repository": "angular/angular",
-    "commit": "8bbe6dc46c9dc13bafa81a60c7613b84b5ca3761",
+    "commit": "8d5210c9fedd8abdd810d7a89ec7ee9a1234f5c1",
     "ignore": [
       "adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json",
       "modules/benchmarks/src/styling/ng2/index.html",
