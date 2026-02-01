@@ -111,5 +111,9 @@
       "modules/playground/src/todo/index.html",
       "packages/compiler-cli/test/compliance/test_cases/r3_view_compiler_i18n/line_ending_normalization/template.html"
     ]
+  },
+  {
+    "repository": "facebook/react",
+    "commit": "64b4605cb82367fa78a08b99bbee1c800e6af21a"
   }
 ]
