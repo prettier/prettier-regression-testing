@@ -39,7 +39,7 @@
     "prettier": "3.7.4",
     "typescript": "5.9.3",
     "typescript-eslint": "8.50.0",
-    "vitest": "4.0.15"
+    "vitest": "4.0.18"
   },
   "packageManager": "yarn@4.12.0"
 }
