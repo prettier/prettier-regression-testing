@@ -1,28 +1,28 @@
 [
   {
     "repository": "babel/babel",
-    "commit": "0be7c1285cbcbd56cf145feb424ee4f8deb2eba1"
+    "commit": "6f16f129cf5f8117aa2e4ee5147817aab3fcfaf2"
   },
   {
     "repository": "vuejs/eslint-plugin-vue",
-    "commit": "138db47242a928ac24c8da60af8773094dadb283"
+    "commit": "356b23452ed2a5387a0cca8f262916a1c9241dfe"
   },
   {
     "repository": "excalidraw/excalidraw",
-    "commit": "f12ae80ba1e1364952c6c6c440ac4212acd06eab",
+    "commit": "60b275880da7d1eb7dff3782e8d491188790597a",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "mdn/content",
-    "commit": "768c7e0a460dcde7cf8d06f9df0d2772ef03a125"
+    "commit": "887d5abd234d91b020daf91838ec63d5328e1fcc"
   },
   {
     "repository": "prettier/prettier",
-    "commit": "88ee8a5b3e5db04f012c18be28aec11ed23ba849"
+    "commit": "9bb7335452738e54ace26093bf9158c033bbfe7b"
   },
   {
     "repository": "marmelab/react-admin",
-    "commit": "823caa0b6489fc8133685525e22d30ddf57643fa",
+    "commit": "873b7c81930af3168c5a64dc6dfcaf2e9810cf26",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -31,20 +31,20 @@
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "8a8c2445c62f31fcded8a899475a11ba44318ffb",
+    "commit": "a09921e2de2e8790e6a803016b825815ca9409d8",
     "ignore": ["packages/website/src/vendor/sandbox.d.ts"]
   },
   {
     "repository": "vega/vega-lite",
-    "commit": "31e56a3009e330f41483e5c83e1bd43b5a6953ed"
+    "commit": "efeb7e00e8052082662b34f93d4c59e45dbe2a37"
   },
   {
     "repository": "vuejs/core",
-    "commit": "0b30b7d3be5185041b790286da8402dd10503dbb"
+    "commit": "ea245764f4c13a6bec452bc238c47a7bcd7e4b3e"
   },
   {
     "repository": "microsoft/vscode",
-    "commit": "e6f0ffde9cd540816b4a1b22e7520424cfa58fdd",
+    "commit": "a94e3bb9cffaddea58c25101035f064a5b98f9bc",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -94,16 +94,16 @@
   },
   {
     "repository": "vitejs/vite",
-    "commit": "c47015eba4f0de255218c35769628d87152216ca",
+    "commit": "9ed2b43d16a7b36a849a87e6a7ee2facc243f70f",
     "ignore": ["playground/import-assertion/import-assertion-dep/index.js"]
   },
   {
     "repository": "formio/angular",
-    "commit": "81a35d5160c4c16cd4d3d10b44e40c32c0399f14"
+    "commit": "b55e038f6f0a2a3f7ff41fce43a96e2fd9978c8a"
   },
   {
     "repository": "angular/angular",
-    "commit": "8d5210c9fedd8abdd810d7a89ec7ee9a1234f5c1",
+    "commit": "73b6135bf51622e82ba624493317276500af8f78",
     "ignore": [
       "adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json",
       "modules/benchmarks/src/styling/ng2/index.html",
@@ -114,7 +114,7 @@
   },
   {
     "repository": "facebook/react",
-    "commit": "64b4605cb82367fa78a08b99bbee1c800e6af21a",
+    "commit": "e0cc7202e14418b453c69c4f06dc00c64151f202",
     "glob": ["**/*.{js,jsx,ts,tsx}"]
   }
 ]
