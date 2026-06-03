@@ -9,11 +9,13 @@ describe("parse", () => {
     expect({ alternative, original }).toMatchInlineSnapshot(`
       {
         "alternative": {
+          "kind": "alternative",
           "number": "2345",
           "raw": "#2345",
           "type": "PULL_REQUEST",
         },
         "original": {
+          "kind": "original",
           "raw": "sosukesuzuki/prettier#ref",
           "type": "PACKAGE",
           "version": "sosukesuzuki/prettier#ref",
@@ -28,11 +30,13 @@ describe("parse", () => {
     expect({ alternative, original }).toMatchInlineSnapshot(`
       {
         "alternative": {
+          "kind": "alternative",
           "raw": "2.1.2",
           "type": "PACKAGE",
           "version": "2.1.2",
         },
         "original": {
+          "kind": "original",
           "raw": "sosukesuzuki/prettier#ref",
           "type": "PACKAGE",
           "version": "sosukesuzuki/prettier#ref",
@@ -45,11 +49,13 @@ describe("parse", () => {
     expect({ alternative, original }).toMatchInlineSnapshot(`
       {
         "alternative": {
+          "kind": "alternative",
           "raw": "2.1.2",
           "type": "PACKAGE",
           "version": "2.1.2",
         },
         "original": {
+          "kind": "original",
           "raw": "prettier/prettier",
           "type": "PACKAGE",
           "version": "prettier/prettier",
@@ -64,20 +70,22 @@ describe("parse", () => {
   });
   it("Support 'on'", () => {
     const { alternative, original, repositories } = parseCommand(
-      "run 1.0.0 vs 2.0.0 on https://github.com/babel/babel.git",
+      "run 1.0.0 vs 2.0.0 on babel/babel",
     );
     expect({
       alternative,
       original,
-      repositories: repositories.map(({ name }) => name),
+      repositories: repositories.map(({ repository }) => repository),
     }).toMatchInlineSnapshot(`
       {
         "alternative": {
+          "kind": "alternative",
           "raw": "1.0.0",
           "type": "PACKAGE",
           "version": "1.0.0",
         },
         "original": {
+          "kind": "original",
           "raw": "2.0.0",
           "type": "PACKAGE",
           "version": "2.0.0",
@@ -94,15 +102,17 @@ describe("parse", () => {
       expect({
         alternative,
         original,
-        repositories: repositories.map(({ name }) => name),
+        repositories: repositories.map(({ repository }) => repository),
       }).toMatchInlineSnapshot(`
         {
           "alternative": {
+            "kind": "alternative",
             "raw": "1.0.0",
             "type": "PACKAGE",
             "version": "1.0.0",
           },
           "original": {
+            "kind": "original",
             "raw": "2.0.0",
             "type": "PACKAGE",
             "version": "2.0.0",
