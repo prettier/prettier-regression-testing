@@ -2510,10 +2510,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nano-spawn@npm:2.0.0":
-  version: 2.0.0
-  resolution: "nano-spawn@npm:2.0.0"
-  checksum: 10c0/d00f9b5739f86e28cb732ffd774793e110810cded246b8393c75c4f22674af47f98ee37b19f022ada2d8c9425f800e841caa0662fbff4c0930a10e39339fb366
+"nano-spawn@npm:2.1.0":
+  version: 2.1.0
+  resolution: "nano-spawn@npm:2.1.0"
+  checksum: 10c0/3becc67ed9ab630b6572feab69a4ef468891ad1f89d5c8643f14a2044cf32ba64533033506208039b1e3d9ddcb2f5f4f87ec360f13b3c4f0774304aedf0f0290
   languageName: node
   linkType: hard
 
@@ -2869,7 +2869,7 @@ __metadata:
     eslint-plugin-simple-import-sort: "npm:12.1.1"
     eslint-plugin-unicorn: "npm:62.0.0"
     globals: "npm:16.5.0"
-    nano-spawn: "npm:2.0.0"
+    nano-spawn: "npm:2.1.0"
     node-style-text: "npm:2.1.2"
     npm-run-all: "npm:4.1.5"
     outdent: "npm:0.8.0"
