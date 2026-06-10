@@ -13,6 +13,8 @@ concurrency:
 
 jobs:
   keep-scheduled-workflow-activity:
+    permissions:
+      actions: write
     uses: WaterLemons2k/scheduled-workflow-activity-action/.github/workflows/reusable.yml@v2
 
   update-repositories:
