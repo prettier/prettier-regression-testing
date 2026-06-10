@@ -96,6 +96,7 @@ export async function runPrettier(
   });
 
   if (alternative === original) {
+    timing.end();
     return "";
   }
 
