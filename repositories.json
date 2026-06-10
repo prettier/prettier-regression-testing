@@ -134,7 +134,24 @@
   {
     "repository": "vitejs/vite",
     "commit": "6daa10ff1e8d15a90f49d8dd909ff208da85d6d8",
-    "ignore": ["playground/import-assertion/import-assertion-dep/index.js"]
+    "ignore": [
+      "packages/*/CHANGELOG.md",
+      "packages/vite/src/node/ssr/__tests__/fixtures/errors/syntax-error.*",
+      "playground-temp/",
+      "dist/",
+      "LICENSE.md",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml",
+      "playground/tsconfig-json-load-error/has-error/tsconfig.json",
+      "playground/html/invalid.html",
+      "playground/html/invalidClick.html",
+      "playground/html/invalidEscape.html",
+      "playground/html/valid.html",
+      "playground/external/public/slash@3.0.0.js",
+      "playground/ssr-html/public/slash@3.0.0.js",
+      "playground/worker/classic-worker.js",
+      "playground/css/weapp.wxss"
+    ]
   },
   {
     "repository": "vuejs/core",
