@@ -18,9 +18,9 @@ export async function executeCommand(commandString: string) {
   const directory = await createTemporaryDirectory();
 
   // Install Prettier
-  const promises = [installPrettier(original, { cwd: directory })];
+  const promises = [installPrettier(alternative, { cwd: directory })];
   promises.push(
-    isSame ? promises[0] : installPrettier(alternative, { cwd: directory }),
+    isSame ? promises[0] : installPrettier(original, { cwd: directory }),
   );
   const [alternativePrettier, originalPrettier] = await Promise.all(promises);
 
