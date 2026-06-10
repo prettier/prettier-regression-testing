@@ -65,7 +65,8 @@
     "ignore": [
       ".eslintrc.js",
       ".prettier-plugins.fb.js",
-      ".prettierrc.js"
+      ".prettierrc.js",
+      "compiler/test-project/src/App.js"
     ]
   },
   {
