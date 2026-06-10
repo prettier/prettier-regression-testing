@@ -13,14 +13,16 @@ export type ExecuteCommandResult = Awaited<ReturnType<typeof executeCommand>>;
 
 export async function executeCommand(commandString: string) {
   const { alternative, original, repositories } = parseCommand(commandString);
+  const isSame = alternative.raw === original.raw;
+
   const directory = await createTemporaryDirectory();
 
   // Install Prettier
-  const [alternativePrettier, originalPrettier] = await Promise.all(
-    [original, alternative].map((version) =>
-      installPrettier(version, { cwd: directory }),
-    ),
+  const promises = [installPrettier(alternative, { cwd: directory })];
+  promises.push(
+    isSame ? promises[0] : installPrettier(original, { cwd: directory }),
   );
+  const [alternativePrettier, originalPrettier] = await Promise.all(promises);
 
   await logger.brief(
     `Running Prettier on ${repositories.length} repositories ...`,
