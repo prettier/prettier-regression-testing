@@ -67,7 +67,9 @@
       ".prettier-plugins.fb.js",
       ".prettierrc.js",
       "compiler/test-project/src/App.js",
-      "compiler/crates/relay-compiler-playground/__tests__/relay_compiler_playground-test.js"
+      "compiler/crates/relay-compiler-playground/__tests__/relay_compiler_playground-test.js",
+      "compiler/crates/relay-compiler-playground/index.js",
+      "compiler/test-project/src/Component.js"
     ]
   },
   {
