@@ -17,7 +17,7 @@ async function run() {
     }
     commandString = comment.body;
   } else {
-    commandString = process.argv.splice(2)[0];
+    commandString = process.argv[2];
   }
 
   if (typeof commandString !== "string" || !commandString) {

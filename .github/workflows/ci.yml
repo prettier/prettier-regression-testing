@@ -6,6 +6,13 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Lint
@@ -17,7 +24,7 @@ jobs:
       - run: yarn lint
 
   test:
-    name: Test
+    name: Unit Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -26,8 +33,9 @@ jobs:
       - run: yarn test
 
   test-run:
-    name: Test
+    name: Test repositories
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v5
@@ -35,7 +43,5 @@ jobs:
           path: repositories
           key: v2-${{ hashFiles('repositories.json') }}
       - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
       - run: yarn
-      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest on prettier/prettier"
+      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest"

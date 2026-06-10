@@ -30,6 +30,6 @@ export async function updateRepositories(processFunction) {
 
   await fs.writeFile(
     REPOSITORIES_JSON_FILE,
-    await prettier.format(JSON.stringify(sorted), { parser: "json" }),
+    await prettier.format(JSON.stringify(sorted), { parser: "json-stringify" }),
   );
 }
