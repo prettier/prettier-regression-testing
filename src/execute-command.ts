@@ -18,19 +18,11 @@ export async function executeCommand(commandString: string) {
   const directory = await createTemporaryDirectory();
 
   // Install Prettier
-  let alternativePrettier;
-  let originalPrettier;
-  if (isSame) {
-    alternativePrettier = originalPrettier = await installPrettier(original, {
-      cwd: directory,
-    });
-  } else {
-    [alternativePrettier, originalPrettier] = await Promise.all(
-      [original, alternative].map((version) =>
-        installPrettier(version, { cwd: directory }),
-      ),
-    );
-  }
+  const promises = [installPrettier(original, { cwd: directory })];
+  promises.push(
+    isSame ? promises[0] : installPrettier(alternative, { cwd: directory }),
+  );
+  const [alternativePrettier, originalPrettier] = await Promise.all(promises);
 
   await logger.brief(
     `Running Prettier on ${repositories.length} repositories ...`,
