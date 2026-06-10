@@ -22,11 +22,14 @@ export async function getRepositoryCommitHash(repository) {
   return commit;
 }
 
-export async function updatedRepositories(processFunction) {
+export async function updateRepositories(processFunction) {
   const updated = await processFunction(repositories);
+  const sorted = updated.toSorted((repositoryA, repositoryB) =>
+    repositoryA.repository.localeCompare(repositoryB.repository),
+  );
 
   await fs.writeFile(
     REPOSITORIES_JSON_FILE,
-    await prettier.format(JSON.stringify(updated), { parser: "json" }),
+    await prettier.format(JSON.stringify(sorted), { parser: "json" }),
   );
 }

@@ -1,7 +1,7 @@
 import process from "node:process";
 import * as readline from "node:readline/promises";
 import { outdent } from "outdent";
-import { getRepositoryCommitHash, updatedRepositories } from "./utilities.mjs";
+import { getRepositoryCommitHash, updateRepositories } from "./utilities.mjs";
 
 const GITHUB_DOMAIN = "https://github.com/";
 
@@ -33,7 +33,7 @@ async function addProject() {
     throw new Error(`Unsupported repository '${input}'.`);
   }
 
-  await updatedRepositories(async (repositories) => {
+  await updateRepositories(async (repositories) => {
     if (repositories.some((project) => project.repository === repository)) {
       throw new Error(`Repository '${repository}' already exists.`);
     }

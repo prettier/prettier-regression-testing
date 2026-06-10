@@ -1,6 +1,6 @@
-import { getRepositoryCommitHash, updatedRepositories } from "./utilities.mjs";
+import { getRepositoryCommitHash, updateRepositories } from "./utilities.mjs";
 
-await updatedRepositories((repositories) =>
+await updateRepositories((repositories) =>
   Promise.all(
     repositories.map(async (repository) => ({
       ...repository,

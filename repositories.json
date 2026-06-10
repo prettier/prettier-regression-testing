@@ -1,11 +1,18 @@
 [
   {
-    "repository": "babel/babel",
-    "commit": "b0e3517dc566880e76b5f1f4dcf7fcecba58337d"
+    "repository": "angular/angular",
+    "commit": "ef7679b7a5347345c0b03322cfbcd817ada71fb1",
+    "ignore": [
+      "adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json",
+      "modules/benchmarks/src/styling/ng2/index.html",
+      "modules/playground/src/jsonp/people.json",
+      "modules/playground/src/todo/index.html",
+      "packages/compiler-cli/test/compliance/test_cases/r3_view_compiler_i18n/line_ending_normalization/template.html"
+    ]
   },
   {
-    "repository": "vuejs/eslint-plugin-vue",
-    "commit": "45ba35812b711cb08ba394b696e56d050e7452c8"
+    "repository": "babel/babel",
+    "commit": "b0e3517dc566880e76b5f1f4dcf7fcecba58337d"
   },
   {
     "repository": "excalidraw/excalidraw",
@@ -13,12 +20,8 @@
     "ignoreFile": ".eslintignore"
   },
   {
-    "repository": "mdn/content",
-    "commit": "81bf621759d3a52fdf737c2d75f186a0073d1406"
-  },
-  {
-    "repository": "prettier/prettier",
-    "commit": "1dcd0b05d026356cce5bf538c6d425955b29903b"
+    "repository": "formio/angular",
+    "commit": "6cca81e58b1426ec0018948b9d2e62d0906998a6"
   },
   {
     "repository": "marmelab/react-admin",
@@ -30,17 +33,8 @@
     ]
   },
   {
-    "repository": "typescript-eslint/typescript-eslint",
-    "commit": "493341709fe7d1d6433332b7bd2724e3332c7cdf",
-    "ignore": ["packages/website/src/vendor/sandbox.d.ts"]
-  },
-  {
-    "repository": "vega/vega-lite",
-    "commit": "da2460030dae613b370fd5cad412f88a947b4b3d"
-  },
-  {
-    "repository": "vuejs/core",
-    "commit": "fa23116437250b3fdec41112f276211cb284136e"
+    "repository": "mdn/content",
+    "commit": "81bf621759d3a52fdf737c2d75f186a0073d1406"
   },
   {
     "repository": "microsoft/vscode",
@@ -93,28 +87,38 @@
     ]
   },
   {
+    "repository": "prettier/prettier",
+    "commit": "1dcd0b05d026356cce5bf538c6d425955b29903b"
+  },
+  {
+    "repository": "react/metro",
+    "commit": "c7be4b2f7544de372ce4ce261fdc9c86059f4567"
+  },
+  {
+    "repository": "react/react",
+    "commit": "80b1cab397764f83efb9828563a259c8052ded0c",
+    "glob": ["**/*.{js,jsx,ts,tsx}"]
+  },
+  {
+    "repository": "typescript-eslint/typescript-eslint",
+    "commit": "493341709fe7d1d6433332b7bd2724e3332c7cdf",
+    "ignore": ["packages/website/src/vendor/sandbox.d.ts"]
+  },
+  {
+    "repository": "vega/vega-lite",
+    "commit": "da2460030dae613b370fd5cad412f88a947b4b3d"
+  },
+  {
     "repository": "vitejs/vite",
     "commit": "6daa10ff1e8d15a90f49d8dd909ff208da85d6d8",
     "ignore": ["playground/import-assertion/import-assertion-dep/index.js"]
   },
   {
-    "repository": "formio/angular",
-    "commit": "6cca81e58b1426ec0018948b9d2e62d0906998a6"
+    "repository": "vuejs/core",
+    "commit": "fa23116437250b3fdec41112f276211cb284136e"
   },
   {
-    "repository": "angular/angular",
-    "commit": "ef7679b7a5347345c0b03322cfbcd817ada71fb1",
-    "ignore": [
-      "adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json",
-      "modules/benchmarks/src/styling/ng2/index.html",
-      "modules/playground/src/jsonp/people.json",
-      "modules/playground/src/todo/index.html",
-      "packages/compiler-cli/test/compliance/test_cases/r3_view_compiler_i18n/line_ending_normalization/template.html"
-    ]
-  },
-  {
-    "repository": "facebook/react",
-    "commit": "80b1cab397764f83efb9828563a259c8052ded0c",
-    "glob": ["**/*.{js,jsx,ts,tsx}"]
+    "repository": "vuejs/eslint-plugin-vue",
+    "commit": "45ba35812b711cb08ba394b696e56d050e7452c8"
   }
 ]
