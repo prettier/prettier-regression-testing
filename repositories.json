@@ -64,7 +64,8 @@
     "commit": "65df294cad6f708264cfa46c299b5f85c34f980b",
     "ignore": [
       ".eslintrc.js",
-      ".prettier-plugins.fb.js"
+      ".prettier-plugins.fb.js",
+      ".prettierrc.js"
     ]
   },
   {
