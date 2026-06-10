@@ -69,7 +69,8 @@
       "compiler/test-project/src/App.js",
       "compiler/crates/relay-compiler-playground/__tests__/relay_compiler_playground-test.js",
       "compiler/crates/relay-compiler-playground/index.js",
-      "compiler/test-project/src/Component.js"
+      "compiler/test-project/src/Component.js",
+      "flow-typed/npm/chalk_v4.x.x.js"
     ]
   },
   {
