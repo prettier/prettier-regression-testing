@@ -191,7 +191,8 @@
       "playground/external/public/slash@3.0.0.js",
       "playground/ssr-html/public/slash@3.0.0.js",
       "playground/worker/classic-worker.js",
-      "playground/css/weapp.wxss"
+      "playground/css/weapp.wxss",
+      "playground/import-assertion/import-assertion-dep/index.js"
     ]
   },
   {
