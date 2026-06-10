@@ -60,29 +60,6 @@
     ]
   },
   {
-    "repository": "facebook/relay",
-    "commit": "65df294cad6f708264cfa46c299b5f85c34f980b",
-    "ignore": [
-      ".eslintrc.js",
-      ".prettier-plugins.fb.js",
-      ".prettierrc.js",
-      "compiler/test-project/src/App.js",
-      "compiler/crates/relay-compiler-playground/__tests__/relay_compiler_playground-test.js",
-      "compiler/crates/relay-compiler-playground/index.js",
-      "compiler/test-project/src/Component.js",
-      "flow-typed/npm/chalk_v4.x.x.js"
-    ]
-  },
-  {
-    "repository": "facebook/stylex",
-    "commit": "20ce0b6dad28b48a602f53f108ea48b21aa9f4f1",
-    "ignore": [
-      ".eslintrc.js",
-      "examples/example-bun/.eslintrc.js",
-      "examples/example-bun/scripts/build.mj"
-    ]
-  },
-  {
     "repository": "formio/angular",
     "commit": "6cca81e58b1426ec0018948b9d2e62d0906998a6"
   },
@@ -152,18 +129,6 @@
   {
     "repository": "prettier/prettier",
     "commit": "1dcd0b05d026356cce5bf538c6d425955b29903b"
-  },
-  {
-    "repository": "react/metro",
-    "commit": "c7be4b2f7544de372ce4ce261fdc9c86059f4567",
-    "ignore": [
-      ".eslintrc.js",
-      ".prettierrc.js",
-      "babel.config.js",
-      "flow-typed/accepts.js",
-      "flow-typed/console.js.flow",
-      "flow-typed/environment/bom.js"
-    ]
   },
   {
     "repository": "react/react",
