@@ -35,7 +35,5 @@ jobs:
           path: repositories
           key: v2-${{ hashFiles('repositories.json') }}
       - uses: actions/setup-node@v6
-        with:
-          node-version: "24"
       - run: yarn
-      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest on prettier/prettier"
+      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS latest"
