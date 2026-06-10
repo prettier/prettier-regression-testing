@@ -37,12 +37,9 @@
       "packages/lqip-loader/lib/",
       "packages/docusaurus/lib/",
       "packages/docusaurus-*/lib/*",
-
       "packages/create-docusaurus/lib/*",
       "!packages/create-docusaurus/src/**",
-
       "!packages/docusaurus-*/lib/theme/**",
-
       "packages/create-docusaurus/templates/*/docusaurus.config.js",
       "packages/eslint-plugin/lib/",
       "packages/stylelint-copyright/lib/",
@@ -161,12 +158,16 @@
   {
     "repository": "react/react",
     "commit": "80b1cab397764f83efb9828563a259c8052ded0c",
-    "glob": ["**/*.{js,jsx,ts,tsx}"]
+    "glob": [
+      "**/*.{js,jsx,ts,tsx}"
+    ]
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
     "commit": "493341709fe7d1d6433332b7bd2724e3332c7cdf",
-    "ignore": ["packages/website/src/vendor/sandbox.d.ts"]
+    "ignore": [
+      "packages/website/src/vendor/sandbox.d.ts"
+    ]
   },
   {
     "repository": "vega/vega-lite",
