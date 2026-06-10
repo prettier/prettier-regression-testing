@@ -33,7 +33,7 @@ jobs:
       - run: yarn test
 
   test-run:
-    name: E2E Test
+    name: Test repositories
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
