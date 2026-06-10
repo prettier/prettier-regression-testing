@@ -114,7 +114,8 @@
       ".eslintrc.js",
       ".prettierrc.js",
       "babel.config.js",
-      "flow-typed/accepts.js"
+      "flow-typed/accepts.js",
+      "flow-typed/console.js.flow"
     ]
   },
   {
