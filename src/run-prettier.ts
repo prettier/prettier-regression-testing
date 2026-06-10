@@ -113,10 +113,10 @@ export async function runPrettier(
     "git",
     [
       "diff",
-      alternative.version.kind,
       original.version.kind,
-      `--src-prefix=${alternative.version.kind}|${fileLinkPrefix}`,
+      alternative.version.kind,
       `--dst-prefix=${original.version.kind}|`,
+      `--src-prefix=${alternative.version.kind}|${fileLinkPrefix}`,
     ],
     { cwd: directory },
   );
