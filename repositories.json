@@ -20,6 +20,10 @@
     "ignoreFile": ".eslintignore"
   },
   {
+    "repository": "facebook/stylex",
+    "commit": "20ce0b6dad28b48a602f53f108ea48b21aa9f4f1"
+  },
+  {
     "repository": "formio/angular",
     "commit": "6cca81e58b1426ec0018948b9d2e62d0906998a6"
   },
