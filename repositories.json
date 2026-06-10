@@ -20,6 +20,10 @@
     "ignoreFile": ".eslintignore"
   },
   {
+    "repository": "facebook/docusaurus",
+    "commit": "96b32dd2e5514878b0d8929260142e4d0ea8745f"
+  },
+  {
     "repository": "facebook/relay",
     "commit": "65df294cad6f708264cfa46c299b5f85c34f980b"
   },
