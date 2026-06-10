@@ -95,6 +95,10 @@ export async function runPrettier(
     reset,
   });
 
+  if (alternative === original) {
+    return "";
+  }
+
   await runPrettierWithVersion({
     cwd: directory,
     prettier: alternative,
