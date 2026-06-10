@@ -115,8 +115,8 @@ export async function runPrettier(
       "diff",
       original.version.kind,
       alternative.version.kind,
-      `--dst-prefix=${original.version.kind}|`,
-      `--src-prefix=${alternative.version.kind}|${fileLinkPrefix}`,
+      `--src-prefix=${original.version.kind}|${fileLinkPrefix}`,
+      `--dst-prefix=${alternative.version.kind}|`,
     ],
     { cwd: directory },
   );
