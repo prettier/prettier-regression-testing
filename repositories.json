@@ -29,7 +29,12 @@
   },
   {
     "repository": "facebook/stylex",
-    "commit": "20ce0b6dad28b48a602f53f108ea48b21aa9f4f1"
+    "commit": "20ce0b6dad28b48a602f53f108ea48b21aa9f4f1",
+    "ignore": [
+      ".eslintrc.js",
+      "examples/example-bun/.eslintrc.js",
+      "examples/example-bun/scripts/build.mj"
+    ]
   },
   {
     "repository": "formio/angular",
