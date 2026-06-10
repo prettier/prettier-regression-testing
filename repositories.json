@@ -154,7 +154,8 @@
       ".prettierrc.js",
       "babel.config.js",
       "flow-typed/accepts.js",
-      "flow-typed/console.js.flow"
+      "flow-typed/console.js.flow",
+      "flow-typed/environment/bom.js"
     ]
   },
   {
