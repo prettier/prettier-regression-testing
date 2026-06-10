@@ -104,7 +104,13 @@
   },
   {
     "repository": "react/metro",
-    "commit": "c7be4b2f7544de372ce4ce261fdc9c86059f4567"
+    "commit": "c7be4b2f7544de372ce4ce261fdc9c86059f4567",
+    "ignore": [
+      ".eslintrc.js",
+      ".prettierrc.js",
+      "babel.config.js",
+      "flow-typed/accepts.js"
+    ]
   },
   {
     "repository": "react/react",
