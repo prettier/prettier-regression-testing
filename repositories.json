@@ -15,6 +15,10 @@
     "commit": "2688fbd1999f5be276142ad0cf60ef182e60fb65"
   },
   {
+    "repository": "eslint/eslint",
+    "commit": "6993fb3173da84999fc208507b93f523aa657448"
+  },
+  {
     "repository": "excalidraw/excalidraw",
     "commit": "61fe15a51d1a74e5edd564b366889ea8789aec1c",
     "ignoreFile": ".eslintignore"
