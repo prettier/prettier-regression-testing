@@ -64,6 +64,9 @@
     "commit": "1709304a30c36cc064656570d3e8146032a45d49",
     "glob": [
       "**/*.js"
+    ],
+    "ignore": [
+      "packages/react-relay/buildReactRelayContainer.js"
     ]
   },
   {
