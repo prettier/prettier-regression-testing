@@ -66,7 +66,15 @@
       "**/*.js"
     ],
     "ignore": [
-      "packages/react-relay/buildReactRelayContainer.js"
+      "packages/react-relay/buildReactRelayContainer.js",
+      "packages/react-relay/ReactRelayTypes.js",
+      "packages/react-relay/relay-hooks/legacy/useBlockingPaginationFragment.js",
+      "packages/react-relay/relay-hooks/loadQuery.js",
+      "packages/react-relay/relay-hooks/usePaginationFragment.js",
+      "packages/react-relay/relay-hooks/usePrefetchableForwardPaginationFragment_EXPERIMENTAL.js",
+      "packages/react-relay/relay-hooks/usePrefetchableForwardPaginationFragment.js",
+      "packages/react-relay/relay-hooks/useRefetchableFragment.js",
+      "packages/react-relay/relay-hooks/EntryPointTypes.flow.js"
     ]
   },
   {

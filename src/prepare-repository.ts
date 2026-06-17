@@ -47,6 +47,7 @@ export async function prepareRepository(
   await setupRepository(directory, repository);
 
   // There are junk files in `microsoft/vscode` can't commit
+  await spawn("git", ["config", "--global", "core.longpaths", "true"]);
   const files = await removeFilesCannotAdd(directory);
   await Promise.all(
     files.map((file) =>
