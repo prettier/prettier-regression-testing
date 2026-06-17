@@ -154,7 +154,10 @@
   },
   {
     "repository": "react/metro",
-    "commit": "44505d8f8ca9c5e901c94287c60769a7cf5405f9"
+    "commit": "44505d8f8ca9c5e901c94287c60769a7cf5405f9",
+    "ignore": [
+      "packages/metro-runtime/src/polyfills/__tests__/MetroFastRefreshMockRuntime.js"
+    ]
   },
   {
     "repository": "react/react",
