@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import spawn from "nano-spawn";
 import { cloneRepository, type Repository } from "./repositories.ts";
+import setupRepository from "./setup-repository.ts";
 import {
   commitChanges,
   readFile,
@@ -42,6 +43,8 @@ export async function prepareRepository(
   await fs.rm(path.join(directory, ".git"), { recursive: true, force: true });
   await preparePrettierIgnoreFile(directory, repository);
   await spawn("git", ["init"], { cwd: directory });
+
+  await setupRepository(directory, repository);
 
   // There are junk files in `microsoft/vscode` can't commit
   const files = await removeFilesCannotAdd(directory);

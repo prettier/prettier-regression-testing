@@ -60,6 +60,17 @@
     ]
   },
   {
+    "repository": "facebook/relay",
+    "commit": "1709304a30c36cc064656570d3e8146032a45d49",
+    "glob": [
+      "**/*.js"
+    ]
+  },
+  {
+    "repository": "facebook/stylex",
+    "commit": "14635baa4cdb79596306e5c1f0d689e3d9404f6d"
+  },
+  {
     "repository": "formio/angular",
     "commit": "0a1b36e24b0571fee15b9578996b5121f32b46be"
   },
@@ -129,6 +140,10 @@
   {
     "repository": "prettier/prettier",
     "commit": "c9a0d5a8cecc76a10c819057e1c60df50d4bdd55"
+  },
+  {
+    "repository": "react/metro",
+    "commit": "44505d8f8ca9c5e901c94287c60769a7cf5405f9"
   },
   {
     "repository": "react/react",
