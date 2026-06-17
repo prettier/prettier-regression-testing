@@ -61,7 +61,10 @@
   },
   {
     "repository": "facebook/relay",
-    "commit": "1709304a30c36cc064656570d3e8146032a45d49"
+    "commit": "1709304a30c36cc064656570d3e8146032a45d49",
+    "glob": [
+      "**/*.js"
+    ]
   },
   {
     "repository": "facebook/stylex",
