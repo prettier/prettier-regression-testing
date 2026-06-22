@@ -86,6 +86,10 @@
     "commit": "0a1b36e24b0571fee15b9578996b5121f32b46be"
   },
   {
+    "repository": "gitlabhq/gitlabhq",
+    "commit": "d65a2edfc060fb2ee6c28f4c91d380c8134e7bd4"
+  },
+  {
     "repository": "marmelab/react-admin",
     "commit": "b6dd62413f120692219dde5b84c34d75fc3a4c29",
     "glob": [
