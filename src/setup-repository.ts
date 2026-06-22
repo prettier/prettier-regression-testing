@@ -13,32 +13,43 @@ async function updateFile(
 }
 
 async function setupRepository(directory: string, repository: Repository) {
-  if (
-    repository.repository === "facebook/relay" ||
-    repository.repository === "react/metro"
-  ) {
-    await updateFile(path.join(directory, ".prettierrc.js"), (text) => {
-      text = text.replace("plugins,", "");
-      text = text.replaceAll("parser: 'hermes'", "parser: 'flow'");
-      return text;
-    });
-  } else if (repository.repository === "facebook/stylex") {
-    await updateFile(path.join(directory, "package.json"), (text) => {
-      const packageJson = JSON.parse(text);
-      const { prettier } = packageJson;
+  switch (repository.repository) {
+    case "facebook/relay":
+    case "react/metro": {
+      await updateFile(path.join(directory, ".prettierrc.js"), (text) => {
+        text = text.replace("plugins,", "");
+        text = text.replaceAll("parser: 'hermes'", "parser: 'flow'");
+        return text;
+      });
+      break;
+    }
 
-      assert.ok(Array.isArray(prettier.plugins));
-      delete packageJson.prettier.plugins;
+    case "facebook/stylex": {
+      await updateFile(path.join(directory, "package.json"), (text) => {
+        const packageJson = JSON.parse(text);
+        const { prettier } = packageJson;
 
-      assert.ok(Array.isArray(prettier.overrides));
-      for (const { options } of prettier.overrides) {
-        if (options.parser === "hermes") {
-          options.parser = "flow";
+        assert.ok(Array.isArray(prettier.plugins));
+        delete packageJson.prettier.plugins;
+
+        assert.ok(Array.isArray(prettier.overrides));
+        for (const { options } of prettier.overrides) {
+          if (options.parser === "hermes") {
+            options.parser = "flow";
+          }
         }
-      }
 
-      return JSON.stringify(packageJson, undefined, 2);
-    });
+        return JSON.stringify(packageJson, undefined, 2);
+      });
+      break;
+    }
+
+    case "gitlabhq/gitlabhq":
+      await updateFile(path.join(directory, ".prettierrc"), (text) => {
+        text = text.replace('"plugins": ["prettier-plugin-tailwindcss"],', "");
+        return text;
+      });
+      break;
   }
 }
 
