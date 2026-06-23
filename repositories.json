@@ -86,6 +86,18 @@
     "commit": "0a1b36e24b0571fee15b9578996b5121f32b46be"
   },
   {
+    "repository": "gitlabhq/gitlabhq",
+    "commit": "d65a2edfc060fb2ee6c28f4c91d380c8134e7bd4",
+    "ignore": [
+      ".gitlab/ci/rules.gitlab-ci.yml",
+      ".rubocop.yml",
+      "config/mail_room.yml",
+      "doc/user/project/integrations/samples/cloudwatch.yml",
+      "generator_templates/usage_metric_definition/metric_definition.yml",
+      "**/fixtures/**"
+    ]
+  },
+  {
     "repository": "marmelab/react-admin",
     "commit": "b6dd62413f120692219dde5b84c34d75fc3a4c29",
     "glob": [
