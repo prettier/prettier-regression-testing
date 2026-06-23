@@ -89,7 +89,9 @@
     "repository": "gitlabhq/gitlabhq",
     "commit": "d65a2edfc060fb2ee6c28f4c91d380c8134e7bd4",
     "ignore": [
-      ".gitlab/ci/rules.gitlab-ci.yml"
+      ".gitlab/ci/rules.gitlab-ci.yml",
+      ".rubocop.yml",
+      "spec/frontend/fixtures/**"
     ]
   },
   {
