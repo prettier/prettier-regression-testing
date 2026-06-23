@@ -44,4 +44,4 @@ jobs:
           key: v2-${{ hashFiles('repositories.json') }}
       - uses: actions/setup-node@v6
       - run: yarn
-      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS https://pkg.pr.new/prettier/prettier@main"
+      - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS https://pkg.pr.new/prettier/prettier@main ON gitlabhq/gitlabhq"

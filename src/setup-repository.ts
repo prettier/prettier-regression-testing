@@ -47,6 +47,10 @@ async function setupRepository(directory: string, repository: Repository) {
     case "gitlabhq/gitlabhq":
       await updateFile(path.join(directory, ".prettierrc"), (text) => {
         text = text.replace('"plugins": ["prettier-plugin-tailwindcss"],', "");
+        text = text.replace(
+          '"tailwindConfig": "./config/tailwind.config.js",',
+          "",
+        );
         return text;
       });
       break;
