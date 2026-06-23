@@ -1,7 +1,7 @@
 [
   {
     "repository": "angular/angular",
-    "commit": "f06b96d181b9584c0da9ccee4df95e1648b7b4e3",
+    "commit": "69ac1d5ee81c7c91054e4dc575fdd0f26023006e",
     "ignore": [
       "adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json",
       "modules/benchmarks/src/styling/ng2/index.html",
@@ -12,20 +12,20 @@
   },
   {
     "repository": "babel/babel",
-    "commit": "2688fbd1999f5be276142ad0cf60ef182e60fb65"
+    "commit": "e441e7a77dbe864911e3bab15310c8b9630a6bdd"
   },
   {
     "repository": "eslint/eslint",
-    "commit": "6993fb3173da84999fc208507b93f523aa657448"
+    "commit": "bb9eb2ab28daf6e6dafc62daa6b5daf9c2b7046c"
   },
   {
     "repository": "excalidraw/excalidraw",
-    "commit": "61fe15a51d1a74e5edd564b366889ea8789aec1c",
+    "commit": "0642e72cfa2d9a71198200e52f37399384610ee3",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "facebook/docusaurus",
-    "commit": "96b32dd2e5514878b0d8929260142e4d0ea8745f",
+    "commit": "7434ba505756126471cc19257b86f0ed086dea40",
     "ignore": [
       "dist",
       "node_modules",
@@ -65,7 +65,7 @@
   },
   {
     "repository": "facebook/relay",
-    "commit": "1709304a30c36cc064656570d3e8146032a45d49",
+    "commit": "1bf1bc4088f1499622923da61c62d2dd341d39c6",
     "glob": [
       "**/*.js"
     ],
@@ -83,15 +83,15 @@
   },
   {
     "repository": "facebook/stylex",
-    "commit": "14635baa4cdb79596306e5c1f0d689e3d9404f6d"
+    "commit": "3d7e23f0e30227408ac42d9364f957ebff8a4e27"
   },
   {
     "repository": "formio/angular",
-    "commit": "0a1b36e24b0571fee15b9578996b5121f32b46be"
+    "commit": "a72af4c9989666502e89d5daaf27e8d1ea6fa6e3"
   },
   {
     "repository": "gitlabhq/gitlabhq",
-    "commit": "d65a2edfc060fb2ee6c28f4c91d380c8134e7bd4",
+    "commit": "b156339f6e052d019695ffba57d699a542968f10",
     "ignore": [
       ".gitlab/ci/rules.gitlab-ci.yml",
       ".rubocop.yml",
@@ -104,7 +104,7 @@
   },
   {
     "repository": "marmelab/react-admin",
-    "commit": "b6dd62413f120692219dde5b84c34d75fc3a4c29",
+    "commit": "52c530baef624dc3b70ea0b438f74a797747916b",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -113,11 +113,11 @@
   },
   {
     "repository": "mdn/content",
-    "commit": "35704c8c6b8065b8a288d0f6454e4a0387538dcc"
+    "commit": "6401be870472f3197c3a130b719952779cad639b"
   },
   {
     "repository": "microsoft/vscode",
-    "commit": "b70582c74283768b95132be3838ca6d5524d1a71",
+    "commit": "b949969d71c3788856872a52e3bc6441292046f9",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -167,25 +167,25 @@
   },
   {
     "repository": "prettier/prettier",
-    "commit": "c9a0d5a8cecc76a10c819057e1c60df50d4bdd55"
+    "commit": "bf3ca0c8866614ebfe6db30d8b36ec1a7a6af78f"
   },
   {
     "repository": "react/metro",
-    "commit": "44505d8f8ca9c5e901c94287c60769a7cf5405f9",
+    "commit": "16fa9ceeeedff6610de67d90f2444b03a1661d7d",
     "ignore": [
       "packages/metro-runtime/src/polyfills/__tests__/MetroFastRefreshMockRuntime.js"
     ]
   },
   {
     "repository": "react/react",
-    "commit": "80b1cab397764f83efb9828563a259c8052ded0c",
+    "commit": "06b2a50f321502514443f675eaa44be8ae826218",
     "glob": [
       "**/*.{js,jsx,ts,tsx}"
     ]
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "4ba3e02e46a3d01c24b030771ec6fc8d52385c61",
+    "commit": "54e285728e5d8cb83fadb8041189f0c3b4ab436a",
     "ignore": [
       "packages/website/src/vendor/sandbox.d.ts"
     ]
@@ -196,7 +196,7 @@
   },
   {
     "repository": "vitejs/vite",
-    "commit": "4074add63e4dbe777c30c5183a526928c0724fca",
+    "commit": "9a0dd481ac2160078b8173879e0fa86e5e6af05d",
     "ignore": [
       "packages/*/CHANGELOG.md",
       "packages/vite/src/node/ssr/__tests__/fixtures/errors/syntax-error.*",
@@ -219,7 +219,7 @@
   },
   {
     "repository": "vuejs/core",
-    "commit": "48ad452dd61926a59e358da3c74c5ef750ae21c4"
+    "commit": "325eb1d9a12e3b90fe36f755291b8f9ba5977820"
   },
   {
     "repository": "vuejs/eslint-plugin-vue",
