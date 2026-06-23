@@ -178,10 +178,7 @@
   },
   {
     "repository": "react/react",
-    "commit": "80b1cab397764f83efb9828563a259c8052ded0c",
-    "glob": [
-      "**/*.{js,jsx,ts,tsx}"
-    ]
+    "commit": "06b2a50f321502514443f675eaa44be8ae826218"
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
