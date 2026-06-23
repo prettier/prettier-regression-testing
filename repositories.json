@@ -94,7 +94,8 @@
       "config/mail_room.yml",
       "doc/user/project/integrations/samples/cloudwatch.yml",
       "generator_templates/usage_metric_definition/metric_definition.yml",
-      "**/fixtures/**"
+      "**/fixtures/**",
+      "spec/support/helpers/database/duplicate_indexes.yml"
     ]
   },
   {
