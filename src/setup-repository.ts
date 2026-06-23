@@ -24,6 +24,15 @@ async function setupRepository(directory: string, repository: Repository) {
       break;
     }
 
+    case "react/react": {
+      await updateFile(path.join(directory, ".prettierrc.js"), (text) => {
+        text = text.replaceAll("'prettier-plugin-hermes-parser'", "");
+        text = text.replaceAll("parser: 'hermes'", "parser: 'flow'");
+        return text;
+      });
+      break;
+    }
+
     case "facebook/stylex": {
       await updateFile(path.join(directory, "package.json"), (text) => {
         const packageJson = JSON.parse(text);
