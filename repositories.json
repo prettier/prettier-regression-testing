@@ -94,8 +94,7 @@
       "config/mail_room.yml",
       "doc/user/project/integrations/samples/cloudwatch.yml",
       "generator_templates/usage_metric_definition/metric_definition.yml",
-      "spec/frontend/fixtures/**",
-      "spec/frontend/fixtures/static/gl_field_errors.html"
+      "**/fixtures/**"
     ]
   },
   {
