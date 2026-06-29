@@ -1,4 +1,4 @@
-import fs from "node:fs/promises";
+import fsSync, { promises as fs } from "node:fs";
 import path from "node:path";
 import spawn, { type SubprocessError } from "nano-spawn";
 import { type InstalledPrettier } from "./install-prettier.ts";
@@ -51,6 +51,10 @@ async function runPrettierWithVersion({
 }
 
 async function installDependencies(cwd: string) {
+  const lockFile = path.join(cwd, "yarn.lock");
+  if (!fsSync.existsSync(lockFile)) {
+    await fs.writeFile(lockFile, "");
+  }
   await spawn("yarn", ["install"], {
     cwd,
     env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },
