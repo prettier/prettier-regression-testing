@@ -166,6 +166,10 @@
     ]
   },
   {
+    "repository": "NG-ZORRO/ng-zorro-antd",
+    "commit": "61d33359a2ae46789447f4e565c949ce45b0794b"
+  },
+  {
     "repository": "prettier/prettier",
     "commit": "bf3ca0c8866614ebfe6db30d8b36ec1a7a6af78f"
   },
