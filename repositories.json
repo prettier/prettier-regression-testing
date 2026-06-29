@@ -184,6 +184,10 @@
     ]
   },
   {
+    "repository": "shoelace-style/webawesome",
+    "commit": "5962446f518264446f52fe5e47ab4efc495d9ee4"
+  },
+  {
     "repository": "typescript-eslint/typescript-eslint",
     "commit": "54e285728e5d8cb83fadb8041189f0c3b4ab436a",
     "ignore": [
