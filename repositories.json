@@ -103,6 +103,10 @@
     ]
   },
   {
+    "repository": "mantinedev/mantine",
+    "commit": "d709e0bc277255c2a857f138cc694028273d8697"
+  },
+  {
     "repository": "marmelab/react-admin",
     "commit": "52c530baef624dc3b70ea0b438f74a797747916b",
     "glob": [
