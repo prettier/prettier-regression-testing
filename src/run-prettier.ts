@@ -59,7 +59,7 @@ async function installDependencies(cwd: string) {
     cwd,
     env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },
   });
-  await fs.rm(path.join(cwd, "yarn.lock"), { force: true });
+  await fs.rm(lockFile, { force: true });
   await spawn("git", ["reset", "--hard"], { cwd });
 }
 
