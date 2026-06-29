@@ -19,6 +19,10 @@ async function addProject() {
     `,
   );
 
+  // https://github.com/nodejs/node/issues/31762
+  rl.terminal = false;
+  rl.close();
+
   let repository = input.trim();
 
   if (repository.startsWith(GITHUB_DOMAIN)) {

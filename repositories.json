@@ -191,6 +191,10 @@
     ]
   },
   {
+    "repository": "vbenjs/vue-vben-admin",
+    "commit": "a8c3729850dd31a8155303e8923a4e7e95dc0a93"
+  },
+  {
     "repository": "vega/vega-lite",
     "commit": "91845a3bca89f9e8bd6ae847bc1b3f31cc85e919"
   },
