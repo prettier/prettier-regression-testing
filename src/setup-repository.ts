@@ -1,4 +1,4 @@
-import assert from "node:assert";
+import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { type Repository } from "./repositories.ts";
@@ -14,18 +14,11 @@ async function updateFile(
 
 async function setupRepository(directory: string, repository: Repository) {
   switch (repository.repository) {
-    case "facebook/relay":
-    case "react/metro": {
-      await updateFile(path.join(directory, ".prettierrc.js"), (text) => {
-        text = text.replace("plugins,", "");
-        text = text.replaceAll("parser: 'hermes'", "parser: 'flow'");
-        return text;
-      });
-      break;
-    }
-
     case "react/react": {
       await updateFile(path.join(directory, ".prettierrc.js"), (text) => {
+        assert.ok(text.includes("'prettier-plugin-hermes-parser'"));
+        assert.ok(text.includes("parser: 'hermes'"));
+
         text = text.replaceAll("'prettier-plugin-hermes-parser'", "");
         text = text.replaceAll("parser: 'hermes'", "parser: 'flow'");
         return text;
