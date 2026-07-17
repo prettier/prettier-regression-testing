@@ -190,7 +190,9 @@
     "glob": [
       "**/*.{js,jsx,ts,tsx}"
     ],
-    "ignore": ["compiler/packages/babel-plugin-react-compiler/src/__tests__/fixtures/"]
+    "ignore": [
+      "compiler/packages/babel-plugin-react-compiler/src/__tests__/fixtures/"
+    ]
   },
   {
     "repository": "shoelace-style/webawesome",
