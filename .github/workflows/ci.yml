@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
       - run: yarn
       - run: yarn lint
 
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
       - run: yarn
       - run: yarn test
 
@@ -42,6 +42,6 @@ jobs:
         with:
           path: repositories
           key: v2-${{ hashFiles('repositories.json') }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
       - run: yarn
       - run: yarn execute "RUN https://pkg.pr.new/prettier/prettier@main VS https://pkg.pr.new/prettier/prettier@main"
