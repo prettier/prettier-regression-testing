@@ -3,10 +3,14 @@
   dependencyDashboardApproval: true,
   lockFileMaintenance: { enabled: true },
   postUpdateOptions: ["yarnDedupeHighest"],
+  extends: [":pinDependencies", ":pinDevDependencies"],
+  lockFileMaintenance: { enabled: true },
+  rangeStrategy: "bump",
   packageRules: [
     {
-      groupName: "devDependencies",
+      groupName: "non-major dev-dependencies",
       matchDepTypes: ["devDependencies"],
+      matchUpdateTypes: ["minor", "patch"],
     },
     {
       groupName: "GitHub Actions",
