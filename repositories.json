@@ -206,6 +206,10 @@
     ]
   },
   {
+    "repository": "ultralytics/ultralytics",
+    "commit": "181e5bcedfb19bbe59ed6a90b7103a331c4e535f"
+  },
+  {
     "repository": "vbenjs/vue-vben-admin",
     "commit": "2d7087602b732e6c23c7696ee8430eb1e8221b56"
   },
