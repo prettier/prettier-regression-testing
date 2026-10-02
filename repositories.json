@@ -1,7 +1,7 @@
 [
   {
     "repository": "angular/angular",
-    "commit": "87d38ec3ff6099d8d4ab9d157fef576a7a213d36",
+    "commit": "3f9191166936166085320652eef1a562504aa3e4",
     "ignore": [
       "adev/src/content/examples/schematics-for-libraries/projects/my-lib/package.json",
       "modules/benchmarks/src/styling/ng2/index.html",
@@ -12,20 +12,20 @@
   },
   {
     "repository": "babel/babel",
-    "commit": "3fbcec1ccbe9ebfa5a8575bc88afadd061899bd5"
+    "commit": "7c1dcfac003791a7fee733ed13851a5cac1ccf1c"
   },
   {
     "repository": "eslint/eslint",
-    "commit": "c6cc6c592f30901345d94ef75e0d42c1894fae6c"
+    "commit": "d166567901e09940c1de4ad0e95d572eeab5c927"
   },
   {
     "repository": "excalidraw/excalidraw",
-    "commit": "e1bb9ff8f8931e783c11d104abb8967ac6605c9a",
+    "commit": "1919728724a1b71af73cb7e6d2d1a418a1415b1c",
     "ignoreFile": ".eslintignore"
   },
   {
     "repository": "facebook/docusaurus",
-    "commit": "016cbb6fc7b35e7c84f2ecb1294b2ac80ca89d87",
+    "commit": "baaa9069324a8dbff1ff8e3ffcd4598d5242332a",
     "ignore": [
       "dist",
       "node_modules",
@@ -65,7 +65,7 @@
   },
   {
     "repository": "facebook/relay",
-    "commit": "5cd08cb972c1dfd4f52b5c60069b653d7d2a772a",
+    "commit": "5e15cb051027bd68d5b7410d6f51922d42522d18",
     "glob": [
       "**/*.js"
     ],
@@ -83,15 +83,15 @@
   },
   {
     "repository": "facebook/stylex",
-    "commit": "dac821c8fc61caf2d2e5c4c529eef278e131b7b9"
+    "commit": "fe0be7f0e76ccc585385f0fa56d9b50053ff9ca2"
   },
   {
     "repository": "formio/angular",
-    "commit": "1f3a1acaa00b0ae93fe1d8bb015ad79796aaada9"
+    "commit": "390bcbd244109c08705e0305bb638c7ddd1dd3c3"
   },
   {
     "repository": "gitlabhq/gitlabhq",
-    "commit": "820ecb38b05d6ec926f986749b1f645f739a97b1",
+    "commit": "b7f8d723d5d6e01024785ec445a77fc1fb694f93",
     "ignore": [
       ".gitlab/ci/rules.gitlab-ci.yml",
       ".rubocop.yml",
@@ -104,11 +104,11 @@
   },
   {
     "repository": "mantinedev/mantine",
-    "commit": "85c7938ee3c0463cc4b51e600b6a525c2d974ccd"
+    "commit": "f38933cb4f1c534600f4ff59ee3ddbb4685a4bc4"
   },
   {
     "repository": "marmelab/react-admin",
-    "commit": "ee3493e5dfd17defc7a43c85b25e9b5b4e922e20",
+    "commit": "e699865d8f46bf6f6fbc9eb7c9570ec4dec79f5d",
     "glob": [
       "packages/*/src/**/*.{js,json,ts,tsx,css,md}",
       "examples/*/src/**/*.{js,ts,json,tsx,css,md}",
@@ -117,11 +117,11 @@
   },
   {
     "repository": "mdn/content",
-    "commit": "4e735554d10b8f0821c1f052db8f687855709507"
+    "commit": "bacd00c353f643d8f5be0ce769015b1a66b4251a"
   },
   {
     "repository": "microsoft/vscode",
-    "commit": "717304b0de30f62658cb6c1d430f7aa5d4c13747",
+    "commit": "072617082f2dfb24d5439b7a30934a8dac70f332",
     "ignore": [
       "**/build/*/**/*.js",
       "**/dist/**/*.js",
@@ -171,22 +171,22 @@
   },
   {
     "repository": "NG-ZORRO/ng-zorro-antd",
-    "commit": "6d3169bead57ea8d7ee307b988e1b7da485ddd91"
+    "commit": "10a07e40308a097d3e5636d3dc1ca9fe39815939"
   },
   {
     "repository": "prettier/prettier",
-    "commit": "5fd5b6908b8dfd8a5d07608b22403d2ebfa5b3f8"
+    "commit": "a777bd865b889c579cd1718e8dc47800260a3da6"
   },
   {
     "repository": "react/metro",
-    "commit": "fce4f296a0adbc2008033b987cf436a6da710166",
+    "commit": "0cd1641f6c30d5e20eb449cca8466444b6919585",
     "ignore": [
       "packages/metro-runtime/src/polyfills/__tests__/MetroFastRefreshMockRuntime.js"
     ]
   },
   {
     "repository": "react/react",
-    "commit": "065bc84eb50914fa1bc60983eac0b0b717186d74",
+    "commit": "7c6ac13e19fef500b7f669a16bbd01ecc95965ca",
     "glob": [
       "**/*.{js,jsx,ts,tsx}"
     ],
@@ -196,30 +196,30 @@
   },
   {
     "repository": "shoelace-style/webawesome",
-    "commit": "2dfbd2624f09ab38a2078335dd5ffbfdff619efa"
+    "commit": "8094c691d208bf2e54bcb7eec1fe4d52d7c1d4ea"
   },
   {
     "repository": "typescript-eslint/typescript-eslint",
-    "commit": "9a6e546823e5d8f2dc015df2aa66c0230615e209",
+    "commit": "338fad98047cf80b88e2090c85dab9def3e2e782",
     "ignore": [
       "packages/website/src/vendor/sandbox.d.ts"
     ]
   },
   {
     "repository": "ultralytics/ultralytics",
-    "commit": "181e5bcedfb19bbe59ed6a90b7103a331c4e535f"
+    "commit": "46f7dd3edaa04ca02d4cf12b33c57de1e9d34c4e"
   },
   {
     "repository": "vbenjs/vue-vben-admin",
-    "commit": "2d7087602b732e6c23c7696ee8430eb1e8221b56"
+    "commit": "50f4ede309d4450c7dd417399cb8d5c02346d2d2"
   },
   {
     "repository": "vega/vega-lite",
-    "commit": "91eeeb8c2b8a4cf2cf9c1ea238667da0216d7a1c"
+    "commit": "37e3b5c76b9cb97dcb1358a46bd645cad8b11ea8"
   },
   {
     "repository": "vitejs/vite",
-    "commit": "238ad811c7fb9e4730cbd317d0657867ed3447b3",
+    "commit": "6894f5cbceac589536a0efb476d881a47f5ab1c5",
     "ignore": [
       "packages/*/CHANGELOG.md",
       "packages/vite/src/node/ssr/__tests__/fixtures/errors/syntax-error.*",
@@ -242,10 +242,10 @@
   },
   {
     "repository": "vuejs/core",
-    "commit": "d63616ca17de965ed32dcb449a4c5cd9982f15d2"
+    "commit": "4ab865a848a1da3d10fb674f857e5fff13094644"
   },
   {
     "repository": "vuejs/eslint-plugin-vue",
-    "commit": "f3a027627472216e17e812f5324059f45d156298"
+    "commit": "01af9fec88cbd0f6c23d454a472da203081cfa58"
   }
 ]
