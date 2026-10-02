@@ -21,7 +21,13 @@
   {
     "repository": "excalidraw/excalidraw",
     "commit": "1919728724a1b71af73cb7e6d2d1a418a1415b1c",
-    "ignoreFile": ".eslintignore"
+    "ignoreFile": ".eslintignore",
+    "ignore": [
+      "dev-docs/docs/@excalidraw/excalidraw/api/props/excalidraw-api.mdx",
+      "dev-docs/docs/@excalidraw/excalidraw/api/props/props.mdx",
+      "dev-docs/docs/@excalidraw/excalidraw/api/props/render-props.mdx",
+      "dev-docs/docs/@excalidraw/excalidraw/api/utils/export.mdx"
+    ]
   },
   {
     "repository": "facebook/docusaurus",
