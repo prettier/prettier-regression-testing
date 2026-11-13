@@ -55,11 +55,9 @@ async function installDependencies(cwd: string) {
   if (!fsSync.existsSync(lockFile)) {
     await fs.writeFile(lockFile, "");
   }
-  await spawn("yarn", ["install"], {
-    cwd,
-    env: { YARN_ENABLE_IMMUTABLE_INSTALLS: "false" },
-  });
+  await spawn("yarn", ["install", "--no-immutable"], { cwd });
   await fs.rm(lockFile, { force: true });
+  await fs.rm(path.join(cwd, ".yarn/install-state.gz"), { force: true });
   await spawn("git", ["reset", "--hard"], { cwd });
 }
 
