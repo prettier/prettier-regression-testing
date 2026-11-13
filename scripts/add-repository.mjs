@@ -26,6 +26,10 @@ async function addProject() {
   let repository = input.trim();
 
   if (repository.startsWith(GITHUB_DOMAIN)) {
+    if (repository.endsWith("/")) {
+      repository = repository.slice(0, -1);
+    }
+
     repository = repository.slice(GITHUB_DOMAIN.length);
 
     if (repository.endsWith("/")) {

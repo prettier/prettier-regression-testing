@@ -11,8 +11,16 @@
     ]
   },
   {
+    "repository": "ant-design/ant-design",
+    "commit": "94ae623993a0c55570a683e7c78be5a094966dee"
+  },
+  {
     "repository": "babel/babel",
     "commit": "52f8e9b9583857eb6f63a06aa302b12499c51e3a"
+  },
+  {
+    "repository": "element-plus/element-plus",
+    "commit": "2cc25233f949fa3d8fab6a51a20059fc97ba48d5"
   },
   {
     "repository": "eslint/eslint",
@@ -205,6 +213,10 @@
     "commit": "dffa8d7c04405c40ece11e87c144c95b4cb41137"
   },
   {
+    "repository": "twbs/bootstrap",
+    "commit": "f9a7a8941e7c1c91b0cae8a0c906537c26086ae2"
+  },
+  {
     "repository": "typescript-eslint/typescript-eslint",
     "commit": "bdf0a9c5fc58bbba7199106b7fb1346d4cfef822",
     "ignore": [
@@ -253,5 +265,9 @@
   {
     "repository": "vuejs/eslint-plugin-vue",
     "commit": "4f46fd54ce636d0419e0a7c664b37f742e09b3ca"
+  },
+  {
+    "repository": "youzan/vant",
+    "commit": "7cc499279866e74b117593abf612567d5a2eb28d"
   }
 ]
