@@ -21,4 +21,5 @@
       matchPackageNames: ["vitest", "@vitest/*", "vite"],
     },
   ],
+  ignoreDeps: ["node"],
 }
