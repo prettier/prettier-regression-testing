@@ -16,5 +16,9 @@
       groupName: "GitHub Actions",
       matchManagers: ["github-actions"],
     },
+    {
+      groupName: "Vitest",
+      matchPackageNames: ["vitest", "@vitest/*", "vite"],
+    },
   ],
 }
