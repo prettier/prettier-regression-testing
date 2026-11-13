@@ -18,7 +18,7 @@ jobs:
           key: v2-${{ hashFiles('repositories.json') }}
       - uses: actions/setup-node@v7
         with:
-          node-version: "24"
+          node-version: "24.22.3"
       - run: yarn
       - run: yarn execute
         env:
