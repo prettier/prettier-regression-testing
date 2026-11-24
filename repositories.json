@@ -100,10 +100,6 @@
     "commit": "e3e2d02901b7b8d6f10afc8627f89e5cd3f89a5d"
   },
   {
-    "repository": "formio/angular",
-    "commit": "390bcbd244109c08705e0305bb638c7ddd1dd3c3"
-  },
-  {
     "repository": "gitlabhq/gitlabhq",
     "commit": "d7b9a6176ab4e279465ba3ee09922cde2b74de47",
     "ignore": [
